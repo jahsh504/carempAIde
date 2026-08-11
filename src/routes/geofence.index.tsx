@@ -34,7 +34,7 @@ function Bars({ rssi }: { rssi: number }) {
 }
 
 const links = [
-  { to: "/geofence/alerts", label: "Recent Alerts", hint: "Room movement and boundary events", icon: Bell },
+  { to: "/geofence/alerts", label: "Recent Activity", hint: "Room movement and boundary events", icon: Bell },
   { to: "/geofence/zones", label: "Restricted Zones", hint: "Choose which rooms are off-limits", icon: Ban },
   { to: "/geofence/settings", label: "Geofence Settings", hint: "Tracking, alerts and scan frequency", icon: Settings2 },
 ] as const;

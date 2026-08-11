@@ -2,7 +2,12 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Mail, Apple, Fingerprint } from "lucide-react";
 
 export const Route = createFileRoute("/auth")({
-  head: () => ({ meta: [{ title: "Sign in — careMP" }, { name: "description", content: "Sign in to your careMP account." }] }),
+  head: () => ({
+    meta: [
+      { title: "Sign in — careMP" },
+      { name: "description", content: "Sign in to your careMP account." },
+    ],
+  }),
   component: Auth,
 });
 
@@ -18,28 +23,42 @@ function Auth() {
             <span className="text-xl font-semibold">c</span>
           </div>
           <h1 className="mt-4 text-xl font-semibold">Welcome back</h1>
-          <p className="mt-1 text-xs text-muted-foreground">Sign in to continue your health journey.</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Sign in to continue your health journey.
+          </p>
         </div>
         <div className="space-y-3">
           <label className="block">
             <span className="text-[11px] font-medium text-muted-foreground">Email</span>
             <div className="mt-1 flex items-center gap-2 rounded-xl border border-border bg-background px-3 py-2.5">
               <Mail className="h-4 w-4 text-muted-foreground" />
-              <input defaultValue="aarav@caremp.app" className="w-full bg-transparent text-sm outline-none" />
+              <input
+                defaultValue="aarav@caremp.app"
+                className="w-full bg-transparent text-sm outline-none"
+              />
             </div>
           </label>
           <label className="block">
             <span className="text-[11px] font-medium text-muted-foreground">Password</span>
-            <input type="password" defaultValue="••••••••" className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none" />
+            <input
+              type="password"
+              defaultValue="••••••••"
+              className="mt-1 w-full rounded-xl border border-border bg-background px-3 py-2.5 text-sm outline-none"
+            />
           </label>
-          <Link to="/home" className="block w-full rounded-xl bg-primary py-3 text-center text-sm font-semibold text-primary-foreground">
+          <Link
+            to="/home"
+            className="block w-full rounded-xl bg-primary py-3 text-center text-sm font-semibold text-primary-foreground"
+          >
             Sign in
           </Link>
           <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium">
             <Apple className="h-4 w-4" /> Continue with Apple
           </button>
           <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card py-3 text-sm font-medium">
-            <span className="grid h-4 w-4 place-items-center rounded-full bg-gradient-to-br from-blue to-teal text-[9px] font-bold text-white">G</span>
+            <span className="grid h-4 w-4 place-items-center rounded-full bg-gradient-to-br from-blue to-teal text-[9px] font-bold text-white">
+              G
+            </span>
             Continue with Google
           </button>
           <label className="flex items-center justify-between rounded-xl border border-border bg-card px-3 py-2.5 text-xs">

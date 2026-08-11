@@ -8,9 +8,16 @@ export const Route = createFileRoute("/medication/course")({
   head: () => ({
     meta: [
       { title: "Course Completion — Finish every course | careMP AIDE" },
-      { name: "description", content: "Track day-by-day progress through each medication course and see which ones are complete." },
+      {
+        name: "description",
+        content:
+          "Track day-by-day progress through each medication course and see which ones are complete.",
+      },
       { property: "og:title", content: "Course Completion — Finish every course | careMP AIDE" },
-      { property: "og:description", content: "Day-by-day progress through every medication course." },
+      {
+        property: "og:description",
+        content: "Day-by-day progress through every medication course.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -26,18 +33,30 @@ function CourseCard({ c }: { c: Course }) {
     <Card>
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-[16px] font-semibold leading-tight">{c.name}</p>
-        {done && <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[10.5px] font-medium text-emerald">Completed</span>}
+        {done && (
+          <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[10.5px] font-medium text-emerald">
+            Completed
+          </span>
+        )}
       </div>
       <p className="mt-1 text-[11.5px] text-muted-foreground">{c.dosage}</p>
       <p className="text-[11.5px] text-muted-foreground">{c.duration}</p>
 
       <div className="mt-3.5 flex items-baseline justify-between">
-        <p className="text-[14px] font-semibold">Day <span className="num">{c.currentDay}</span> of <span className="num">{c.totalDays}</span></p>
-        <p className={cn("num text-[12.5px] font-medium", done ? "text-emerald" : "text-teal")}>{pct}% Complete</p>
+        <p className="text-[14px] font-semibold">
+          Day <span className="num">{c.currentDay}</span> of{" "}
+          <span className="num">{c.totalDays}</span>
+        </p>
+        <p className={cn("num text-[12.5px] font-medium", done ? "text-emerald" : "text-teal")}>
+          {pct}% Complete
+        </p>
       </div>
 
       <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-        <div className="h-full rounded-full bg-gradient-to-r from-emerald to-teal" style={{ width: `${pct}%` }} />
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-emerald to-teal"
+          style={{ width: `${pct}%` }}
+        />
       </div>
 
       <div className="mt-4 flex flex-wrap gap-2">
@@ -50,9 +69,10 @@ function CourseCard({ c }: { c: Course }) {
               <span
                 className={cn(
                   "grid h-8 w-8 place-items-center rounded-full border text-[11px] font-medium",
-                  complete && "border-transparent bg-gradient-to-br from-emerald to-teal text-white",
+                  complete &&
+                    "border-transparent bg-gradient-to-br from-emerald to-teal text-white",
                   current && "border-teal text-teal",
-                  !complete && !current && "border-border text-muted-foreground"
+                  !complete && !current && "border-border text-muted-foreground",
                 )}
               >
                 {complete ? <Check className="h-3.5 w-3.5" strokeWidth={4} /> : current ? "•" : day}
@@ -82,7 +102,9 @@ function CourseCompletionPage() {
       <div>
         <SectionHeader title="Active courses" />
         <div className="space-y-3">
-          {active.map((c) => <CourseCard key={c.id} c={c} />)}
+          {active.map((c) => (
+            <CourseCard key={c.id} c={c} />
+          ))}
         </div>
       </div>
 
@@ -90,7 +112,9 @@ function CourseCompletionPage() {
         <div>
           <SectionHeader title="Completed courses" />
           <div className="space-y-3">
-            {completed.map((c) => <CourseCard key={c.id} c={c} />)}
+            {completed.map((c) => (
+              <CourseCard key={c.id} c={c} />
+            ))}
           </div>
         </div>
       )}
@@ -103,8 +127,8 @@ function CourseCompletionPage() {
           <div>
             <p className="text-[13px] font-semibold">Why finishing an antibiotic course matters</p>
             <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
-              Stopping early can leave the strongest bacteria behind, letting the infection return and making it harder
-              to treat next time. Take every dose, even once you feel better.
+              Stopping early can leave the strongest bacteria behind, letting the infection return
+              and making it harder to treat next time. Take every dose, even once you feel better.
             </p>
           </div>
         </div>

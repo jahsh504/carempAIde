@@ -1,8 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  FlaskConical, Scan, Pill, Folder, Search, Plus, X, Camera, ScanLine,
-  FileText, Image as ImageIcon, FolderOpen, Sparkles, Lock, ChevronRight, Clock,
+  FlaskConical,
+  Scan,
+  Pill,
+  Folder,
+  Search,
+  Plus,
+  X,
+  Camera,
+  ScanLine,
+  FileText,
+  Image as ImageIcon,
+  FolderOpen,
+  Sparkles,
+  Lock,
+  ChevronRight,
+  Clock,
 } from "lucide-react";
 import { Card, SectionHeader } from "@/components/care/primitives";
 import { categories, documents, countFor, recordsSummary, twinUsageLine } from "@/data/records";
@@ -12,9 +26,16 @@ export const Route = createFileRoute("/records/")({
   head: () => ({
     meta: [
       { title: "Medical Records — Your secure health vault | careMP AIDE" },
-      { name: "description", content: "Browse lab reports, imaging, prescriptions and documents in one calm, encrypted health vault." },
+      {
+        name: "description",
+        content:
+          "Browse lab reports, imaging, prescriptions and documents in one calm, encrypted health vault.",
+      },
       { property: "og:title", content: "Medical Records — Your secure health vault | careMP AIDE" },
-      { property: "og:description", content: "Lab reports, imaging, prescriptions and documents — organised and private." },
+      {
+        property: "og:description",
+        content: "Lab reports, imaging, prescriptions and documents — organised and private.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -22,7 +43,12 @@ export const Route = createFileRoute("/records/")({
   component: RecordsHome,
 });
 
-const catIcon: Record<string, typeof Folder> = { flask: FlaskConical, scan: Scan, pill: Pill, folder: Folder };
+const catIcon: Record<string, typeof Folder> = {
+  flask: FlaskConical,
+  scan: Scan,
+  pill: Pill,
+  folder: Folder,
+};
 const catTone: Record<string, string> = {
   teal: "bg-teal/10 text-teal",
   blue: "bg-blue/10 text-blue",
@@ -50,7 +76,9 @@ function RecordsHome() {
     if (!s) return [];
     return documents.filter((d) =>
       [d.title, d.hospital, d.doctor, d.date, d.tag ?? "", d.category, ...(d.medications ?? [])]
-        .join(" ").toLowerCase().includes(s)
+        .join(" ")
+        .toLowerCase()
+        .includes(s),
     );
   }, [q]);
 
@@ -70,7 +98,10 @@ function RecordsHome() {
     setSheet(false);
     setProcessing(label);
     setExtracted(false);
-    setTimeout(() => { setProcessing(null); setExtracted(true); }, 1800);
+    setTimeout(() => {
+      setProcessing(null);
+      setExtracted(true);
+    }, 1800);
   };
 
   return (
@@ -90,7 +121,11 @@ function RecordsHome() {
           className="w-full bg-transparent text-[13px] outline-none placeholder:text-muted-foreground"
         />
         {q && (
-          <button onClick={() => setQ("")} aria-label="Clear search" className="text-muted-foreground">
+          <button
+            onClick={() => setQ("")}
+            aria-label="Clear search"
+            className="text-muted-foreground"
+          >
             <X className="h-3.5 w-3.5" />
           </button>
         )}
@@ -98,12 +133,23 @@ function RecordsHome() {
 
       {q ? (
         <div className="space-y-2">
-          <SectionHeader title="Results" hint={`${results.length} document${results.length === 1 ? "" : "s"}`} />
+          <SectionHeader
+            title="Results"
+            hint={`${results.length} document${results.length === 1 ? "" : "s"}`}
+          />
           {results.map((d) => (
-            <DocRow key={d.id} id={d.id} title={d.title} sub={`${d.hospital} · ${d.date}`} tag={d.tag} />
+            <DocRow
+              key={d.id}
+              id={d.id}
+              title={d.title}
+              sub={`${d.hospital} · ${d.date}`}
+              tag={d.tag}
+            />
           ))}
           {results.length === 0 && (
-            <Card className="text-center text-xs text-muted-foreground">No records match that search.</Card>
+            <Card className="text-center text-xs text-muted-foreground">
+              No records match that search.
+            </Card>
           )}
         </div>
       ) : (
@@ -116,7 +162,9 @@ function RecordsHome() {
                 onClick={() => setTab(t)}
                 className={cn(
                   "rounded-full px-3.5 py-1.5 text-[12px] font-medium capitalize transition-colors",
-                  tab === t ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                  tab === t
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted text-muted-foreground",
                 )}
               >
                 {t}
@@ -132,7 +180,9 @@ function RecordsHome() {
                     <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-teal border-t-transparent" />
                     Processing…
                   </p>
-                  <p className="mt-1 text-[11px] text-muted-foreground">Reading your {processing.toLowerCase()} and extracting details.</p>
+                  <p className="mt-1 text-[11px] text-muted-foreground">
+                    Reading your {processing.toLowerCase()} and extracting details.
+                  </p>
                 </>
               ) : (
                 <>
@@ -141,7 +191,9 @@ function RecordsHome() {
                     <p>Apollo Hospital · Dr. Nadia Rahman</p>
                     <p>March 2026 · Lab report · Haemoglobin 14.2 g/dL</p>
                   </div>
-                  <p className="mt-2 text-[11px] text-muted-foreground">The original document is stored unchanged.</p>
+                  <p className="mt-2 text-[11px] text-muted-foreground">
+                    The original document is stored unchanged.
+                  </p>
                 </>
               )}
             </Card>
@@ -158,11 +210,18 @@ function RecordsHome() {
                     params={{ category: c.key }}
                     className="card-surface p-4 active:scale-[0.98]"
                   >
-                    <span className={cn("grid h-10 w-10 place-items-center rounded-xl", catTone[c.tone])}>
+                    <span
+                      className={cn(
+                        "grid h-10 w-10 place-items-center rounded-xl",
+                        catTone[c.tone],
+                      )}
+                    >
                       <Icon className="h-4.5 w-4.5" />
                     </span>
                     <p className="mt-3 text-[14px] font-semibold">{c.label}</p>
-                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{c.blurb}</p>
+                    <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">
+                      {c.blurb}
+                    </p>
                     <p className="num mt-2.5 text-[11px] text-muted-foreground">
                       {countFor(c.key)} files · {c.lastUpdated}
                     </p>
@@ -179,7 +238,13 @@ function RecordsHome() {
                   </p>
                   <div className="space-y-2">
                     {g.docs.map((d) => (
-                      <DocRow key={d.id} id={d.id} title={d.title} sub={`${d.hospital} · ${d.doctor}`} tag={d.tag} />
+                      <DocRow
+                        key={d.id}
+                        id={d.id}
+                        title={d.title}
+                        sub={`${d.hospital} · ${d.doctor}`}
+                        tag={d.tag}
+                      />
                     ))}
                   </div>
                 </div>
@@ -193,7 +258,9 @@ function RecordsHome() {
               <Sparkles className="h-3.5 w-3.5" /> From your Twin
             </p>
             {recordsSummary.map((s) => (
-              <p key={s} className="mt-2 text-[13px] leading-relaxed">{s}</p>
+              <p key={s} className="mt-2 text-[13px] leading-relaxed">
+                {s}
+              </p>
             ))}
             <p className="mt-2 text-[11px] text-muted-foreground">{twinUsageLine}</p>
           </Card>
@@ -204,7 +271,8 @@ function RecordsHome() {
               <Lock className="h-4 w-4" />
             </span>
             <p className="text-[12px] leading-relaxed text-muted-foreground">
-              Your medical records are encrypted and only shared with people you explicitly authorize.
+              Your medical records are encrypted and only shared with people you explicitly
+              authorize.
             </p>
           </Card>
         </>
@@ -220,11 +288,16 @@ function RecordsHome() {
 
       {sheet && (
         <div className="fixed inset-0 z-50 flex items-end justify-center">
-          <div className="absolute inset-0 bg-foreground/30 backdrop-blur-[2px]" onClick={() => setSheet(false)} />
+          <div
+            className="absolute inset-0 bg-foreground/30 backdrop-blur-[2px]"
+            onClick={() => setSheet(false)}
+          />
           <div className="rise-in relative mx-3 mb-4 w-full max-w-[440px] overflow-hidden rounded-3xl border border-border bg-card soft-shadow">
             <div className="px-4 pb-1 pt-4">
               <p className="text-sm font-semibold">Upload Record</p>
-              <p className="text-[11px] text-muted-foreground">Scanned documents are read automatically.</p>
+              <p className="text-[11px] text-muted-foreground">
+                Scanned documents are read automatically.
+              </p>
             </div>
             {uploadItems.map((u) => (
               <button
@@ -237,7 +310,10 @@ function RecordsHome() {
                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
               </button>
             ))}
-            <button onClick={() => setSheet(false)} className="w-full border-t border-border py-3.5 text-[13px] font-medium text-muted-foreground">
+            <button
+              onClick={() => setSheet(false)}
+              className="w-full border-t border-border py-3.5 text-[13px] font-medium text-muted-foreground"
+            >
               Cancel
             </button>
           </div>
@@ -249,7 +325,11 @@ function RecordsHome() {
 
 function DocRow({ id, title, sub, tag }: { id: string; title: string; sub: string; tag?: string }) {
   return (
-    <Link to="/records/doc/$id" params={{ id }} className="card-surface flex items-center gap-3 p-3 active:scale-[0.99]">
+    <Link
+      to="/records/doc/$id"
+      params={{ id }}
+      className="card-surface flex items-center gap-3 p-3 active:scale-[0.99]"
+    >
       <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue/10 text-blue">
         <FileText className="h-4.5 w-4.5" />
       </span>
@@ -257,7 +337,11 @@ function DocRow({ id, title, sub, tag }: { id: string; title: string; sub: strin
         <span className="block truncate text-[13px] font-semibold">{title}</span>
         <span className="block truncate text-[11px] text-muted-foreground">{sub}</span>
       </span>
-      {tag && <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">{tag}</span>}
+      {tag && (
+        <span className="shrink-0 rounded-full bg-muted px-2 py-0.5 text-[10px] text-muted-foreground">
+          {tag}
+        </span>
+      )}
     </Link>
   );
 }

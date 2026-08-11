@@ -19,12 +19,16 @@ function Splash() {
       </div>
       <div className="relative z-10 flex flex-col items-center text-center">
         <div className="grid h-20 w-20 place-items-center rounded-[26px] bg-gradient-to-br from-teal to-blue text-white soft-shadow">
-          <span className="text-3xl font-semibold" style={{ fontFamily: "Manrope, sans-serif" }}>c</span>
+          <span className="text-3xl font-semibold" style={{ fontFamily: "Manrope, sans-serif" }}>
+            c
+          </span>
         </div>
         <h1 className="mt-6 text-3xl font-semibold tracking-tight">
           careMP <span className="text-teal">AIDE</span>
         </h1>
-        <p className="mt-2 max-w-[280px] text-sm text-muted-foreground">Your AI Health Companion for Every Stage of Life</p>
+        <p className="mt-2 max-w-[280px] text-sm text-muted-foreground">
+          Your AI Health Companion for Every Stage of Life
+        </p>
         <div className="mt-10 flex flex-col items-center gap-3">
           {!ready ? (
             <div className="flex items-center gap-1.5">
@@ -34,17 +38,25 @@ function Splash() {
             </div>
           ) : (
             <div className="flex flex-col items-center gap-3 fade-in">
-              <Link to="/onboarding" className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground soft-shadow">
+              <Link
+                to="/onboarding"
+                className="rounded-full bg-primary px-8 py-3 text-sm font-semibold text-primary-foreground soft-shadow"
+              >
                 Get started
               </Link>
-              <Link to="/auth" className="text-xs text-muted-foreground underline-offset-4 hover:underline">
+              <Link
+                to="/auth"
+                className="text-xs text-muted-foreground underline-offset-4 hover:underline"
+              >
                 I already have an account
               </Link>
             </div>
           )}
         </div>
       </div>
-      <p className="absolute bottom-6 text-[11px] text-muted-foreground">Preventive intelligence · Digital Twin · Family care</p>
+      <p className="absolute bottom-6 text-[11px] text-muted-foreground">
+        Preventive intelligence · Digital Twin · Family care
+      </p>
     </div>
   );
 }

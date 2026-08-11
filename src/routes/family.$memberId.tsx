@@ -1,7 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { family, familyDetails } from "@/data/mock";
-import { Card, SectionHeader, RingProgress, StatusChip, TrendBadge } from "@/components/care/primitives";
+import {
+  Card,
+  SectionHeader,
+  RingProgress,
+  StatusChip,
+  TrendBadge,
+} from "@/components/care/primitives";
 import { MessageSquare, Share2, Siren, ChevronRight, Sparkles, Loader2 } from "lucide-react";
 
 export const Route = createFileRoute("/family/$memberId")({
@@ -10,9 +16,15 @@ export const Route = createFileRoute("/family/$memberId")({
     return {
       meta: [
         { title: `${m?.name ?? "Family"} — careMP AIDE` },
-        { name: "description", content: `Check in on ${m?.name ?? "your family member"} — today's snapshot, health twin summary and trends.` },
+        {
+          name: "description",
+          content: `Check in on ${m?.name ?? "your family member"} — today's snapshot, health twin summary and trends.`,
+        },
         { property: "og:title", content: `${m?.name ?? "Family"} — careMP AIDE` },
-        { property: "og:description", content: `Check in on ${m?.name ?? "your family member"} — today's snapshot, health twin summary and trends.` },
+        {
+          property: "og:description",
+          content: `Check in on ${m?.name ?? "your family member"} — today's snapshot, health twin summary and trends.`,
+        },
       ],
     };
   },
@@ -47,7 +59,9 @@ function MemberDetail() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-lg font-semibold">{m.name}</p>
-            <p className="text-xs text-muted-foreground">{m.relation} · Age {m.age}</p>
+            <p className="text-xs text-muted-foreground">
+              {m.relation} · Age {m.age}
+            </p>
           </div>
           <StatusChip status={m.status}>{d.statusLabel}</StatusChip>
         </div>
@@ -61,7 +75,13 @@ function MemberDetail() {
             value={d.recovery}
             size={72}
             stroke={7}
-            color={m.status === "good" ? "var(--emerald)" : m.status === "caution" ? "var(--amber)" : "var(--coral)"}
+            color={
+              m.status === "good"
+                ? "var(--emerald)"
+                : m.status === "caution"
+                  ? "var(--amber)"
+                  : "var(--coral)"
+            }
           />
           <div className="grid flex-1 grid-cols-2 gap-3">
             <div>
@@ -74,7 +94,9 @@ function MemberDetail() {
             </div>
           </div>
         </div>
-        <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground">{d.todayStatus}</p>
+        <p className="mt-4 border-t border-border pt-3 text-sm text-muted-foreground">
+          {d.todayStatus}
+        </p>
       </Card>
 
       {/* 2 — Digital Twin */}
@@ -113,13 +135,19 @@ function MemberDetail() {
       <SectionHeader title="Recent events" />
       <Card className="p-0">
         {d.events.slice(0, 5).map((e, i, a) => (
-          <div key={i} className={`flex items-start justify-between gap-3 px-4 py-3 ${i < a.length - 1 ? "border-b border-border" : ""}`}>
+          <div
+            key={i}
+            className={`flex items-start justify-between gap-3 px-4 py-3 ${i < a.length - 1 ? "border-b border-border" : ""}`}
+          >
             <span className="text-sm">{e.text}</span>
             <span className="shrink-0 text-[11px] text-muted-foreground">{e.when}</span>
           </div>
         ))}
       </Card>
-      <Link to="/notifications" className="flex items-center justify-center gap-1 text-xs font-medium text-primary">
+      <Link
+        to="/notifications"
+        className="flex items-center justify-center gap-1 text-xs font-medium text-primary"
+      >
         See all activity <ChevronRight className="h-3.5 w-3.5" />
       </Link>
 
@@ -144,7 +172,9 @@ function MemberDetail() {
             key={a.label}
             className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-3 text-[11px] font-medium"
           >
-            <a.icon className={`h-4 w-4 ${a.label === "Emergency" ? "text-coral" : "text-muted-foreground"}`} />
+            <a.icon
+              className={`h-4 w-4 ${a.label === "Emergency" ? "text-coral" : "text-muted-foreground"}`}
+            />
             {a.label}
           </button>
         ))}

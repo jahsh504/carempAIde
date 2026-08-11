@@ -5,7 +5,12 @@ import { goals } from "@/data/mock";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/onboarding")({
-  head: () => ({ meta: [{ title: "Welcome to careMP" }, { name: "description", content: "Personalize your careMP experience in a minute." }] }),
+  head: () => ({
+    meta: [
+      { title: "Welcome to careMP" },
+      { name: "description", content: "Personalize your careMP experience in a minute." },
+    ],
+  }),
   component: Onboarding,
 });
 
@@ -21,10 +26,18 @@ function Onboarding() {
       <div className="mb-8 flex items-center justify-between">
         <div className="flex gap-1.5">
           {Array.from({ length: total }).map((_, i) => (
-            <span key={i} className={cn("h-1.5 rounded-full transition-all", i === step ? "w-6 bg-primary" : i < step ? "w-2 bg-primary/60" : "w-2 bg-muted")} />
+            <span
+              key={i}
+              className={cn(
+                "h-1.5 rounded-full transition-all",
+                i === step ? "w-6 bg-primary" : i < step ? "w-2 bg-primary/60" : "w-2 bg-muted",
+              )}
+            />
           ))}
         </div>
-        <button onClick={() => navigate({ to: "/home" })} className="text-xs text-muted-foreground">Skip</button>
+        <button onClick={() => navigate({ to: "/home" })} className="text-xs text-muted-foreground">
+          Skip
+        </button>
       </div>
 
       <div className="flex-1 rise-in">
@@ -35,14 +48,17 @@ function Onboarding() {
             </div>
             <h2 className="text-2xl font-semibold">Welcome to careMP</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              A calm, proactive companion that learns your body over time. No dashboards to babysit — just clear, personal guidance when it matters.
+              A calm, proactive companion that learns your body over time. No dashboards to babysit
+              — just clear, personal guidance when it matters.
             </p>
           </div>
         )}
         {step === 1 && (
           <div>
             <h2 className="text-2xl font-semibold">What matters most to you?</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Pick a few. You can change these later.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Pick a few. You can change these later.
+            </p>
             <div className="mt-6 grid grid-cols-2 gap-3">
               {goals.map((g) => {
                 const on = selected.includes(g);
@@ -52,7 +68,9 @@ function Onboarding() {
                     onClick={() => setSelected((s) => (on ? s.filter((x) => x !== g) : [...s, g]))}
                     className={cn(
                       "rounded-2xl border p-3 text-left text-[13px] font-medium transition-all",
-                      on ? "border-primary bg-primary/5 text-primary" : "border-border bg-card text-foreground"
+                      on
+                        ? "border-primary bg-primary/5 text-primary"
+                        : "border-border bg-card text-foreground",
                     )}
                   >
                     {g}
@@ -68,7 +86,10 @@ function Onboarding() {
               <Watch className="h-6 w-6" />
             </div>
             <h2 className="text-2xl font-semibold">Pair your careMP Band</h2>
-            <p className="mt-2 text-sm text-muted-foreground">The careMP Band is our dedicated wearable — it streams continuous vitals so your Twin gets sharper by the hour.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              The careMP Band is our dedicated wearable — it streams continuous vitals so your Twin
+              gets sharper by the hour.
+            </p>
             <div className="mt-6 space-y-2.5">
               <button className="flex w-full items-center justify-between rounded-2xl border border-primary bg-primary/5 p-4 text-sm font-semibold text-primary">
                 Pair careMP Band
@@ -92,7 +113,10 @@ function Onboarding() {
                 { label: "Weight", value: "76 kg" },
                 { label: "Biological sex", value: "Male" },
               ].map((f) => (
-                <div key={f.label} className="flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3">
+                <div
+                  key={f.label}
+                  className="flex items-center justify-between rounded-2xl border border-border bg-card px-4 py-3"
+                >
                   <span className="text-xs text-muted-foreground">{f.label}</span>
                   <span className="text-sm font-medium">{f.value}</span>
                 </div>
@@ -107,7 +131,8 @@ function Onboarding() {
             </div>
             <h2 className="mt-6 text-2xl font-semibold">You're all set</h2>
             <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-              Your Digital Twin will start learning today. Turn on notifications to get preventive nudges only when they matter.
+              Your Digital Twin will start learning today. Turn on notifications to get preventive
+              nudges only when they matter.
             </p>
             <button className="mt-6 inline-flex items-center gap-2 rounded-full bg-card border border-border px-5 py-2.5 text-sm font-medium">
               <Bell className="h-4 w-4" /> Enable notifications
@@ -117,7 +142,9 @@ function Onboarding() {
       </div>
 
       <div className="mt-6 flex items-center justify-between">
-        <Link to="/auth" className="text-xs text-muted-foreground">Have an account?</Link>
+        <Link to="/auth" className="text-xs text-muted-foreground">
+          Have an account?
+        </Link>
         <button
           onClick={next}
           className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground soft-shadow"

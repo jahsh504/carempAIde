@@ -9,9 +9,19 @@ export const Route = createFileRoute("/care-team/request-sent")({
   head: () => ({
     meta: [
       { title: "Care Request Sent — Tracking your caregiver | careMP AIDE" },
-      { name: "description", content: "Your care request has been sent. Follow the live status from accepted through to visit completed." },
-      { property: "og:title", content: "Care Request Sent — Tracking your caregiver | careMP AIDE" },
-      { property: "og:description", content: "Live status of your caregiver request, from accepted to visit completed." },
+      {
+        name: "description",
+        content:
+          "Your care request has been sent. Follow the live status from accepted through to visit completed.",
+      },
+      {
+        property: "og:title",
+        content: "Care Request Sent — Tracking your caregiver | careMP AIDE",
+      },
+      {
+        property: "og:description",
+        content: "Live status of your caregiver request, from accepted to visit completed.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -33,7 +43,10 @@ function RequestSentPage() {
       <div className="px-4 pb-6">
         <Card>
           <p className="text-[13px] text-muted-foreground">No active care request.</p>
-          <Link to="/care-team/find" className="mt-3 inline-flex rounded-full bg-primary px-4 py-2 text-[12.5px] font-semibold text-primary-foreground">
+          <Link
+            to="/care-team/find"
+            className="mt-3 inline-flex rounded-full bg-primary px-4 py-2 text-[12.5px] font-semibold text-primary-foreground"
+          >
             Find a caregiver
           </Link>
         </Card>
@@ -76,12 +89,14 @@ function RequestSentPage() {
                 <span
                   className={cn(
                     "absolute -left-6 top-0.5 grid h-3.5 w-3.5 place-items-center rounded-full border-2 border-card",
-                    done ? "bg-gradient-to-br from-emerald to-teal text-white" : "bg-muted"
+                    done ? "bg-gradient-to-br from-emerald to-teal text-white" : "bg-muted",
                   )}
                 >
                   {done && <Check className="h-2.5 w-2.5" strokeWidth={4} />}
                 </span>
-                <p className={cn("text-[13px]", done ? "font-medium" : "text-muted-foreground")}>{s}</p>
+                <p className={cn("text-[13px]", done ? "font-medium" : "text-muted-foreground")}>
+                  {s}
+                </p>
               </div>
             );
           })}
@@ -89,9 +104,13 @@ function RequestSentPage() {
       </Card>
 
       <Card>
-        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Request details</p>
+        <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
+          Request details
+        </p>
         <p className="mt-2 text-[13px] font-medium">{req.reason}</p>
-        {req.notes && <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{req.notes}</p>}
+        {req.notes && (
+          <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">{req.notes}</p>
+        )}
       </Card>
 
       <Link

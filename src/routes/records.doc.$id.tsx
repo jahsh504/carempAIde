@@ -1,7 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import {
-  Download, Share2, Printer, Trash2, PencilLine, FileText, Sparkles, ChevronLeft,
+  Download,
+  Share2,
+  Printer,
+  Trash2,
+  PencilLine,
+  FileText,
+  Sparkles,
+  ChevronLeft,
 } from "lucide-react";
 import { Card } from "@/components/care/primitives";
 import { documents, categories } from "@/data/records";
@@ -14,9 +21,15 @@ export const Route = createFileRoute("/records/doc/$id")({
     return {
       meta: [
         { title: `${title} — Medical Records | careMP AIDE` },
-        { name: "description", content: `${title}${d ? ` from ${d.hospital}, ${d.date}` : ""} — stored securely in your careMP AIDE health vault.` },
+        {
+          name: "description",
+          content: `${title}${d ? ` from ${d.hospital}, ${d.date}` : ""} — stored securely in your careMP AIDE health vault.`,
+        },
         { property: "og:title", content: `${title} — Medical Records | careMP AIDE` },
-        { property: "og:description", content: "Preview, share and control Digital Twin access for this medical document." },
+        {
+          property: "og:description",
+          content: "Preview, share and control Digital Twin access for this medical document.",
+        },
         { property: "og:type", content: "website" },
         { name: "twitter:card", content: "summary_large_image" },
       ],
@@ -43,7 +56,9 @@ function DocPage() {
       <div className="px-4 pb-6">
         <Card className="text-center text-sm text-muted-foreground">
           This document is no longer available.
-          <Link to="/records" className="mt-3 block text-teal">Back to Medical Records</Link>
+          <Link to="/records" className="mt-3 block text-teal">
+            Back to Medical Records
+          </Link>
         </Card>
       </div>
     );
@@ -53,7 +68,11 @@ function DocPage() {
 
   return (
     <div className="space-y-4 px-4 pb-6">
-      <Link to="/records/$category" params={{ category: doc.category }} className="inline-flex items-center gap-1 text-[12px] text-muted-foreground">
+      <Link
+        to="/records/$category"
+        params={{ category: doc.category }}
+        className="inline-flex items-center gap-1 text-[12px] text-muted-foreground"
+      >
         <ChevronLeft className="h-3.5 w-3.5" /> {cat?.label}
       </Link>
 
@@ -70,7 +89,9 @@ function DocPage() {
                 <div key={i} className="h-1.5 rounded-full bg-muted" style={{ width: `${w}%` }} />
               ))}
             </div>
-            <p className="mt-3 text-[9px] uppercase tracking-wider text-muted-foreground">{doc.kind} · {doc.hospital}</p>
+            <p className="mt-3 text-[9px] uppercase tracking-wider text-muted-foreground">
+              {doc.kind} · {doc.hospital}
+            </p>
           </div>
         </div>
       </div>
@@ -88,7 +109,9 @@ function DocPage() {
         ) : (
           <h1 className="text-lg font-semibold">{name}</h1>
         )}
-        <p className="mt-0.5 text-[12px] text-muted-foreground">{doc.hospital} · {doc.date}</p>
+        <p className="mt-0.5 text-[12px] text-muted-foreground">
+          {doc.hospital} · {doc.date}
+        </p>
       </div>
 
       {/* Metadata */}
@@ -100,7 +123,13 @@ function DocPage() {
           ["Category", cat?.label ?? doc.category],
           ["File type", doc.kind],
         ].map(([k, v], i, a) => (
-          <div key={k} className={cn("flex items-center justify-between px-4 py-3", i < a.length - 1 && "border-b border-border")}>
+          <div
+            key={k}
+            className={cn(
+              "flex items-center justify-between px-4 py-3",
+              i < a.length - 1 && "border-b border-border",
+            )}
+          >
             <span className="text-xs text-muted-foreground">{k}</span>
             <span className="text-[13px] font-medium">{v}</span>
           </div>
@@ -109,12 +138,16 @@ function DocPage() {
 
       {doc.values && (
         <Card>
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Extracted values</p>
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            Extracted values
+          </p>
           <div className="mt-2 space-y-2">
             {doc.values.map((v) => (
               <div key={v.label} className="flex items-center justify-between">
                 <span className="text-[13px]">{v.label}</span>
-                <span className={cn("num text-[13px] font-semibold", flagTone[v.flag ?? "ok"])}>{v.value}</span>
+                <span className={cn("num text-[13px] font-semibold", flagTone[v.flag ?? "ok"])}>
+                  {v.value}
+                </span>
               </div>
             ))}
           </div>
@@ -138,9 +171,17 @@ function DocPage() {
           <button
             onClick={() => setTwin((v) => !v)}
             aria-label="Toggle Digital Twin access"
-            className={cn("relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors", twin ? "bg-primary" : "bg-muted")}
+            className={cn(
+              "relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors",
+              twin ? "bg-primary" : "bg-muted",
+            )}
           >
-            <span className={cn("h-5 w-5 rounded-full bg-white shadow transition-transform", twin ? "translate-x-[22px]" : "translate-x-0.5")} />
+            <span
+              className={cn(
+                "h-5 w-5 rounded-full bg-white shadow transition-transform",
+                twin ? "translate-x-[22px]" : "translate-x-0.5",
+              )}
+            />
           </button>
         </div>
       </Card>
@@ -152,7 +193,10 @@ function DocPage() {
           { label: "Share", icon: Share2 },
           { label: "Print", icon: Printer },
         ].map((a) => (
-          <button key={a.label} className="card-surface flex flex-col items-center gap-1.5 py-3 active:scale-[0.98]">
+          <button
+            key={a.label}
+            className="card-surface flex flex-col items-center gap-1.5 py-3 active:scale-[0.98]"
+          >
             <a.icon className="h-4 w-4 text-muted-foreground" />
             <span className="text-[11px] font-medium">{a.label}</span>
           </button>

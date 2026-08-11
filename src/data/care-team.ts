@@ -2,12 +2,7 @@
 // Mock data only; shaped so each block can be swapped for a live API.
 
 export type JourneyState =
-  | "assigned"
-  | "traveling"
-  | "arrived"
-  | "checked-in"
-  | "in-visit"
-  | "completed";
+  "assigned" | "traveling" | "arrived" | "checked-in" | "in-visit" | "completed";
 
 export const journeyOrder: JourneyState[] = [
   "assigned",

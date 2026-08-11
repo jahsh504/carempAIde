@@ -1,8 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  ArrowRight, Sparkles, Flame, X, Bookmark, Plus,
-  TrendingDown, Dumbbell, Leaf, Heart, Droplet, Gauge, Brain, Moon, Flower, HandHeart,
+  ArrowRight,
+  Sparkles,
+  Flame,
+  X,
+  Bookmark,
+  Plus,
+  TrendingDown,
+  Dumbbell,
+  Leaf,
+  Heart,
+  Droplet,
+  Gauge,
+  Brain,
+  Moon,
+  Flower,
+  HandHeart,
 } from "lucide-react";
 import { Card, SectionHeader, RingProgress } from "@/components/care/primitives";
 import { TaskRow } from "@/components/care/care-module";
@@ -13,9 +27,16 @@ export const Route = createFileRoute("/care/")({
   head: () => ({
     meta: [
       { title: "Care Plan — Your daily health plan | careMP AIDE" },
-      { name: "description", content: "Care Plan turns your Digital Twin's insights into one clear daily plan — today's focus, tasks, reasoning and personalised care programs." },
+      {
+        name: "description",
+        content:
+          "Care Plan turns your Digital Twin's insights into one clear daily plan — today's focus, tasks, reasoning and personalised care programs.",
+      },
       { property: "og:title", content: "Care Plan — Your daily health plan | careMP AIDE" },
-      { property: "og:description", content: "One question, answered every morning: what is the best thing for me to do today?" },
+      {
+        property: "og:description",
+        content: "One question, answered every morning: what is the best thing for me to do today?",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -24,8 +45,16 @@ export const Route = createFileRoute("/care/")({
 });
 
 const programIcon: Record<string, typeof Heart> = {
-  "trending-down": TrendingDown, dumbbell: Dumbbell, leaf: Leaf, heart: Heart,
-  droplet: Droplet, gauge: Gauge, brain: Brain, moon: Moon, flower: Flower, "hand-heart": HandHeart,
+  "trending-down": TrendingDown,
+  dumbbell: Dumbbell,
+  leaf: Leaf,
+  heart: Heart,
+  droplet: Droplet,
+  gauge: Gauge,
+  brain: Brain,
+  moon: Moon,
+  flower: Flower,
+  "hand-heart": HandHeart,
 };
 
 const recTone: Record<string, string> = {
@@ -60,7 +89,17 @@ function CarePage() {
 
   const applyRec = (id: string, title: string) => {
     setApplied((p) => [...p, id]);
-    setTasks((prev) => [...prev, { id: `rec-${id}`, title, minutes: 5, category: "recovery", done: false, why: "Added from a Twin recommendation." }]);
+    setTasks((prev) => [
+      ...prev,
+      {
+        id: `rec-${id}`,
+        title,
+        minutes: 5,
+        category: "recovery",
+        done: false,
+        why: "Added from a Twin recommendation.",
+      },
+    ]);
     setTimeout(() => setDismissed((p) => [...p, id]), 700);
   };
 
@@ -75,7 +114,8 @@ function CarePage() {
         </div>
         <h1 className="text-xl font-semibold">Let's build your Care Plan</h1>
         <p className="mt-2 max-w-[280px] text-sm text-muted-foreground">
-          Your Digital Twin will turn 30 days of your vitals into one simple plan — a handful of things to do each day, and the reason behind each one.
+          Your Digital Twin will turn 30 days of your vitals into one simple plan — a handful of
+          things to do each day, and the reason behind each one.
         </p>
         <button
           onClick={() => setHasPlan(true)}
@@ -120,7 +160,9 @@ function CarePage() {
       {celebrate && (
         <Card className="scale-in border-emerald/30 bg-emerald/5 text-center">
           <p className="text-sm font-semibold text-emerald">Every task done today</p>
-          <p className="mt-1 text-xs text-muted-foreground">{streakMilestones[0]} · {streakMilestones[1]}</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {streakMilestones[0]} · {streakMilestones[1]}
+          </p>
         </Card>
       )}
 
@@ -128,7 +170,10 @@ function CarePage() {
       <div id="todays-plan">
         <SectionHeader title="Today's plan" hint={`${doneCount} of ${tasks.length} complete`} />
         <div className="mb-3 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-          <div className="h-full rounded-full bg-gradient-to-r from-teal to-blue transition-all duration-500" style={{ width: `${pct}%` }} />
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-teal to-blue transition-all duration-500"
+            style={{ width: `${pct}%` }}
+          />
         </div>
         <div className="space-y-2">
           {tasks.map((t) => (
@@ -141,43 +186,57 @@ function CarePage() {
       <div>
         <SectionHeader title="From your Twin" hint="Recommendations, not ads" />
         <div className="space-y-2">
-          {recommendations.filter((r) => !dismissed.includes(r.id)).map((r) => (
-            <Card key={r.id} className="p-3.5">
-              <div className="flex items-start gap-3">
-                <div className={cn("grid h-9 w-9 shrink-0 place-items-center rounded-xl", recTone[r.tone])}>
-                  <Sparkles className="h-4 w-4" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="text-[13px] font-medium">{r.title}</p>
-                  <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">{r.reason}</p>
-                  <div className="mt-2.5 flex items-center gap-1.5">
-                    <button
-                      onClick={() => applyRec(r.id, r.title)}
-                      className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-medium text-primary-foreground active:scale-95"
-                    >
-                      <Plus className="h-3 w-3" /> {applied.includes(r.id) ? "Added" : "Apply to plan"}
-                    </button>
-                    <button
-                      onClick={() => setSaved((p) => (p.includes(r.id) ? p.filter((x) => x !== r.id) : [...p, r.id]))}
-                      className={cn(
-                        "inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-[11px] font-medium",
-                        saved.includes(r.id) && "border-teal/30 bg-teal/10 text-teal"
-                      )}
-                    >
-                      <Bookmark className="h-3 w-3" /> {saved.includes(r.id) ? "Saved" : "Save"}
-                    </button>
-                    <button
-                      onClick={() => setDismissed((p) => [...p, r.id])}
-                      aria-label="Dismiss recommendation"
-                      className="ml-auto grid h-7 w-7 place-items-center rounded-full text-muted-foreground active:scale-90"
-                    >
-                      <X className="h-3.5 w-3.5" />
-                    </button>
+          {recommendations
+            .filter((r) => !dismissed.includes(r.id))
+            .map((r) => (
+              <Card key={r.id} className="p-3.5">
+                <div className="flex items-start gap-3">
+                  <div
+                    className={cn(
+                      "grid h-9 w-9 shrink-0 place-items-center rounded-xl",
+                      recTone[r.tone],
+                    )}
+                  >
+                    <Sparkles className="h-4 w-4" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[13px] font-medium">{r.title}</p>
+                    <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">
+                      {r.reason}
+                    </p>
+                    <div className="mt-2.5 flex items-center gap-1.5">
+                      <button
+                        onClick={() => applyRec(r.id, r.title)}
+                        className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-[11px] font-medium text-primary-foreground active:scale-95"
+                      >
+                        <Plus className="h-3 w-3" />{" "}
+                        {applied.includes(r.id) ? "Added" : "Apply to plan"}
+                      </button>
+                      <button
+                        onClick={() =>
+                          setSaved((p) =>
+                            p.includes(r.id) ? p.filter((x) => x !== r.id) : [...p, r.id],
+                          )
+                        }
+                        className={cn(
+                          "inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-[11px] font-medium",
+                          saved.includes(r.id) && "border-teal/30 bg-teal/10 text-teal",
+                        )}
+                      >
+                        <Bookmark className="h-3 w-3" /> {saved.includes(r.id) ? "Saved" : "Save"}
+                      </button>
+                      <button
+                        onClick={() => setDismissed((p) => [...p, r.id])}
+                        aria-label="Dismiss recommendation"
+                        className="ml-auto grid h-7 w-7 place-items-center rounded-full text-muted-foreground active:scale-90"
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-          ))}
+              </Card>
+            ))}
           {recommendations.every((r) => dismissed.includes(r.id)) && (
             <Card className="text-center text-xs text-muted-foreground">
               All caught up — your Twin will surface more tomorrow.
@@ -204,13 +263,14 @@ function CarePage() {
                 </div>
                 <p className="mt-2.5 text-[13px] font-semibold">{p.label}</p>
                 <p className="mt-0.5 text-[11px] leading-snug text-muted-foreground">{p.tagline}</p>
-                <p className="mt-2 text-[10px] uppercase tracking-wider text-muted-foreground">{p.weeks} weeks</p>
+                <p className="mt-2 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  {p.weeks} weeks
+                </p>
               </Link>
             );
           })}
         </div>
       </div>
-
     </div>
   );
 }

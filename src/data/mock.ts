@@ -114,9 +114,9 @@ export const insight = {
 };
 
 export const mission = {
-  title: "Take a 10-minute walk after lunch",
+  title: "20 minute easy walk",
   why: "Post-meal walks improve glucose regulation and mid-afternoon focus.",
-  minutes: 10,
+  minutes: 20,
 };
 
 export const medication = {
@@ -138,12 +138,54 @@ export const alerts: { id: string; kind: Status; title: string; time: string }[]
 export const weeklyTrend = [64, 68, 72, 70, 75, 78, 82];
 
 export const bodySystems = [
-  { key: "cardiovascular", label: "Cardiovascular", score: 88, status: "good", trend: +3, note: "Resting HR trending down" },
-  { key: "respiratory", label: "Respiratory", score: 92, status: "good", trend: +1, note: "SpO2 stable, VO2 improving" },
-  { key: "mental", label: "Mental Wellness", score: 74, status: "caution", trend: -2, note: "Stress spikes on weekdays" },
-  { key: "activity", label: "Activity & Mobility", score: 79, status: "good", trend: +4, note: "Consistent movement" },
-  { key: "recovery", label: "Recovery", score: 76, status: "good", trend: +5, note: "HRV improving overnight" },
-  { key: "glucose", label: "Glucose", score: 86, status: "good", trend: +2, note: "86% time in range today" },
+  {
+    key: "cardiovascular",
+    label: "Cardiovascular",
+    score: 88,
+    status: "good",
+    trend: +3,
+    note: "Resting HR trending down",
+  },
+  {
+    key: "respiratory",
+    label: "Respiratory",
+    score: 92,
+    status: "good",
+    trend: +1,
+    note: "SpO2 stable, VO2 improving",
+  },
+  {
+    key: "mental",
+    label: "Mental Wellness",
+    score: 74,
+    status: "caution",
+    trend: -2,
+    note: "Stress spikes on weekdays",
+  },
+  {
+    key: "activity",
+    label: "Activity & Mobility",
+    score: 79,
+    status: "good",
+    trend: +4,
+    note: "Consistent movement",
+  },
+  {
+    key: "recovery",
+    label: "Recovery",
+    score: 76,
+    status: "good",
+    trend: +5,
+    note: "HRV improving overnight",
+  },
+  {
+    key: "glucose",
+    label: "Glucose",
+    score: 86,
+    status: "good",
+    trend: +2,
+    note: "86% time in range today",
+  },
 ] as const;
 
 export const twinSummary =
@@ -175,10 +217,46 @@ export const dataSources = [
 ];
 
 export const family = [
-  { id: "meera", name: "Meera Mehta", relation: "Mother", age: 66, score: 71, status: "caution" as Status, avatar: "MM", note: "BP slightly elevated today" },
-  { id: "raghav", name: "Raghav Mehta", relation: "Father", age: 70, score: 78, status: "good" as Status, avatar: "RM", note: "Steady this week" },
-  { id: "priya", name: "Priya Mehta", relation: "Spouse", age: 36, score: 86, status: "good" as Status, avatar: "PM", note: "Recovery trending up" },
-  { id: "kiaan", name: "Kiaan Mehta", relation: "Son (8)", age: 8, score: 92, status: "good" as Status, avatar: "KM", note: "All vitals normal" },
+  {
+    id: "meera",
+    name: "Meera Mehta",
+    relation: "Mother",
+    age: 66,
+    score: 71,
+    status: "caution" as Status,
+    avatar: "MM",
+    note: "BP slightly elevated today",
+  },
+  {
+    id: "raghav",
+    name: "Raghav Mehta",
+    relation: "Father",
+    age: 70,
+    score: 78,
+    status: "good" as Status,
+    avatar: "RM",
+    note: "Steady this week",
+  },
+  {
+    id: "priya",
+    name: "Priya Mehta",
+    relation: "Spouse",
+    age: 36,
+    score: 86,
+    status: "good" as Status,
+    avatar: "PM",
+    note: "Recovery trending up",
+  },
+  {
+    id: "kiaan",
+    name: "Kiaan Mehta",
+    relation: "Son (8)",
+    age: 8,
+    score: 92,
+    status: "good" as Status,
+    avatar: "KM",
+    note: "All vitals normal",
+  },
 ];
 
 export const supportCategories = [
@@ -192,11 +270,66 @@ export const supportCategories = [
 ];
 
 export const providers = [
-  { id: "p1", name: "Dr. Ananya Iyer", credential: "MBBS, MD (Internal Medicine)", rating: 4.9, reviews: 1284, distance: "1.2 km", eta: "15 min", price: 599, available: true, category: "doctor" },
-  { id: "p2", name: "Dr. Karthik Rao", credential: "MBBS, DNB Cardiology", rating: 4.8, reviews: 942, distance: "2.4 km", eta: "22 min", price: 899, available: true, category: "doctor" },
-  { id: "p3", name: "Sister Fatima N.", credential: "RN, 8 yrs home care", rating: 4.9, reviews: 512, distance: "3.1 km", eta: "40 min", price: 999, available: true, category: "nurse" },
-  { id: "p4", name: "Rohan Physio Studio", credential: "MPT, Sports Rehab", rating: 4.7, reviews: 318, distance: "1.9 km", eta: "Same day", price: 799, available: true, category: "physio" },
-  { id: "p5", name: "PathLabs Home Draw", credential: "NABL accredited", rating: 4.8, reviews: 2210, distance: "—", eta: "30 min", price: 249, available: true, category: "lab" },
+  {
+    id: "p1",
+    name: "Dr. Ananya Iyer",
+    credential: "MBBS, MD (Internal Medicine)",
+    rating: 4.9,
+    reviews: 1284,
+    distance: "1.2 km",
+    eta: "15 min",
+    price: 599,
+    available: true,
+    category: "doctor",
+  },
+  {
+    id: "p2",
+    name: "Dr. Karthik Rao",
+    credential: "MBBS, DNB Cardiology",
+    rating: 4.8,
+    reviews: 942,
+    distance: "2.4 km",
+    eta: "22 min",
+    price: 899,
+    available: true,
+    category: "doctor",
+  },
+  {
+    id: "p3",
+    name: "Sister Fatima N.",
+    credential: "RN, 8 yrs home care",
+    rating: 4.9,
+    reviews: 512,
+    distance: "3.1 km",
+    eta: "40 min",
+    price: 999,
+    available: true,
+    category: "nurse",
+  },
+  {
+    id: "p4",
+    name: "Rohan Physio Studio",
+    credential: "MPT, Sports Rehab",
+    rating: 4.7,
+    reviews: 318,
+    distance: "1.9 km",
+    eta: "Same day",
+    price: 799,
+    available: true,
+    category: "physio",
+  },
+  {
+    id: "p5",
+    name: "PathLabs Home Draw",
+    credential: "NABL accredited",
+    rating: 4.8,
+    reviews: 2210,
+    distance: "—",
+    eta: "30 min",
+    price: 249,
+    available: true,
+    category: "lab",
+  },
 ];
 
 export const reports = [
@@ -211,47 +344,161 @@ export const reportDetail = {
   title: "Lipid Profile",
   lab: "PathLabs · Sep 12, 2025",
   values: [
-    { label: "Total Cholesterol", value: 214, unit: "mg/dL", range: [0, 200] as [number, number], flag: "high" as const },
-    { label: "LDL", value: 138, unit: "mg/dL", range: [0, 130] as [number, number], flag: "high" as const },
-    { label: "HDL", value: 52, unit: "mg/dL", range: [40, 60] as [number, number], flag: "ok" as const },
-    { label: "Triglycerides", value: 118, unit: "mg/dL", range: [0, 150] as [number, number], flag: "ok" as const },
+    {
+      label: "Total Cholesterol",
+      value: 214,
+      unit: "mg/dL",
+      range: [0, 200] as [number, number],
+      flag: "high" as const,
+    },
+    {
+      label: "LDL",
+      value: 138,
+      unit: "mg/dL",
+      range: [0, 130] as [number, number],
+      flag: "high" as const,
+    },
+    {
+      label: "HDL",
+      value: 52,
+      unit: "mg/dL",
+      range: [40, 60] as [number, number],
+      flag: "ok" as const,
+    },
+    {
+      label: "Triglycerides",
+      value: 118,
+      unit: "mg/dL",
+      range: [0, 150] as [number, number],
+      flag: "ok" as const,
+    },
   ],
   summary:
     "Your LDL is mildly elevated. Combined with your current Atorvastatin regimen, this is trending in the right direction from your March reading of 156 mg/dL. Continue medication and revisit in 3 months.",
 };
 
 export const notifications = [
-  { group: "Health Alerts", items: [
-    { title: "Elevated evening heart rate detected", time: "2h ago", unread: true, tone: "caution" as Status },
-    { title: "Geofence Alert — Patient approaching restricted kitchen area", time: "Just now", unread: true, tone: "alert" as Status },
-    { title: "Geofence Alert — Mary exited the garden boundary", time: "10 mins ago", unread: true, tone: "caution" as Status },
-    { title: "Sleep debt cleared this week", time: "Yesterday", unread: false, tone: "good" as Status },
-  ]},
-  { group: "Medication", items: [
-    { title: "Atorvastatin 10 mg — 8:30 PM", time: "In 3h", unread: true, tone: "good" as Status },
-  ]},
-  { group: "Appointments", items: [
-    { title: "Dr. Nadia Rahman — Thursday 3:30 PM", time: "In 2 days", unread: false, tone: "good" as Status },
-  ]},
-  { group: "Family", items: [
-    { title: "Meera's blood pressure is slightly elevated", time: "1h ago", unread: true, tone: "caution" as Status },
-    { title: "Priya completed her morning run", time: "5h ago", unread: false, tone: "good" as Status },
-  ]},
-  { group: "Care Team", items: [
-    { title: "Priya checked in for today's visit", time: "10:02 AM", unread: true, tone: "good" as Status },
-    { title: "Caregiver arriving in 15 minutes", time: "9:45 AM", unread: false, tone: "good" as Status },
-    { title: "Priya started her journey to you", time: "9:05 AM", unread: false, tone: "good" as Status },
-    { title: "New caregiver note available", time: "Yesterday", unread: false, tone: "good" as Status },
-  ]},
-  { group: "System", items: [
-    { title: "careMP Band synced 240 new data points", time: "8h ago", unread: false, tone: "good" as Status },
-  ]},
+  {
+    group: "Health Alerts",
+    items: [
+      {
+        title: "Elevated evening heart rate detected",
+        time: "2h ago",
+        unread: true,
+        tone: "caution" as Status,
+      },
+      {
+        title: "Geofence Alert — Patient approaching restricted kitchen area",
+        time: "Just now",
+        unread: true,
+        tone: "alert" as Status,
+      },
+      {
+        title: "Geofence Alert — Mary exited the garden boundary",
+        time: "10 mins ago",
+        unread: true,
+        tone: "caution" as Status,
+      },
+      {
+        title: "Sleep debt cleared this week",
+        time: "Yesterday",
+        unread: false,
+        tone: "good" as Status,
+      },
+    ],
+  },
+  {
+    group: "Medication",
+    items: [
+      {
+        title: "Atorvastatin 10 mg — 8:30 PM",
+        time: "In 3h",
+        unread: true,
+        tone: "good" as Status,
+      },
+    ],
+  },
+  {
+    group: "Appointments",
+    items: [
+      {
+        title: "Dr. Nadia Rahman — Thursday 3:30 PM",
+        time: "In 2 days",
+        unread: false,
+        tone: "good" as Status,
+      },
+    ],
+  },
+  {
+    group: "Family",
+    items: [
+      {
+        title: "Meera's blood pressure is slightly elevated",
+        time: "1h ago",
+        unread: true,
+        tone: "caution" as Status,
+      },
+      {
+        title: "Priya completed her morning run",
+        time: "5h ago",
+        unread: false,
+        tone: "good" as Status,
+      },
+    ],
+  },
+  {
+    group: "Care Team",
+    items: [
+      {
+        title: "Priya checked in for today's visit",
+        time: "10:02 AM",
+        unread: true,
+        tone: "good" as Status,
+      },
+      {
+        title: "Caregiver arriving in 15 minutes",
+        time: "9:45 AM",
+        unread: false,
+        tone: "good" as Status,
+      },
+      {
+        title: "Priya started her journey to you",
+        time: "9:05 AM",
+        unread: false,
+        tone: "good" as Status,
+      },
+      {
+        title: "New caregiver note available",
+        time: "Yesterday",
+        unread: false,
+        tone: "good" as Status,
+      },
+    ],
+  },
+  {
+    group: "System",
+    items: [
+      {
+        title: "careMP Band synced 240 new data points",
+        time: "8h ago",
+        unread: false,
+        tone: "good" as Status,
+      },
+    ],
+  },
 ];
 
 export const chatSeed = [
-  { role: "ai" as const, text: "Good morning, Aarav. Your recovery is up 5 points overnight — a great day to push activity a bit." },
+  {
+    role: "ai" as const,
+    text: "Good morning, Aarav. Your recovery is up 5 points overnight — a great day to push activity a bit.",
+  },
   { role: "user" as const, text: "Why is my resting heart rate lower this week?" },
-  { role: "ai" as const, text: "Two things stand out: your sleep midpoint has been within a 20-minute window, and you cut evening caffeine on 5 of 7 days. Both correlate strongly with your lower morning HR.", rich: "hr-explainer" as const },
+  {
+    role: "ai" as const,
+    text: "Two things stand out: your sleep midpoint has been within a 20-minute window, and you cut evening caffeine on 5 of 7 days. Both correlate strongly with your lower morning HR.",
+    rich: "hr-explainer" as const,
+  },
 ];
 
 export const suggestedQuestions = [
@@ -296,11 +543,18 @@ export const familyDetails: Record<string, FamilyDetail> = {
     recovery: 71,
     sleep: "6h 40m",
     steps: "3,120",
-    twinSummary: "Based on the last few weeks, her health twin suggests taking today gently — rest and hydration matter more than activity.",
+    twinSummary:
+      "Based on the last few weeks, her health twin suggests taking today gently — rest and hydration matter more than activity.",
     trends: [
       { key: "recovery", label: "Recovery", delta: -2, caption: "Slight decline", metric: "sleep" },
       { key: "sleep", label: "Sleep", delta: 0, caption: "Stable", metric: "sleep" },
-      { key: "heart", label: "Heart health", delta: -3, caption: "Slight decline", metric: "blood-pressure" },
+      {
+        key: "heart",
+        label: "Heart health",
+        delta: -3,
+        caption: "Slight decline",
+        metric: "blood-pressure",
+      },
     ],
     events: [
       { when: "Today", text: "Blood pressure slightly elevated" },
@@ -316,7 +570,8 @@ export const familyDetails: Record<string, FamilyDetail> = {
     recovery: 78,
     sleep: "7h 10m",
     steps: "5,480",
-    twinSummary: "Based on the last few weeks, his health twin thinks today is a good day for a longer walk.",
+    twinSummary:
+      "Based on the last few weeks, his health twin thinks today is a good day for a longer walk.",
     trends: [
       { key: "recovery", label: "Recovery", delta: 3, caption: "Improving", metric: "sleep" },
       { key: "sleep", label: "Sleep", delta: 0, caption: "Stable", metric: "sleep" },
@@ -336,7 +591,8 @@ export const familyDetails: Record<string, FamilyDetail> = {
     recovery: 86,
     sleep: "7h 45m",
     steps: "8,240",
-    twinSummary: "Based on the last few weeks, her health twin thinks today is a good recovery day.",
+    twinSummary:
+      "Based on the last few weeks, her health twin thinks today is a good recovery day.",
     trends: [
       { key: "recovery", label: "Recovery", delta: 6, caption: "Improving", metric: "sleep" },
       { key: "sleep", label: "Sleep", delta: 4, caption: "Improving", metric: "sleep" },
@@ -356,7 +612,8 @@ export const familyDetails: Record<string, FamilyDetail> = {
     recovery: 92,
     sleep: "9h 05m",
     steps: "6,842",
-    twinSummary: "Based on the last few weeks, his health twin sees a steady, healthy rhythm — nothing to worry about.",
+    twinSummary:
+      "Based on the last few weeks, his health twin sees a steady, healthy rhythm — nothing to worry about.",
     trends: [
       { key: "recovery", label: "Recovery", delta: 2, caption: "Improving", metric: "sleep" },
       { key: "sleep", label: "Sleep", delta: 0, caption: "Stable", metric: "sleep" },

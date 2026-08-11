@@ -51,7 +51,12 @@ export function SectionHeader({
 
 export function StatusChip({ status, children }: { status: Status; children: ReactNode }) {
   return (
-    <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium", statusBg[status])}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium",
+        statusBg[status],
+      )}
+    >
       <span className={cn("h-1.5 w-1.5 rounded-full", statusDot[status])} />
       {children}
     </span>
@@ -62,9 +67,18 @@ export function TrendBadge({ value, unit = "" }: { value: number; unit?: string 
   const good = value > 0;
   const flat = value === 0;
   const Icon = flat ? Minus : good ? TrendingUp : TrendingDown;
-  const tone = flat ? "text-muted-foreground bg-muted" : good ? "text-emerald bg-emerald/10" : "text-coral bg-coral/10";
+  const tone = flat
+    ? "text-muted-foreground bg-muted"
+    : good
+      ? "text-emerald bg-emerald/10"
+      : "text-coral bg-coral/10";
   return (
-    <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium", tone)}>
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium",
+        tone,
+      )}
+    >
       <Icon className="h-3 w-3" />
       {value > 0 ? "+" : ""}
       {value}
@@ -96,7 +110,10 @@ export function RadialScore({
   const dash = (pct / 100) * c;
   const id = `g-${label ?? "s"}-${size}`.replace(/\s/g, "");
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div
+      className="relative inline-flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} className="-rotate-90">
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="1" y2="1">
@@ -104,7 +121,14 @@ export function RadialScore({
             <stop offset="100%" stopColor={gradient[1]} />
           </linearGradient>
         </defs>
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--muted)" strokeWidth={stroke} fill="none" />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          stroke="var(--muted)"
+          strokeWidth={stroke}
+          fill="none"
+        />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -119,7 +143,11 @@ export function RadialScore({
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="num text-[42px] font-semibold leading-none">{Math.round(animated)}</span>
-        {label && <span className="mt-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{label}</span>}
+        {label && (
+          <span className="mt-1 text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+            {label}
+          </span>
+        )}
         {sub && <span className="mt-1 text-xs text-muted-foreground">{sub}</span>}
       </div>
     </div>
@@ -145,9 +173,19 @@ export function RingProgress({
   const c = 2 * Math.PI * r;
   const dash = (Math.max(0, Math.min(100, animated)) / 100) * c;
   return (
-    <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
+    <div
+      className="relative inline-flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} stroke="var(--muted)" strokeWidth={stroke} fill="none" />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          stroke="var(--muted)"
+          strokeWidth={stroke}
+          fill="none"
+        />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -189,7 +227,9 @@ export function Sparkline({
     const y = height - ((v - min) / range) * (height - 4) - 2;
     return [x, y] as const;
   });
-  const path = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const path = pts
+    .map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`)
+    .join(" ");
   const area = `${path} L${width},${height} L0,${height} Z`;
   const id = `spark-${Math.random().toString(36).slice(2, 8)}`;
   return (
@@ -201,13 +241,28 @@ export function Sparkline({
         </linearGradient>
       </defs>
       {fill && <path d={area} fill={`url(#${id})`} />}
-      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
 
 // Weekly bar chart
-export function BarChart({ data, labels, height = 120 }: { data: number[]; labels?: string[]; height?: number }) {
+export function BarChart({
+  data,
+  labels,
+  height = 120,
+}: {
+  data: number[];
+  labels?: string[];
+  height?: number;
+}) {
   const max = Math.max(...data, 1);
   return (
     <div className="flex items-end gap-2" style={{ height }}>
@@ -230,7 +285,13 @@ export function SkeletonCard({ className }: { className?: string }) {
   return <div className={cn("card-surface h-24 shimmer", className)} />;
 }
 
-export function IconTile({ children, tone = "teal" }: { children: ReactNode; tone?: "teal" | "blue" | "emerald" | "amber" | "coral" }) {
+export function IconTile({
+  children,
+  tone = "teal",
+}: {
+  children: ReactNode;
+  tone?: "teal" | "blue" | "emerald" | "amber" | "coral";
+}) {
   const map: Record<string, string> = {
     teal: "bg-teal/10 text-teal",
     blue: "bg-blue/10 text-blue",
@@ -238,12 +299,25 @@ export function IconTile({ children, tone = "teal" }: { children: ReactNode; ton
     amber: "bg-amber/15 text-amber",
     coral: "bg-coral/10 text-coral",
   };
-  return <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl", map[tone])}>{children}</div>;
+  return (
+    <div className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl", map[tone])}>
+      {children}
+    </div>
+  );
 }
 
-export function LinkCard({ to, children, className, ...rest }: { to: string; children: ReactNode; className?: string } & Record<string, unknown>) {
+export function LinkCard({
+  to,
+  children,
+  className,
+  ...rest
+}: { to: string; children: ReactNode; className?: string } & Record<string, unknown>) {
   return (
-    <Link to={to} className={cn("card-surface block p-4 transition-transform active:scale-[0.98]", className)} {...rest}>
+    <Link
+      to={to}
+      className={cn("card-surface block p-4 transition-transform active:scale-[0.98]", className)}
+      {...rest}
+    >
       {children}
     </Link>
   );

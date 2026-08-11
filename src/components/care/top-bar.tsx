@@ -21,7 +21,7 @@ const TITLES: Record<string, string> = {
   "/medication/review": "Doctor Review Reminder",
   "/medication/history": "Medication History",
   "/geofence": "Geofence",
-  "/geofence/alerts": "Recent Alerts",
+  "/geofence/alerts": "Recent Activity",
   "/geofence/zones": "Restricted Zones",
   "/geofence/settings": "Geofence Settings",
   "/care-team": "Care Team",
@@ -38,7 +38,9 @@ export function TopBar() {
   const [open, setOpen] = useState(false);
   if (HIDE_ON.includes(pathname)) return null;
   const isHome = pathname === "/home";
-  const showBack = !isHome && !["/companion", "/twin", "/family", "/support", "/care", "/care-team"].includes(pathname);
+  const showBack =
+    !isHome &&
+    !["/companion", "/twin", "/family", "/support", "/care", "/care-team"].includes(pathname);
   const title = TITLES[pathname] ?? "";
 
   return (
@@ -88,7 +90,9 @@ export function TopBar() {
               <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
               <div className="absolute right-0 top-11 z-50 w-56 overflow-hidden rounded-2xl border border-border bg-popover soft-shadow rise-in">
                 <div className="px-4 py-3 border-b border-border">
-                  <p className="text-sm font-semibold">{user.firstName} {user.lastName}</p>
+                  <p className="text-sm font-semibold">
+                    {user.firstName} {user.lastName}
+                  </p>
                   <p className="text-xs text-muted-foreground">{user.plan} plan</p>
                 </div>
                 {[
@@ -108,7 +112,13 @@ export function TopBar() {
                     {i.label}
                   </Link>
                 ))}
-                <Link to="/auth" onClick={() => setOpen(false)} className={cn("block border-t border-border px-4 py-2.5 text-sm text-coral hover:bg-muted")}>
+                <Link
+                  to="/auth"
+                  onClick={() => setOpen(false)}
+                  className={cn(
+                    "block border-t border-border px-4 py-2.5 text-sm text-coral hover:bg-muted",
+                  )}
+                >
                   Log out
                 </Link>
               </div>

@@ -43,8 +43,7 @@ export const caregiverMatches: MatchCaregiver[] = [
     availabilityLabel: "Available in 20 minutes",
     responseTime: "Usually replies in 4 min",
     certifications: ["Certified Nursing Assistant", "BLS & First Aid", "Diabetes Care Level 2"],
-    bio:
-      "Priya has spent eight years supporting seniors at home, with a focus on recovery after surgery and steady day-to-day diabetes management. She keeps families informed with clear, gentle updates.",
+    bio: "Priya has spent eight years supporting seniors at home, with a focus on recovery after surgery and steady day-to-day diabetes management. She keeps families informed with clear, gentle updates.",
     matchScore: 94,
     matchReasons: [
       "Experience with hypertension",
@@ -54,8 +53,18 @@ export const caregiverMatches: MatchCaregiver[] = [
     ],
     tone: "teal",
     patientReviews: [
-      { by: "Meera R.", when: "2 weeks ago", stars: 5, text: "Calm, punctual and explained every reading to my father." },
-      { by: "Arjun S.", when: "1 month ago", stars: 5, text: "Made post-surgery days far less stressful for us." },
+      {
+        by: "Meera R.",
+        when: "2 weeks ago",
+        stars: 5,
+        text: "Calm, punctual and explained every reading to my father.",
+      },
+      {
+        by: "Arjun S.",
+        when: "1 month ago",
+        stars: 5,
+        text: "Made post-surgery days far less stressful for us.",
+      },
     ],
   },
   {
@@ -78,7 +87,14 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 88,
     matchReasons: ["Strong medication routines", "Nearby this week", "Dementia trained"],
     tone: "blue",
-    patientReviews: [{ by: "Latha P.", when: "3 weeks ago", stars: 5, text: "Very gentle with my mother's walking practice." }],
+    patientReviews: [
+      {
+        by: "Latha P.",
+        when: "3 weeks ago",
+        stars: 5,
+        text: "Very gentle with my mother's walking practice.",
+      },
+    ],
   },
   {
     id: "anita-george",
@@ -100,7 +116,14 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 86,
     matchReasons: ["Gait and balance focus", "Closest to your home"],
     tone: "emerald",
-    patientReviews: [{ by: "Sunil K.", when: "1 week ago", stars: 5, text: "My balance improved within a fortnight." }],
+    patientReviews: [
+      {
+        by: "Sunil K.",
+        when: "1 week ago",
+        stars: 5,
+        text: "My balance improved within a fortnight.",
+      },
+    ],
   },
   {
     id: "sana-kapoor",
@@ -122,7 +145,14 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 78,
     matchReasons: ["Great for companion visits", "Flexible weekend hours"],
     tone: "amber",
-    patientReviews: [{ by: "Devi N.", when: "2 months ago", stars: 5, text: "Lovely company for my aunt every afternoon." }],
+    patientReviews: [
+      {
+        by: "Devi N.",
+        when: "2 months ago",
+        stars: 5,
+        text: "Lovely company for my aunt every afternoon.",
+      },
+    ],
   },
   {
     id: "joseph-thomas",
@@ -144,7 +174,14 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 84,
     matchReasons: ["Cardiac recovery specialist", "Vitals monitoring depth"],
     tone: "coral",
-    patientReviews: [{ by: "Ramesh V.", when: "1 month ago", stars: 5, text: "Reassuring through my father's recovery." }],
+    patientReviews: [
+      {
+        by: "Ramesh V.",
+        when: "1 month ago",
+        stars: 5,
+        text: "Reassuring through my father's recovery.",
+      },
+    ],
   },
   {
     id: "fatima-sheikh",
@@ -166,7 +203,9 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 75,
     matchReasons: ["Memory-care routines", "Evening availability"],
     tone: "blue",
-    patientReviews: [{ by: "Imran A.", when: "5 weeks ago", stars: 5, text: "Endless patience and warmth." }],
+    patientReviews: [
+      { by: "Imran A.", when: "5 weeks ago", stars: 5, text: "Endless patience and warmth." },
+    ],
   },
   {
     id: "deepa-rao",
@@ -188,7 +227,9 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 80,
     matchReasons: ["Medication accuracy", "Very close by"],
     tone: "teal",
-    patientReviews: [{ by: "Kiran M.", when: "3 weeks ago", stars: 4, text: "Reliable and organised." }],
+    patientReviews: [
+      { by: "Kiran M.", when: "3 weeks ago", stars: 4, text: "Reliable and organised." },
+    ],
   },
   {
     id: "vikram-shetty",
@@ -210,7 +251,9 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 72,
     matchReasons: ["Transfer and lifting expertise"],
     tone: "emerald",
-    patientReviews: [{ by: "Nandita B.", when: "2 months ago", stars: 5, text: "Strong, careful and respectful." }],
+    patientReviews: [
+      { by: "Nandita B.", when: "2 months ago", stars: 5, text: "Strong, careful and respectful." },
+    ],
   },
   {
     id: "leela-krishnan",
@@ -232,7 +275,14 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 82,
     matchReasons: ["Highest rated in your area", "Broad experience"],
     tone: "amber",
-    patientReviews: [{ by: "Gopal S.", when: "1 month ago", stars: 5, text: "The most experienced caregiver we've had." }],
+    patientReviews: [
+      {
+        by: "Gopal S.",
+        when: "1 month ago",
+        stars: 5,
+        text: "The most experienced caregiver we've had.",
+      },
+    ],
   },
   {
     id: "arun-pillai",
@@ -254,7 +304,9 @@ export const caregiverMatches: MatchCaregiver[] = [
     matchScore: 68,
     matchReasons: ["Good for routine wellness visits"],
     tone: "blue",
-    patientReviews: [{ by: "Sheeba T.", when: "6 weeks ago", stars: 4, text: "Friendly and dependable." }],
+    patientReviews: [
+      { by: "Sheeba T.", when: "6 weeks ago", stars: 4, text: "Friendly and dependable." },
+    ],
   },
 ];
 
@@ -352,7 +404,7 @@ export function useCareRequest() {
       return () => listeners.delete(cb);
     },
     () => current,
-    () => null
+    () => null,
   );
 }
 

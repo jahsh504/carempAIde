@@ -9,130 +9,60 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TwinRouteImport } from './routes/twin'
-import { Route as SupportRouteImport } from './routes/support'
-import { Route as ReportsRouteImport } from './routes/reports'
-import { Route as RecordsRouteImport } from './routes/records'
-import { Route as ProfileRouteImport } from './routes/profile'
-import { Route as PremiumRouteImport } from './routes/premium'
-import { Route as OnboardingRouteImport } from './routes/onboarding'
-import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as MedicationRouteImport } from './routes/medication'
-import { Route as HomeRouteImport } from './routes/home'
-import { Route as GeofenceRouteImport } from './routes/geofence'
-import { Route as FamilyRouteImport } from './routes/family'
-import { Route as CompanionRouteImport } from './routes/companion'
-import { Route as CareTeamRouteImport } from './routes/care-team'
-import { Route as CareRouteImport } from './routes/care'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as RecordsIndexRouteImport } from './routes/records.index'
-import { Route as MedicationIndexRouteImport } from './routes/medication.index'
-import { Route as GeofenceIndexRouteImport } from './routes/geofence.index'
-import { Route as FamilyIndexRouteImport } from './routes/family.index'
-import { Route as CareIndexRouteImport } from './routes/care.index'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as CareRouteImport } from './routes/care'
+import { Route as CareTeamRouteImport } from './routes/care-team'
+import { Route as CompanionRouteImport } from './routes/companion'
+import { Route as FamilyRouteImport } from './routes/family'
+import { Route as GeofenceRouteImport } from './routes/geofence'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as MedicationRouteImport } from './routes/medication'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
+import { Route as PremiumRouteImport } from './routes/premium'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as RecordsRouteImport } from './routes/records'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as TwinRouteImport } from './routes/twin'
 import { Route as CareTeamIndexRouteImport } from './routes/care-team.index'
-import { Route as VitalsMetricRouteImport } from './routes/vitals.$metric'
-import { Route as TwinSystemRouteImport } from './routes/twin.$system'
-import { Route as SupportPharmacyRouteImport } from './routes/support.pharmacy'
-import { Route as SupportLabRouteImport } from './routes/support.lab'
-import { Route as SupportClinicRouteImport } from './routes/support.clinic'
-import { Route as SupportAmbulanceRouteImport } from './routes/support.ambulance'
-import { Route as ReportsIdRouteImport } from './routes/reports.$id'
-import { Route as RecordsCategoryRouteImport } from './routes/records.$category'
-import { Route as ProfileSectionRouteImport } from './routes/profile.$section'
-import { Route as MedicationReviewRouteImport } from './routes/medication.review'
-import { Route as MedicationRemindersRouteImport } from './routes/medication.reminders'
-import { Route as MedicationRefillsRouteImport } from './routes/medication.refills'
-import { Route as MedicationHistoryRouteImport } from './routes/medication.history'
-import { Route as MedicationCourseRouteImport } from './routes/medication.course'
-import { Route as MedicationAddRouteImport } from './routes/medication.add'
-import { Route as GeofenceZonesRouteImport } from './routes/geofence.zones'
-import { Route as GeofenceSettingsRouteImport } from './routes/geofence.settings'
-import { Route as GeofenceAlertsRouteImport } from './routes/geofence.alerts'
-import { Route as FamilyMemberIdRouteImport } from './routes/family.$memberId'
-import { Route as CareProgramRouteImport } from './routes/care.$program'
-import { Route as CareTeamRequestSentRouteImport } from './routes/care-team.request-sent'
-import { Route as CareTeamFindRouteImport } from './routes/care-team.find'
 import { Route as CareTeamCaregiversRouteImport } from './routes/care-team.caregivers'
-import { Route as SupportOnlineServiceRouteImport } from './routes/support.online.$service'
-import { Route as SupportHomeCareServiceRouteImport } from './routes/support.home-care.$service'
-import { Route as RecordsDocIdRouteImport } from './routes/records.doc.$id'
+import { Route as CareTeamFindRouteImport } from './routes/care-team.find'
+import { Route as CareTeamRequestSentRouteImport } from './routes/care-team.request-sent'
+import { Route as CareIndexRouteImport } from './routes/care.index'
+import { Route as CareProgramRouteImport } from './routes/care.$program'
+import { Route as FamilyIndexRouteImport } from './routes/family.index'
+import { Route as FamilyMemberIdRouteImport } from './routes/family.$memberId'
+import { Route as GeofenceIndexRouteImport } from './routes/geofence.index'
+import { Route as GeofenceAlertsRouteImport } from './routes/geofence.alerts'
+import { Route as GeofenceSettingsRouteImport } from './routes/geofence.settings'
+import { Route as GeofenceZonesRouteImport } from './routes/geofence.zones'
+import { Route as MedicationIndexRouteImport } from './routes/medication.index'
+import { Route as MedicationAddRouteImport } from './routes/medication.add'
+import { Route as MedicationCourseRouteImport } from './routes/medication.course'
+import { Route as MedicationHistoryRouteImport } from './routes/medication.history'
+import { Route as MedicationRefillsRouteImport } from './routes/medication.refills'
+import { Route as MedicationRemindersRouteImport } from './routes/medication.reminders'
+import { Route as MedicationReviewRouteImport } from './routes/medication.review'
+import { Route as ProfileSectionRouteImport } from './routes/profile.$section'
+import { Route as RecordsIndexRouteImport } from './routes/records.index'
+import { Route as RecordsCategoryRouteImport } from './routes/records.$category'
+import { Route as ReportsIdRouteImport } from './routes/reports.$id'
+import { Route as SupportAmbulanceRouteImport } from './routes/support.ambulance'
+import { Route as SupportClinicRouteImport } from './routes/support.clinic'
+import { Route as SupportLabRouteImport } from './routes/support.lab'
+import { Route as SupportPharmacyRouteImport } from './routes/support.pharmacy'
+import { Route as TwinSystemRouteImport } from './routes/twin.$system'
+import { Route as VitalsMetricRouteImport } from './routes/vitals.$metric'
 import { Route as CareTeamCaregiverCaregiverIdRouteImport } from './routes/care-team.caregiver.$caregiverId'
+import { Route as RecordsDocIdRouteImport } from './routes/records.doc.$id'
+import { Route as SupportHomeCareServiceRouteImport } from './routes/support.home-care.$service'
+import { Route as SupportOnlineServiceRouteImport } from './routes/support.online.$service'
 
-const TwinRoute = TwinRouteImport.update({
-  id: '/twin',
-  path: '/twin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SupportRoute = SupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReportsRoute = ReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RecordsRoute = RecordsRouteImport.update({
-  id: '/records',
-  path: '/records',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PremiumRoute = PremiumRouteImport.update({
-  id: '/premium',
-  path: '/premium',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const OnboardingRoute = OnboardingRouteImport.update({
-  id: '/onboarding',
-  path: '/onboarding',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MedicationRoute = MedicationRouteImport.update({
-  id: '/medication',
-  path: '/medication',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HomeRoute = HomeRouteImport.update({
-  id: '/home',
-  path: '/home',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GeofenceRoute = GeofenceRouteImport.update({
-  id: '/geofence',
-  path: '/geofence',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FamilyRoute = FamilyRouteImport.update({
-  id: '/family',
-  path: '/family',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CompanionRoute = CompanionRouteImport.update({
-  id: '/companion',
-  path: '/companion',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareTeamRoute = CareTeamRouteImport.update({
-  id: '/care-team',
-  path: '/care-team',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CareRoute = CareRouteImport.update({
-  id: '/care',
-  path: '/care',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -140,149 +70,84 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const CareRoute = CareRouteImport.update({
+  id: '/care',
+  path: '/care',
   getParentRoute: () => rootRouteImport,
 } as any)
-const RecordsIndexRoute = RecordsIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => RecordsRoute,
+const CareTeamRoute = CareTeamRouteImport.update({
+  id: '/care-team',
+  path: '/care-team',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const MedicationIndexRoute = MedicationIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => MedicationRoute,
+const CompanionRoute = CompanionRouteImport.update({
+  id: '/companion',
+  path: '/companion',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const GeofenceIndexRoute = GeofenceIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => GeofenceRoute,
+const FamilyRoute = FamilyRouteImport.update({
+  id: '/family',
+  path: '/family',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const FamilyIndexRoute = FamilyIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => FamilyRoute,
+const GeofenceRoute = GeofenceRouteImport.update({
+  id: '/geofence',
+  path: '/geofence',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const CareIndexRoute = CareIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CareRoute,
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicationRoute = MedicationRouteImport.update({
+  id: '/medication',
+  path: '/medication',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PremiumRoute = PremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecordsRoute = RecordsRouteImport.update({
+  id: '/records',
+  path: '/records',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TwinRoute = TwinRouteImport.update({
+  id: '/twin',
+  path: '/twin',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CareTeamIndexRoute = CareTeamIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => CareTeamRoute,
-} as any)
-const VitalsMetricRoute = VitalsMetricRouteImport.update({
-  id: '/vitals/$metric',
-  path: '/vitals/$metric',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TwinSystemRoute = TwinSystemRouteImport.update({
-  id: '/$system',
-  path: '/$system',
-  getParentRoute: () => TwinRoute,
-} as any)
-const SupportPharmacyRoute = SupportPharmacyRouteImport.update({
-  id: '/pharmacy',
-  path: '/pharmacy',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportLabRoute = SupportLabRouteImport.update({
-  id: '/lab',
-  path: '/lab',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportClinicRoute = SupportClinicRouteImport.update({
-  id: '/clinic',
-  path: '/clinic',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportAmbulanceRoute = SupportAmbulanceRouteImport.update({
-  id: '/ambulance',
-  path: '/ambulance',
-  getParentRoute: () => SupportRoute,
-} as any)
-const ReportsIdRoute = ReportsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => ReportsRoute,
-} as any)
-const RecordsCategoryRoute = RecordsCategoryRouteImport.update({
-  id: '/$category',
-  path: '/$category',
-  getParentRoute: () => RecordsRoute,
-} as any)
-const ProfileSectionRoute = ProfileSectionRouteImport.update({
-  id: '/$section',
-  path: '/$section',
-  getParentRoute: () => ProfileRoute,
-} as any)
-const MedicationReviewRoute = MedicationReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const MedicationRemindersRoute = MedicationRemindersRouteImport.update({
-  id: '/reminders',
-  path: '/reminders',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const MedicationRefillsRoute = MedicationRefillsRouteImport.update({
-  id: '/refills',
-  path: '/refills',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const MedicationHistoryRoute = MedicationHistoryRouteImport.update({
-  id: '/history',
-  path: '/history',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const MedicationCourseRoute = MedicationCourseRouteImport.update({
-  id: '/course',
-  path: '/course',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const MedicationAddRoute = MedicationAddRouteImport.update({
-  id: '/add',
-  path: '/add',
-  getParentRoute: () => MedicationRoute,
-} as any)
-const GeofenceZonesRoute = GeofenceZonesRouteImport.update({
-  id: '/zones',
-  path: '/zones',
-  getParentRoute: () => GeofenceRoute,
-} as any)
-const GeofenceSettingsRoute = GeofenceSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => GeofenceRoute,
-} as any)
-const GeofenceAlertsRoute = GeofenceAlertsRouteImport.update({
-  id: '/alerts',
-  path: '/alerts',
-  getParentRoute: () => GeofenceRoute,
-} as any)
-const FamilyMemberIdRoute = FamilyMemberIdRouteImport.update({
-  id: '/$memberId',
-  path: '/$memberId',
-  getParentRoute: () => FamilyRoute,
-} as any)
-const CareProgramRoute = CareProgramRouteImport.update({
-  id: '/$program',
-  path: '/$program',
-  getParentRoute: () => CareRoute,
-} as any)
-const CareTeamRequestSentRoute = CareTeamRequestSentRouteImport.update({
-  id: '/request-sent',
-  path: '/request-sent',
-  getParentRoute: () => CareTeamRoute,
-} as any)
-const CareTeamFindRoute = CareTeamFindRouteImport.update({
-  id: '/find',
-  path: '/find',
   getParentRoute: () => CareTeamRoute,
 } as any)
 const CareTeamCaregiversRoute = CareTeamCaregiversRouteImport.update({
@@ -290,20 +155,140 @@ const CareTeamCaregiversRoute = CareTeamCaregiversRouteImport.update({
   path: '/caregivers',
   getParentRoute: () => CareTeamRoute,
 } as any)
-const SupportOnlineServiceRoute = SupportOnlineServiceRouteImport.update({
-  id: '/online/$service',
-  path: '/online/$service',
-  getParentRoute: () => SupportRoute,
+const CareTeamFindRoute = CareTeamFindRouteImport.update({
+  id: '/find',
+  path: '/find',
+  getParentRoute: () => CareTeamRoute,
 } as any)
-const SupportHomeCareServiceRoute = SupportHomeCareServiceRouteImport.update({
-  id: '/home-care/$service',
-  path: '/home-care/$service',
-  getParentRoute: () => SupportRoute,
+const CareTeamRequestSentRoute = CareTeamRequestSentRouteImport.update({
+  id: '/request-sent',
+  path: '/request-sent',
+  getParentRoute: () => CareTeamRoute,
 } as any)
-const RecordsDocIdRoute = RecordsDocIdRouteImport.update({
-  id: '/doc/$id',
-  path: '/doc/$id',
+const CareIndexRoute = CareIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CareRoute,
+} as any)
+const CareProgramRoute = CareProgramRouteImport.update({
+  id: '/$program',
+  path: '/$program',
+  getParentRoute: () => CareRoute,
+} as any)
+const FamilyIndexRoute = FamilyIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => FamilyRoute,
+} as any)
+const FamilyMemberIdRoute = FamilyMemberIdRouteImport.update({
+  id: '/$memberId',
+  path: '/$memberId',
+  getParentRoute: () => FamilyRoute,
+} as any)
+const GeofenceIndexRoute = GeofenceIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => GeofenceRoute,
+} as any)
+const GeofenceAlertsRoute = GeofenceAlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => GeofenceRoute,
+} as any)
+const GeofenceSettingsRoute = GeofenceSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => GeofenceRoute,
+} as any)
+const GeofenceZonesRoute = GeofenceZonesRouteImport.update({
+  id: '/zones',
+  path: '/zones',
+  getParentRoute: () => GeofenceRoute,
+} as any)
+const MedicationIndexRoute = MedicationIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationAddRoute = MedicationAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationCourseRoute = MedicationCourseRouteImport.update({
+  id: '/course',
+  path: '/course',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationHistoryRoute = MedicationHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationRefillsRoute = MedicationRefillsRouteImport.update({
+  id: '/refills',
+  path: '/refills',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationRemindersRoute = MedicationRemindersRouteImport.update({
+  id: '/reminders',
+  path: '/reminders',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const MedicationReviewRoute = MedicationReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => MedicationRoute,
+} as any)
+const ProfileSectionRoute = ProfileSectionRouteImport.update({
+  id: '/$section',
+  path: '/$section',
+  getParentRoute: () => ProfileRoute,
+} as any)
+const RecordsIndexRoute = RecordsIndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => RecordsRoute,
+} as any)
+const RecordsCategoryRoute = RecordsCategoryRouteImport.update({
+  id: '/$category',
+  path: '/$category',
+  getParentRoute: () => RecordsRoute,
+} as any)
+const ReportsIdRoute = ReportsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ReportsRoute,
+} as any)
+const SupportAmbulanceRoute = SupportAmbulanceRouteImport.update({
+  id: '/ambulance',
+  path: '/ambulance',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportClinicRoute = SupportClinicRouteImport.update({
+  id: '/clinic',
+  path: '/clinic',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportLabRoute = SupportLabRouteImport.update({
+  id: '/lab',
+  path: '/lab',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportPharmacyRoute = SupportPharmacyRouteImport.update({
+  id: '/pharmacy',
+  path: '/pharmacy',
+  getParentRoute: () => SupportRoute,
+} as any)
+const TwinSystemRoute = TwinSystemRouteImport.update({
+  id: '/$system',
+  path: '/$system',
+  getParentRoute: () => TwinRoute,
+} as any)
+const VitalsMetricRoute = VitalsMetricRouteImport.update({
+  id: '/vitals/$metric',
+  path: '/vitals/$metric',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CareTeamCaregiverCaregiverIdRoute =
   CareTeamCaregiverCaregiverIdRouteImport.update({
@@ -311,6 +296,21 @@ const CareTeamCaregiverCaregiverIdRoute =
     path: '/caregiver/$caregiverId',
     getParentRoute: () => CareTeamRoute,
   } as any)
+const RecordsDocIdRoute = RecordsDocIdRouteImport.update({
+  id: '/doc/$id',
+  path: '/doc/$id',
+  getParentRoute: () => RecordsRoute,
+} as any)
+const SupportHomeCareServiceRoute = SupportHomeCareServiceRouteImport.update({
+  id: '/home-care/$service',
+  path: '/home-care/$service',
+  getParentRoute: () => SupportRoute,
+} as any)
+const SupportOnlineServiceRoute = SupportOnlineServiceRouteImport.update({
+  id: '/online/$service',
+  path: '/online/$service',
+  getParentRoute: () => SupportRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -639,109 +639,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/twin': {
-      id: '/twin'
-      path: '/twin'
-      fullPath: '/twin'
-      preLoaderRoute: typeof TwinRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/support': {
-      id: '/support'
-      path: '/support'
-      fullPath: '/support'
-      preLoaderRoute: typeof SupportRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reports': {
-      id: '/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof ReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/records': {
-      id: '/records'
-      path: '/records'
-      fullPath: '/records'
-      preLoaderRoute: typeof RecordsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/premium': {
-      id: '/premium'
-      path: '/premium'
-      fullPath: '/premium'
-      preLoaderRoute: typeof PremiumRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/onboarding': {
-      id: '/onboarding'
-      path: '/onboarding'
-      fullPath: '/onboarding'
-      preLoaderRoute: typeof OnboardingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/medication': {
-      id: '/medication'
-      path: '/medication'
-      fullPath: '/medication'
-      preLoaderRoute: typeof MedicationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/home': {
-      id: '/home'
-      path: '/home'
-      fullPath: '/home'
-      preLoaderRoute: typeof HomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/geofence': {
-      id: '/geofence'
-      path: '/geofence'
-      fullPath: '/geofence'
-      preLoaderRoute: typeof GeofenceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/family': {
-      id: '/family'
-      path: '/family'
-      fullPath: '/family'
-      preLoaderRoute: typeof FamilyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/companion': {
-      id: '/companion'
-      path: '/companion'
-      fullPath: '/companion'
-      preLoaderRoute: typeof CompanionRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/care-team': {
-      id: '/care-team'
-      path: '/care-team'
-      fullPath: '/care-team'
-      preLoaderRoute: typeof CareTeamRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/care': {
-      id: '/care'
-      path: '/care'
-      fullPath: '/care'
-      preLoaderRoute: typeof CareRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -751,207 +653,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/care': {
+      id: '/care'
+      path: '/care'
+      fullPath: '/care'
+      preLoaderRoute: typeof CareRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/records/': {
-      id: '/records/'
-      path: '/'
-      fullPath: '/records/'
-      preLoaderRoute: typeof RecordsIndexRouteImport
-      parentRoute: typeof RecordsRoute
+    '/care-team': {
+      id: '/care-team'
+      path: '/care-team'
+      fullPath: '/care-team'
+      preLoaderRoute: typeof CareTeamRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/medication/': {
-      id: '/medication/'
-      path: '/'
-      fullPath: '/medication/'
-      preLoaderRoute: typeof MedicationIndexRouteImport
-      parentRoute: typeof MedicationRoute
+    '/companion': {
+      id: '/companion'
+      path: '/companion'
+      fullPath: '/companion'
+      preLoaderRoute: typeof CompanionRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/geofence/': {
-      id: '/geofence/'
-      path: '/'
-      fullPath: '/geofence/'
-      preLoaderRoute: typeof GeofenceIndexRouteImport
-      parentRoute: typeof GeofenceRoute
+    '/family': {
+      id: '/family'
+      path: '/family'
+      fullPath: '/family'
+      preLoaderRoute: typeof FamilyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/family/': {
-      id: '/family/'
-      path: '/'
-      fullPath: '/family/'
-      preLoaderRoute: typeof FamilyIndexRouteImport
-      parentRoute: typeof FamilyRoute
+    '/geofence': {
+      id: '/geofence'
+      path: '/geofence'
+      fullPath: '/geofence'
+      preLoaderRoute: typeof GeofenceRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/care/': {
-      id: '/care/'
-      path: '/'
-      fullPath: '/care/'
-      preLoaderRoute: typeof CareIndexRouteImport
-      parentRoute: typeof CareRoute
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medication': {
+      id: '/medication'
+      path: '/medication'
+      fullPath: '/medication'
+      preLoaderRoute: typeof MedicationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/premium': {
+      id: '/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof PremiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/records': {
+      id: '/records'
+      path: '/records'
+      fullPath: '/records'
+      preLoaderRoute: typeof RecordsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/twin': {
+      id: '/twin'
+      path: '/twin'
+      fullPath: '/twin'
+      preLoaderRoute: typeof TwinRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/care-team/': {
       id: '/care-team/'
       path: '/'
       fullPath: '/care-team/'
       preLoaderRoute: typeof CareTeamIndexRouteImport
-      parentRoute: typeof CareTeamRoute
-    }
-    '/vitals/$metric': {
-      id: '/vitals/$metric'
-      path: '/vitals/$metric'
-      fullPath: '/vitals/$metric'
-      preLoaderRoute: typeof VitalsMetricRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/twin/$system': {
-      id: '/twin/$system'
-      path: '/$system'
-      fullPath: '/twin/$system'
-      preLoaderRoute: typeof TwinSystemRouteImport
-      parentRoute: typeof TwinRoute
-    }
-    '/support/pharmacy': {
-      id: '/support/pharmacy'
-      path: '/pharmacy'
-      fullPath: '/support/pharmacy'
-      preLoaderRoute: typeof SupportPharmacyRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/lab': {
-      id: '/support/lab'
-      path: '/lab'
-      fullPath: '/support/lab'
-      preLoaderRoute: typeof SupportLabRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/clinic': {
-      id: '/support/clinic'
-      path: '/clinic'
-      fullPath: '/support/clinic'
-      preLoaderRoute: typeof SupportClinicRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/ambulance': {
-      id: '/support/ambulance'
-      path: '/ambulance'
-      fullPath: '/support/ambulance'
-      preLoaderRoute: typeof SupportAmbulanceRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/reports/$id': {
-      id: '/reports/$id'
-      path: '/$id'
-      fullPath: '/reports/$id'
-      preLoaderRoute: typeof ReportsIdRouteImport
-      parentRoute: typeof ReportsRoute
-    }
-    '/records/$category': {
-      id: '/records/$category'
-      path: '/$category'
-      fullPath: '/records/$category'
-      preLoaderRoute: typeof RecordsCategoryRouteImport
-      parentRoute: typeof RecordsRoute
-    }
-    '/profile/$section': {
-      id: '/profile/$section'
-      path: '/$section'
-      fullPath: '/profile/$section'
-      preLoaderRoute: typeof ProfileSectionRouteImport
-      parentRoute: typeof ProfileRoute
-    }
-    '/medication/review': {
-      id: '/medication/review'
-      path: '/review'
-      fullPath: '/medication/review'
-      preLoaderRoute: typeof MedicationReviewRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/medication/reminders': {
-      id: '/medication/reminders'
-      path: '/reminders'
-      fullPath: '/medication/reminders'
-      preLoaderRoute: typeof MedicationRemindersRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/medication/refills': {
-      id: '/medication/refills'
-      path: '/refills'
-      fullPath: '/medication/refills'
-      preLoaderRoute: typeof MedicationRefillsRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/medication/history': {
-      id: '/medication/history'
-      path: '/history'
-      fullPath: '/medication/history'
-      preLoaderRoute: typeof MedicationHistoryRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/medication/course': {
-      id: '/medication/course'
-      path: '/course'
-      fullPath: '/medication/course'
-      preLoaderRoute: typeof MedicationCourseRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/medication/add': {
-      id: '/medication/add'
-      path: '/add'
-      fullPath: '/medication/add'
-      preLoaderRoute: typeof MedicationAddRouteImport
-      parentRoute: typeof MedicationRoute
-    }
-    '/geofence/zones': {
-      id: '/geofence/zones'
-      path: '/zones'
-      fullPath: '/geofence/zones'
-      preLoaderRoute: typeof GeofenceZonesRouteImport
-      parentRoute: typeof GeofenceRoute
-    }
-    '/geofence/settings': {
-      id: '/geofence/settings'
-      path: '/settings'
-      fullPath: '/geofence/settings'
-      preLoaderRoute: typeof GeofenceSettingsRouteImport
-      parentRoute: typeof GeofenceRoute
-    }
-    '/geofence/alerts': {
-      id: '/geofence/alerts'
-      path: '/alerts'
-      fullPath: '/geofence/alerts'
-      preLoaderRoute: typeof GeofenceAlertsRouteImport
-      parentRoute: typeof GeofenceRoute
-    }
-    '/family/$memberId': {
-      id: '/family/$memberId'
-      path: '/$memberId'
-      fullPath: '/family/$memberId'
-      preLoaderRoute: typeof FamilyMemberIdRouteImport
-      parentRoute: typeof FamilyRoute
-    }
-    '/care/$program': {
-      id: '/care/$program'
-      path: '/$program'
-      fullPath: '/care/$program'
-      preLoaderRoute: typeof CareProgramRouteImport
-      parentRoute: typeof CareRoute
-    }
-    '/care-team/request-sent': {
-      id: '/care-team/request-sent'
-      path: '/request-sent'
-      fullPath: '/care-team/request-sent'
-      preLoaderRoute: typeof CareTeamRequestSentRouteImport
-      parentRoute: typeof CareTeamRoute
-    }
-    '/care-team/find': {
-      id: '/care-team/find'
-      path: '/find'
-      fullPath: '/care-team/find'
-      preLoaderRoute: typeof CareTeamFindRouteImport
       parentRoute: typeof CareTeamRoute
     }
     '/care-team/caregivers': {
@@ -961,19 +772,201 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareTeamCaregiversRouteImport
       parentRoute: typeof CareTeamRoute
     }
-    '/support/online/$service': {
-      id: '/support/online/$service'
-      path: '/online/$service'
-      fullPath: '/support/online/$service'
-      preLoaderRoute: typeof SupportOnlineServiceRouteImport
+    '/care-team/find': {
+      id: '/care-team/find'
+      path: '/find'
+      fullPath: '/care-team/find'
+      preLoaderRoute: typeof CareTeamFindRouteImport
+      parentRoute: typeof CareTeamRoute
+    }
+    '/care-team/request-sent': {
+      id: '/care-team/request-sent'
+      path: '/request-sent'
+      fullPath: '/care-team/request-sent'
+      preLoaderRoute: typeof CareTeamRequestSentRouteImport
+      parentRoute: typeof CareTeamRoute
+    }
+    '/care/': {
+      id: '/care/'
+      path: '/'
+      fullPath: '/care/'
+      preLoaderRoute: typeof CareIndexRouteImport
+      parentRoute: typeof CareRoute
+    }
+    '/care/$program': {
+      id: '/care/$program'
+      path: '/$program'
+      fullPath: '/care/$program'
+      preLoaderRoute: typeof CareProgramRouteImport
+      parentRoute: typeof CareRoute
+    }
+    '/family/': {
+      id: '/family/'
+      path: '/'
+      fullPath: '/family/'
+      preLoaderRoute: typeof FamilyIndexRouteImport
+      parentRoute: typeof FamilyRoute
+    }
+    '/family/$memberId': {
+      id: '/family/$memberId'
+      path: '/$memberId'
+      fullPath: '/family/$memberId'
+      preLoaderRoute: typeof FamilyMemberIdRouteImport
+      parentRoute: typeof FamilyRoute
+    }
+    '/geofence/': {
+      id: '/geofence/'
+      path: '/'
+      fullPath: '/geofence/'
+      preLoaderRoute: typeof GeofenceIndexRouteImport
+      parentRoute: typeof GeofenceRoute
+    }
+    '/geofence/alerts': {
+      id: '/geofence/alerts'
+      path: '/alerts'
+      fullPath: '/geofence/alerts'
+      preLoaderRoute: typeof GeofenceAlertsRouteImport
+      parentRoute: typeof GeofenceRoute
+    }
+    '/geofence/settings': {
+      id: '/geofence/settings'
+      path: '/settings'
+      fullPath: '/geofence/settings'
+      preLoaderRoute: typeof GeofenceSettingsRouteImport
+      parentRoute: typeof GeofenceRoute
+    }
+    '/geofence/zones': {
+      id: '/geofence/zones'
+      path: '/zones'
+      fullPath: '/geofence/zones'
+      preLoaderRoute: typeof GeofenceZonesRouteImport
+      parentRoute: typeof GeofenceRoute
+    }
+    '/medication/': {
+      id: '/medication/'
+      path: '/'
+      fullPath: '/medication/'
+      preLoaderRoute: typeof MedicationIndexRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/add': {
+      id: '/medication/add'
+      path: '/add'
+      fullPath: '/medication/add'
+      preLoaderRoute: typeof MedicationAddRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/course': {
+      id: '/medication/course'
+      path: '/course'
+      fullPath: '/medication/course'
+      preLoaderRoute: typeof MedicationCourseRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/history': {
+      id: '/medication/history'
+      path: '/history'
+      fullPath: '/medication/history'
+      preLoaderRoute: typeof MedicationHistoryRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/refills': {
+      id: '/medication/refills'
+      path: '/refills'
+      fullPath: '/medication/refills'
+      preLoaderRoute: typeof MedicationRefillsRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/reminders': {
+      id: '/medication/reminders'
+      path: '/reminders'
+      fullPath: '/medication/reminders'
+      preLoaderRoute: typeof MedicationRemindersRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/medication/review': {
+      id: '/medication/review'
+      path: '/review'
+      fullPath: '/medication/review'
+      preLoaderRoute: typeof MedicationReviewRouteImport
+      parentRoute: typeof MedicationRoute
+    }
+    '/profile/$section': {
+      id: '/profile/$section'
+      path: '/$section'
+      fullPath: '/profile/$section'
+      preLoaderRoute: typeof ProfileSectionRouteImport
+      parentRoute: typeof ProfileRoute
+    }
+    '/records/': {
+      id: '/records/'
+      path: '/'
+      fullPath: '/records/'
+      preLoaderRoute: typeof RecordsIndexRouteImport
+      parentRoute: typeof RecordsRoute
+    }
+    '/records/$category': {
+      id: '/records/$category'
+      path: '/$category'
+      fullPath: '/records/$category'
+      preLoaderRoute: typeof RecordsCategoryRouteImport
+      parentRoute: typeof RecordsRoute
+    }
+    '/reports/$id': {
+      id: '/reports/$id'
+      path: '/$id'
+      fullPath: '/reports/$id'
+      preLoaderRoute: typeof ReportsIdRouteImport
+      parentRoute: typeof ReportsRoute
+    }
+    '/support/ambulance': {
+      id: '/support/ambulance'
+      path: '/ambulance'
+      fullPath: '/support/ambulance'
+      preLoaderRoute: typeof SupportAmbulanceRouteImport
       parentRoute: typeof SupportRoute
     }
-    '/support/home-care/$service': {
-      id: '/support/home-care/$service'
-      path: '/home-care/$service'
-      fullPath: '/support/home-care/$service'
-      preLoaderRoute: typeof SupportHomeCareServiceRouteImport
+    '/support/clinic': {
+      id: '/support/clinic'
+      path: '/clinic'
+      fullPath: '/support/clinic'
+      preLoaderRoute: typeof SupportClinicRouteImport
       parentRoute: typeof SupportRoute
+    }
+    '/support/lab': {
+      id: '/support/lab'
+      path: '/lab'
+      fullPath: '/support/lab'
+      preLoaderRoute: typeof SupportLabRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/pharmacy': {
+      id: '/support/pharmacy'
+      path: '/pharmacy'
+      fullPath: '/support/pharmacy'
+      preLoaderRoute: typeof SupportPharmacyRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/twin/$system': {
+      id: '/twin/$system'
+      path: '/$system'
+      fullPath: '/twin/$system'
+      preLoaderRoute: typeof TwinSystemRouteImport
+      parentRoute: typeof TwinRoute
+    }
+    '/vitals/$metric': {
+      id: '/vitals/$metric'
+      path: '/vitals/$metric'
+      fullPath: '/vitals/$metric'
+      preLoaderRoute: typeof VitalsMetricRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/care-team/caregiver/$caregiverId': {
+      id: '/care-team/caregiver/$caregiverId'
+      path: '/caregiver/$caregiverId'
+      fullPath: '/care-team/caregiver/$caregiverId'
+      preLoaderRoute: typeof CareTeamCaregiverCaregiverIdRouteImport
+      parentRoute: typeof CareTeamRoute
     }
     '/records/doc/$id': {
       id: '/records/doc/$id'
@@ -982,12 +975,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecordsDocIdRouteImport
       parentRoute: typeof RecordsRoute
     }
-    '/care-team/caregiver/$caregiverId': {
-      id: '/care-team/caregiver/$caregiverId'
-      path: '/caregiver/$caregiverId'
-      fullPath: '/care-team/caregiver/$caregiverId'
-      preLoaderRoute: typeof CareTeamCaregiverCaregiverIdRouteImport
-      parentRoute: typeof CareTeamRoute
+    '/support/home-care/$service': {
+      id: '/support/home-care/$service'
+      path: '/home-care/$service'
+      fullPath: '/support/home-care/$service'
+      preLoaderRoute: typeof SupportHomeCareServiceRouteImport
+      parentRoute: typeof SupportRoute
+    }
+    '/support/online/$service': {
+      id: '/support/online/$service'
+      path: '/online/$service'
+      fullPath: '/support/online/$service'
+      preLoaderRoute: typeof SupportOnlineServiceRouteImport
+      parentRoute: typeof SupportRoute
     }
   }
 }
@@ -1170,3 +1170,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

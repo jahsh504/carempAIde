@@ -32,6 +32,8 @@ function AddMedicationPage() {
   const [frequency, setFrequency] = useState(frequencies[0]);
   const [food, setFood] = useState<FoodRule>("After food");
   const [time, setTime] = useState("08:00");
+  const [isCourse, setIsCourse] = useState(false);
+  const [duration, setDuration] = useState("");
   const [start, setStart] = useState("2026-08-07");
   const [end, setEnd] = useState("");
 
@@ -88,16 +90,50 @@ function AddMedicationPage() {
           <label className={labelClass}>Time</label>
           <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className={inputClass} />
         </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className={labelClass}>Start date</label>
-            <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={inputClass} />
+
+        {/* Treatment course toggle */}
+        <div className="rounded-2xl border border-border bg-muted/40 p-3.5 space-y-1">
+          <div className="flex items-center justify-between">
+            <label htmlFor="course-toggle" className="text-[13px] font-medium cursor-pointer">
+              Track as a treatment course
+            </label>
+            <input
+              id="course-toggle"
+              type="checkbox"
+              checked={isCourse}
+              onChange={(e) => setIsCourse(e.target.checked)}
+              className="h-4.5 w-4.5 rounded accent-teal cursor-pointer"
+            />
           </div>
-          <div>
-            <label className={labelClass}>End date</label>
-            <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className={inputClass} />
-          </div>
+          <p className="text-[11.5px] leading-normal text-muted-foreground">
+            Track this medication toward a defined course with a start and end date.
+          </p>
         </div>
+
+        {isCourse && (
+          <div className="space-y-4 pt-1">
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className={labelClass}>Start date</label>
+                <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={inputClass} />
+              </div>
+              <div>
+                <label className={labelClass}>End date</label>
+                <input type="date" value={end} onChange={(e) => setEnd(e.target.value)} className={inputClass} />
+              </div>
+            </div>
+            <div>
+              <label className={labelClass}>Course duration</label>
+              <input
+                type="text"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                placeholder="e.g. 7 day course"
+                className={inputClass}
+              />
+            </div>
+          </div>
+        )}
 
         <button
           onClick={save}

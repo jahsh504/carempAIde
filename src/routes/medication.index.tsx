@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Pill, Plus, PackageCheck, Stethoscope, History, ChevronRight, Check, Sparkles, CalendarCheck } from "lucide-react";
+import { useState } from "react";
+import { Pill, Plus, PackageCheck, Stethoscope, History, ChevronRight, Check, Sparkles, CalendarCheck, X, Calendar } from "lucide-react";
 import { Card, SectionHeader, RingProgress } from "@/components/care/primitives";
 import { useSchedule, takeMedication, toggleMedication, formatRemaining, todayLabel } from "@/data/medication";
 import { cn } from "@/lib/utils";
@@ -29,6 +30,7 @@ const quickActions = [
 
 function MedicationHome() {
   const schedule = useSchedule();
+  const [showScheduleModal, setShowScheduleModal] = useState(false);
   const done = schedule.filter((m) => m.taken).length;
   const pct = Math.round((done / schedule.length) * 100);
   const next = schedule.find((m) => !m.taken);
@@ -111,13 +113,72 @@ function MedicationHome() {
             </button>
           ))}
         </Card>
-        <Link
-          to="/medication/history"
+        <button
+          onClick={() => setShowScheduleModal(true)}
           className="mt-3 inline-flex w-full items-center justify-center gap-1 rounded-full border border-border px-4 py-2.5 text-[12.5px] font-medium active:scale-[0.98]"
         >
           View Full Schedule <ChevronRight className="h-3.5 w-3.5" />
-        </Link>
+        </button>
       </div>
+
+      {/* Today's Schedule Modal */}
+      {showScheduleModal && (
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 p-0 sm:p-4 backdrop-blur-xs">
+          <div
+            className="fixed inset-0"
+            onClick={() => setShowScheduleModal(false)}
+          />
+          <div className="relative z-10 w-full max-w-[440px] max-h-[85vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl border border-border bg-card p-5 soft-shadow rise-in">
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div>
+                <h3 className="text-[17px] font-semibold">Today's medications</h3>
+                <p className="text-[11.5px] text-muted-foreground">{todayLabel}</p>
+              </div>
+              <button
+                onClick={() => setShowScheduleModal(false)}
+                className="grid h-8 w-8 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {schedule.map((m) => (
+                <div key={m.id} className="rounded-2xl border border-border bg-muted/30 p-3.5">
+                  <span className="num block text-[11.5px] font-semibold text-teal uppercase tracking-wider">{m.time}</span>
+                  <div className="mt-1 flex items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[15px] font-semibold text-foreground">
+                        {m.name} {m.name === "Metformin" ? "500mg" : m.name === "Amlodipine" ? "5mg" : m.name === "Atorvastatin" ? "20mg" : ""}
+                      </p>
+                      <p className="text-[12px] text-muted-foreground">
+                        {m.dosage} {m.food && m.food !== "Anytime" ? `· ${m.food}` : ""}
+                      </p>
+                    </div>
+                    <span
+                      className={cn(
+                        "grid h-6 w-6 shrink-0 place-items-center rounded-full border text-[12px] font-semibold",
+                        m.taken
+                          ? "border-transparent bg-gradient-to-br from-emerald to-teal text-white"
+                          : "border-border text-muted-foreground bg-card"
+                      )}
+                    >
+                      {m.taken ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : "○"}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setShowScheduleModal(false)}
+              className="mt-5 w-full rounded-full bg-primary py-2.5 text-[13.5px] font-semibold text-primary-foreground active:scale-[0.98]"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Quick actions */}
       <div>

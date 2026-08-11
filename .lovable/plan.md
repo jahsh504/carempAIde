@@ -1,4 +1,3 @@
-
 # careMP — Investor Demo Build Plan
 
 Fully static, mobile-first web app. All data hardcoded, no backend, no auth, no AI calls. Every screen prepopulated with realistic sample data so it reads as a launch-ready product. Chat is in-memory only.

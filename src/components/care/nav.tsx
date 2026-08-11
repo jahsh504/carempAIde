@@ -1,5 +1,13 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Home, MessageCircle, Sparkles, Users, HeartHandshake, HeartPulse, Bot } from "lucide-react";
+import {
+  Home,
+  MessageCircle,
+  Sparkles,
+  Users,
+  HeartHandshake,
+  HeartPulse,
+  Bot,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
@@ -10,7 +18,6 @@ const tabs = [
   { to: "/care", label: "Care Plan", icon: HeartPulse },
   { to: "/care-team", label: "Care Team", icon: HeartHandshake },
 ] as const;
-
 
 const HIDE_ON = ["/", "/onboarding", "/auth"];
 
@@ -28,7 +35,7 @@ export function BottomNav() {
               to={to}
               className={cn(
                 "relative flex flex-1 flex-col items-center gap-0.5 rounded-2xl px-0.5 py-1.5 text-center text-[9.5px] leading-tight font-medium transition-colors",
-                active ? "text-primary" : "text-muted-foreground"
+                active ? "text-primary" : "text-muted-foreground",
               )}
             >
               <Icon className={cn("h-5 w-5", active && "stroke-[2.25]")} />

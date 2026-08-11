@@ -186,46 +186,6 @@ function CareTeamPage() {
         </Card>
       </div>
 
-      {/* Today's care */}
-      <div>
-        <SectionHeader title="Today's care" hint={`${done} of ${items.length} complete`} />
-        <div className="space-y-2">
-          {items.map((i) => (
-            <button
-              key={i.id}
-              onClick={() => setItems((p) => p.map((x) => (x.id === i.id ? { ...x, done: !x.done } : x)))}
-              className={cn(
-                "flex w-full items-center gap-3 rounded-2xl border border-border bg-card px-3 py-2.5 text-left transition-colors active:scale-[0.99]",
-                i.done && "border-emerald/30 bg-emerald/5"
-              )}
-            >
-              <span
-                className={cn(
-                  "grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-all",
-                  i.done ? "scale-in border-transparent bg-gradient-to-br from-emerald to-teal text-white" : "border-border text-transparent"
-                )}
-              >
-                <Check className="h-4 w-4" strokeWidth={3} />
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className={cn("block truncate text-[13px] font-medium", i.done && "text-muted-foreground line-through")}>{i.title}</span>
-                <span className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-                  <Clock className="h-3 w-3" /> {i.time}
-                </span>
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* AI summary */}
-      <Card className="border-teal/20 bg-gradient-to-br from-teal/5 to-blue/5">
-        <p className="inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-teal">
-          <Sparkles className="h-3.5 w-3.5" /> Twin summary
-        </p>
-        <p className="mt-2 text-sm leading-relaxed">{careTeamSummary}</p>
-      </Card>
-
       {/* Current care request / Quick actions */}
       <div>
         <SectionHeader title="Quick actions" />
@@ -249,10 +209,6 @@ function CareTeamPage() {
           {[
             { label: "Schedule Caregiver", icon: CalendarClock, tone: "bg-teal/10 text-teal", to: "/care-team/find" as const },
             { label: "Message", icon: MessageSquare, tone: "bg-blue/10 text-blue", to: null },
-            activeRequest
-              ? { label: "Track Care Request", icon: HandHeart, tone: "bg-emerald/10 text-emerald", to: "/care-team/request-sent" as const }
-              : { label: "Request Assistance", icon: HandHeart, tone: "bg-emerald/10 text-emerald", to: "/care-team/find" as const },
-            { label: "Emergency Message", icon: Siren, tone: "bg-coral/10 text-coral", to: null },
           ].map((a) => {
             const inner = (
               <>
@@ -271,8 +227,6 @@ function CareTeamPage() {
           })}
         </div>
       </div>
-
-
     </div>
   );
 }

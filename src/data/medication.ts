@@ -153,11 +153,10 @@ export const smartReminder = {
   forgetLabel: "Low",
   forgetNote: "You're doing great.",
   timeline: [
-    { time: "8:00 AM", label: "Initial Reminder", sent: true },
-    { time: "8:10 AM", label: "Gentle Reminder", sent: true },
-    { time: "8:20 AM", label: "Voice Reminder", sent: false },
-    { time: "8:30 AM", label: "Persistent Reminder", sent: false },
-    { time: "8:40 AM", label: "Final Nudge", sent: false },
+    { time: "8:00 AM", label: "Initial", sent: true },
+    { time: "8:10 AM", label: "Gentle", sent: true },
+    { time: "8:20 AM", label: "Persistent", sent: false },
+    { time: "8:30 AM", label: "Nudge", sent: false },
   ],
 };
 
@@ -174,6 +173,21 @@ export const courses: Course[] = [
   { id: "c1", name: "Amoxicillin", dosage: "500 mg · 3 times daily", duration: "7 day course", totalDays: 7, currentDay: 5 },
   { id: "c2", name: "Vitamin B12", dosage: "1500 mcg · Once daily", duration: "10 day course", totalDays: 10, currentDay: 3 },
   { id: "c3", name: "Azithromycin", dosage: "250 mg · Once daily", duration: "5 day course", totalDays: 5, currentDay: 5 },
+];
+
+export type PastMedication = {
+  id: string;
+  name: string;
+  dosage: string;
+  whenTaken: string;
+  courseDuration?: string;
+  status: "Completed course" | "Discontinued";
+};
+
+export const pastMedications: PastMedication[] = [
+  { id: "p1", name: "Amoxicillin 500mg", dosage: "1 capsule · 3 times daily", whenTaken: "1 Jul 2026 - 7 Jul 2026", courseDuration: "7 day course", status: "Completed course" },
+  { id: "p2", name: "Prednisone 10mg", dosage: "1 tablet · Once daily", whenTaken: "15 May 2026 - 29 May 2026", courseDuration: "14 day course", status: "Discontinued" },
+  { id: "p3", name: "Ciprofloxacin 250mg", dosage: "1 tablet · Twice daily", whenTaken: "10 Mar 2026 - 17 Mar 2026", courseDuration: "7 day course", status: "Completed course" },
 ];
 
 

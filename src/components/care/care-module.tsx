@@ -3,19 +3,13 @@ import { Check, Clock, Bell } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CareTask } from "@/data/care";
 
-export function TaskRow({
-  task,
-  onToggle,
-}: {
-  task: CareTask;
-  onToggle: (id: string) => void;
-}) {
+export function TaskRow({ task, onToggle }: { task: CareTask; onToggle: (id: string) => void }) {
   const [open, setOpen] = useState(false);
   return (
     <div
       className={cn(
         "rounded-2xl border border-border bg-card px-3 py-2.5 transition-colors",
-        task.done && "border-emerald/30 bg-emerald/5"
+        task.done && "border-emerald/30 bg-emerald/5",
       )}
     >
       <div className="flex items-center gap-3">
@@ -26,13 +20,18 @@ export function TaskRow({
             "grid h-7 w-7 shrink-0 place-items-center rounded-full border transition-all active:scale-90",
             task.done
               ? "border-transparent bg-gradient-to-br from-emerald to-teal text-white scale-in"
-              : "border-border bg-background text-transparent"
+              : "border-border bg-background text-transparent",
           )}
         >
           <Check className="h-4 w-4" strokeWidth={3} />
         </button>
         <button onClick={() => setOpen((v) => !v)} className="min-w-0 flex-1 text-left">
-          <p className={cn("truncate text-[13px] font-medium", task.done && "text-muted-foreground line-through")}>
+          <p
+            className={cn(
+              "truncate text-[13px] font-medium",
+              task.done && "text-muted-foreground line-through",
+            )}
+          >
             {task.title}
           </p>
           <div className="mt-0.5 flex items-center gap-2 text-[11px] text-muted-foreground">
@@ -79,11 +78,20 @@ export function MiniLine({
     const y = height - ((v - min) / range) * (height - 6) - 3;
     return [x, y] as const;
   });
-  const path = pts.map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`).join(" ");
+  const path = pts
+    .map(([x, y], i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`)
+    .join(" ");
   const [lx, ly] = pts[pts.length - 1];
   return (
     <svg width={width} height={height} className="overflow-visible">
-      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
       <circle cx={lx} cy={ly} r={3} fill={color} />
     </svg>
   );
