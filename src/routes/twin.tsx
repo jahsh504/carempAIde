@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   Info,
   ChevronDown,
@@ -352,7 +353,36 @@ function TwinPage() {
 
   const data = mode === "everyday" ? everydayData : recoveryData;
 
-  return mode === "recovery" ? <div className="px-4 pb-6 space-y-4"><div className="flex rounded-full border border-border bg-card p-1"><button onClick={() => setMode("everyday")} className="flex-1 rounded-full py-2 text-[12.5px] font-semibold text-muted-foreground">Everyday Twin</button><button className="flex-1 rounded-full bg-primary py-2 text-[12.5px] font-semibold text-primary-foreground">Recovery Twin</button></div><RecoveryDashboard /></div> : (
+  return mode === "recovery" ? (
+    <div className="px-4 pb-6 space-y-4">
+      {/* Mode Segment Switcher */}
+      <div className="flex rounded-full border border-border bg-card p-1">
+        <button
+          onClick={() => toggleMode("everyday")}
+          disabled={isTransitioning}
+          className="flex-1 rounded-full py-2 text-[12.5px] font-semibold text-muted-foreground hover:text-foreground cursor-pointer transition-all duration-300"
+        >
+          Everyday Twin
+        </button>
+        <button
+          onClick={() => toggleMode("recovery")}
+          disabled={isTransitioning}
+          className="flex-1 rounded-full bg-primary py-2 text-[12.5px] font-semibold text-primary-foreground shadow-sm cursor-pointer transition-all duration-300"
+        >
+          Recovery Twin
+        </button>
+      </div>
+
+      {/* Mode Transition Overlay */}
+      {isTransitioning && (
+        <div className="rounded-2xl border border-border bg-card p-4 text-center rise-in">
+          <p className="text-xs font-semibold text-teal animate-pulse">{transitionLabel}</p>
+        </div>
+      )}
+
+      <RecoveryDashboard />
+    </div>
+  ) : (
     <div className="px-4 pb-6 space-y-4">
       {/* Mode Segment Switcher */}
       <div className="flex rounded-full border border-border bg-card p-1">
@@ -642,13 +672,13 @@ function TwinPage() {
       <EnergyTimelineCard />
 
       {/* Tap Detail Popover Overlay */}
-      {selectedSystem && (
+      {selectedSystem && createPortal(
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 rise-in"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto"
           onClick={() => setSelectedSystem(null)}
         >
           <div
-            className="w-full max-w-xs rounded-2xl border border-border bg-popover p-4 text-popover-foreground shadow-2xl space-y-3"
+            className="relative z-10 w-full max-w-[360px] rounded-3xl border border-border bg-popover p-5 text-popover-foreground shadow-2xl space-y-3 my-auto rise-in"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between">
@@ -701,7 +731,8 @@ function TwinPage() {
               </p>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Timeline Section: 2 Timelines (Everyday Mode) vs Recovery Timeline */}
@@ -851,81 +882,384 @@ function RecoveryDashboard() {
 function RecoveryDashboard() {
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
   const [selectedTwin, setSelectedTwin] = useState<string | null>(null);
-  const summary = ["Recovery is progressing normally.", "Your activity increased 18%.", "Pain reduced. Great job!", "No signs of infection detected.", "Continue breathing exercises."];
-  const points = [[25, 108, 58, "May 10"], [83, 96, 62, "May 17"], [141, 75, 68, "May 24"], [199, 44, 77, "May 31"], [257, 30, 81, "Today"]] as const;
 
-  const twinFindings: Record<string, { title: string; status: string; summary: string; detail: string }> = {
+  // Smooth padding coordinate math to prevent clipping near edges
+  const points = [
+    { x: 30, y: 115, value: 58, label: "May 10" },
+    { x: 88, y: 102, value: 62, label: "May 17" },
+    { x: 146, y: 80, value: 68, label: "May 24" },
+    { x: 204, y: 52, value: 77, label: "May 31" },
+    { x: 255, y: 38, value: 81, label: "Today" },
+  ];
+
+  // Smooth bezier curve path
+  const curvePath = "M 30 115 C 55 108, 70 104, 88 102 C 110 98, 130 86, 146 80 C 170 72, 185 58, 204 52 C 225 45, 245 40, 255 38";
+
+  const twinFindings: Record<
+    string,
+    { title: string; status: string; summary: string; detail: string; icon: any; tone: string }
+  > = {
     Vitals: {
       title: "Current Vitals",
       status: "Stable",
       summary: "Your heart rate, blood pressure, and oxygen levels are all in a healthy range for recovery.",
       detail: "Your current vital signs are stable and within your expected recovery range. No concerning changes were detected today.",
+      icon: HeartPulse,
+      tone: "emerald",
     },
     Activity: {
       title: "Current Activity",
       status: "Improving",
       summary: "You are moving more than last week and your recovery activity is increasing steadily.",
       detail: "Your movement is trending up, and your recovery plan is supporting healthy progress without overloading your system.",
+      icon: Activity,
+      tone: "teal",
     },
     "Mind & Mood": {
       title: "Mind & Mood",
       status: "Calm",
       summary: "Your mood is stable and stress is low to moderate, which supports a better recovery rhythm.",
       detail: "Your emotional state looks steady, and there are no signs of elevated stress that would slow healing.",
+      icon: Brain,
+      tone: "teal",
     },
     Sleep: {
       title: "Sleep",
       status: "Recovered",
       summary: "Your rest is improving and you are getting enough deep sleep for healing and recovery.",
       detail: "Sleep quality is better than earlier in the week. Recovery is being supported by stronger rest and deeper sleep cycles.",
+      icon: Moon,
+      tone: "emerald",
     },
     Medications: {
       title: "Medications",
-      status: "On track",
+      status: "On Track",
       summary: "You are staying consistent with your medication plan, which is helping keep recovery stable.",
       detail: "Medication adherence is strong, and the schedule is supporting the expected recovery pattern without missed doses.",
+      icon: Pill,
+      tone: "emerald",
     },
     Glucose: {
       title: "Glucose",
       status: "Healthy",
       summary: "Your blood sugar pattern is mostly steady, with no major spikes or dips noted.",
       detail: "Your glucose trends remain within a healthy band. Energy and recovery remain balanced across the day.",
+      icon: Zap,
+      tone: "teal",
     },
   };
 
   const twinLabels = [
-    { key: "Vitals", label: "Vitals ❤️", className: "left-0 top-8" },
-    { key: "Activity", label: "Activity 🏃", className: "right-0 top-8" },
-    { key: "Mind & Mood", label: "Mind & Mood ☺", className: "left-0 top-28" },
-    { key: "Sleep", label: "Sleep 🌙", className: "right-0 top-28" },
-    { key: "Medications", label: "Medications 💊", className: "left-0 top-48" },
-    { key: "Glucose", label: "Glucose 🍲", className: "right-0 top-48" },
+    { key: "Vitals", label: "Vitals", icon: HeartPulse, className: "left-1 top-8" },
+    { key: "Activity", label: "Activity", icon: Activity, className: "right-1 top-8" },
+    { key: "Mind & Mood", label: "Mind & Mood", icon: Brain, className: "left-1 top-28" },
+    { key: "Sleep", label: "Sleep", icon: Moon, className: "right-1 top-28" },
+    { key: "Medications", label: "Medications", icon: Pill, className: "left-1 top-48" },
+    { key: "Glucose", label: "Glucose", icon: Zap, className: "right-1 top-48" },
   ] as const;
 
   const selectedFinding = selectedTwin ? twinFindings[selectedTwin] : null;
 
-  return <div className="flex flex-col space-y-3.5 rise-in [&>*:nth-child(1)]:order-1 [&>*:nth-child(2)]:order-2 [&>*:nth-child(3)]:order-4 [&>*:nth-child(4)]:order-5 [&>*:nth-child(5)]:order-3 [&>*:nth-child(6)]:order-6 [&>*:nth-child(7)]:order-7">
-    {selectedFinding && (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => setSelectedTwin(null)}>
-        <div className="w-full max-w-xs rounded-2xl border border-border bg-card p-5 shadow-xl" onClick={(event) => event.stopPropagation()}>
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold">{selectedFinding.title}</h3>
-            <button type="button" onClick={() => setSelectedTwin(null)} className="text-xs text-muted-foreground">Close</button>
+  return (
+    <div className="flex flex-col space-y-4 rise-in w-full max-w-md mx-auto">
+      {/* Detail Popover Modal */}
+      {selectedFinding && createPortal(
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 overflow-y-auto"
+          onClick={() => setSelectedTwin(null)}
+        >
+          <div
+            className="relative z-10 w-full max-w-[360px] rounded-3xl border border-border bg-card p-5 soft-shadow my-auto rise-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-border pb-3">
+              <div className="flex items-center gap-2.5">
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-teal/10 text-teal">
+                  <selectedFinding.icon className="h-4 w-4" />
+                </span>
+                <h3 className="text-base font-semibold">{selectedFinding.title}</h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setSelectedTwin(null)}
+                className="grid h-7 w-7 place-items-center rounded-full bg-muted text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            </div>
+            <div className="mt-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-muted-foreground font-medium">Status</span>
+                <span className="rounded-full bg-emerald/15 px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider text-emerald">
+                  {selectedFinding.status}
+                </span>
+              </div>
+              <p className="text-xs leading-relaxed text-foreground">{selectedFinding.summary}</p>
+              <div className="rounded-2xl border border-border bg-muted/40 p-3">
+                <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                  Engine Output Detail
+                </p>
+                <p className="text-xs leading-relaxed text-muted-foreground">{selectedFinding.detail}</p>
+              </div>
+            </div>
           </div>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{selectedFinding.summary}</p>
-          <p className="mt-3 text-xs font-semibold text-emerald">Status: {selectedFinding.status}</p>
-          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">{selectedFinding.detail}</p>
+        </div>,
+        document.body
+      )}
+
+      {/* Recovery Hero Body Card */}
+      <Card className="relative overflow-hidden border-teal/20 bg-gradient-to-b from-card via-card to-teal/5 p-4 text-center">
+        <div className="flex items-center justify-between border-b border-border pb-3 mb-2">
+          <p className="text-xs font-semibold uppercase tracking-wider text-teal">Your Recovery Twin</p>
+          <span className="rounded-full bg-emerald/15 px-2.5 py-0.5 text-[10.5px] font-semibold text-emerald">
+            Active Recovery
+          </span>
         </div>
+        <div className="relative mx-auto mt-2 h-[280px] w-full max-w-[340px]">
+          {/* Energy Aura Pulse Rings */}
+          <div className="absolute inset-x-6 top-4 bottom-2 rounded-[50%] border border-dashed border-teal/30 animate-pulse" />
+
+          {/* Morphing Digital Twin Body SVG */}
+          <svg viewBox="0 0 100 220" className="absolute left-1/2 top-2 h-[270px] w-[120px] -translate-x-1/2">
+            <defs>
+              <linearGradient id="body-clean-mesh-v2" x1="0" y1="0" x2="1" y2="1">
+                <stop stopColor="var(--teal)" />
+                <stop offset="1" stopColor="var(--blue)" />
+              </linearGradient>
+            </defs>
+            <circle cx="50" cy="22" r="13" fill="url(#body-clean-mesh-v2)" />
+            <path
+              d="M29 56 Q50 40 71 56 L78 112 L65 119 L61 201 L52 201 L50 135 L48 201 L39 201 L35 119 L22 112 Z"
+              fill="url(#body-clean-mesh-v2)"
+              opacity=".85"
+            />
+            <path
+              d="M50 43 L50 199 M30 64 L70 64 M34 83 L66 83 M36 102 L64 102 M39 122 L61 122 M41 145 L59 145"
+              stroke="white"
+              strokeOpacity=".5"
+            />
+            <circle cx="44" cy="78" r="4" fill="white" />
+          </svg>
+
+          {/* Minimal Icon Badges */}
+          {twinLabels.map(({ key, label, icon: Icon, className }) => (
+            <button
+              key={key}
+              type="button"
+              onClick={() => setSelectedTwin(key)}
+              className={cn(
+                "absolute flex items-center gap-1.5 cursor-pointer rounded-full bg-card/95 border border-border/80 px-2.5 py-1 text-[11px] font-semibold text-foreground shadow-xs transition hover:border-teal/50 hover:bg-card active:scale-95 z-10 backdrop-blur-xs",
+                className
+              )}
+            >
+              <Icon className="h-3.5 w-3.5 text-teal shrink-0" />
+              <span className="truncate">{label}</span>
+            </button>
+          ))}
+        </div>
+      </Card>
+
+      {/* Recovery Score */}
+      <Card>
+        <div className="flex items-center justify-between border-b border-border pb-3 mb-3">
+          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Recovery Score</p>
+          <Info className="h-4 w-4 text-muted-foreground" />
+        </div>
+        <div className="flex items-center gap-4">
+          <RingProgress value={81} size={100} stroke={9} color="var(--emerald)">
+            <div className="text-center">
+              <p className="num text-2xl font-bold">81</p>
+              <p className="text-[10px] text-muted-foreground">/100</p>
+            </div>
+          </RingProgress>
+          <div className="space-y-1 flex-1 min-w-0">
+            <div className="flex items-center gap-1.5">
+              <span className="rounded-full bg-emerald/15 p-1 text-emerald">
+                <ArrowUp className="h-3.5 w-3.5" />
+              </span>
+              <span className="num text-base font-bold text-foreground">+4 pts</span>
+              <span className="text-xs text-muted-foreground">vs yesterday</span>
+            </div>
+            <p className="text-xs font-semibold text-emerald">● On Track</p>
+            <p className="text-xs leading-snug text-muted-foreground">
+              You are recovering well. Keep following your daily recovery plan.
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Readmission Risk & Recovery Day Grid */}
+      <div className="grid grid-cols-2 gap-3">
+        <Card className="p-3.5 flex flex-col justify-between min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground truncate">Readmission Risk</p>
+          <div className="my-1.5">
+            <p className="text-sm font-bold text-emerald">Low</p>
+            <p className="num text-2xl font-bold text-foreground">12%</p>
+          </div>
+          <p className="text-[11px] text-muted-foreground flex items-center gap-1 truncate">
+            <ArrowDown className="h-3 w-3 text-emerald shrink-0" /> <span className="font-semibold text-emerald">-3%</span> from yesterday
+          </p>
+        </Card>
+        <Card className="p-3.5 flex flex-col justify-between min-w-0">
+          <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground truncate">Recovery Day</p>
+          <div className="my-1.5">
+            <p className="num text-2xl font-bold text-foreground">Day 12</p>
+            <p className="text-[11px] text-muted-foreground truncate">Since Discharge</p>
+          </div>
+          <p className="text-[11px] font-semibold text-teal truncate">Active Phase 3</p>
+        </Card>
       </div>
-    )}
-    <Card><div className="flex justify-between"><h3 className="text-[15px] font-bold">Milestones Completed</h3><span className="text-xl font-bold">4 / 8 <ChevronRight className="inline h-5 w-5 text-muted-foreground" /></span></div><div className="mt-4 h-2.5 rounded-full bg-muted"><div className="h-full w-1/2 rounded-full bg-gradient-to-r from-emerald to-teal" /></div><p className="mt-3 text-sm text-muted-foreground">You are <b className="text-emerald">6 days</b> ahead of expected timeline</p></Card>
-    <Card><div className="flex justify-between"><h3 className="text-[17px] font-bold">Recovery Score</h3><Info className="h-5 w-5 text-muted-foreground" /></div><div className="mt-2 flex items-center gap-3"><RingProgress value={81} size={160} stroke={14} color="var(--emerald)"><div className="text-center"><p className="num text-5xl font-bold">81</p><p className="text-sm text-muted-foreground">/100</p></div></RingProgress><div className="space-y-2"><p className="text-emerald"><ArrowUp className="inline h-5 w-5 text-amber" /> <b className="num text-2xl">4</b></p><p className="text-sm text-muted-foreground">from yesterday</p><p className="text-sm font-semibold text-emerald">On Track</p><p className="text-xs leading-relaxed text-muted-foreground">You are recovering well.<br/>Keep following your plan.</p></div></div></Card>
-    <div className="grid grid-cols-2 gap-3"><Card><p className="text-sm font-semibold text-muted-foreground">Readmission Risk</p><p className="mt-2 text-lg font-bold text-emerald">Low</p><p className="num text-4xl font-bold text-emerald">12%</p><p className="text-xs text-muted-foreground"><ArrowDown className="inline h-4 w-4 text-emerald" /> <b>3%</b> from yesterday</p></Card><Card><p className="text-sm font-semibold text-muted-foreground">Recovery Day</p><p className="mt-3 text-3xl font-bold">Day 12</p><p className="text-sm text-muted-foreground">Since Discharge</p></Card></div>
-    <Card><h3 className="text-[15px] font-bold">Today's Twin Summary</h3><div className="mt-3 space-y-3">{summary.map(s => <p key={s} className="text-xs leading-snug text-muted-foreground">💚 {s}</p>)}</div></Card>
-    <Card><h3 className="text-[17px] font-bold">Your Recovery Twin</h3><div className="relative mx-auto mt-2 h-[300px] max-w-[360px]"><div className="absolute inset-x-8 top-5 bottom-4 rounded-[50%] border border-dashed border-teal/20"/><svg viewBox="0 0 100 220" className="absolute left-1/2 top-2 h-[290px] w-[125px] -translate-x-1/2"><defs><linearGradient id="body-clean" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#5eead4"/><stop offset="1" stopColor="#0891b2"/></linearGradient></defs><circle cx="50" cy="22" r="13" fill="url(#body-clean)"/><path d="M29 56 Q50 40 71 56 L78 112 L65 119 L61 201 L52 201 L50 135 L48 201 L39 201 L35 119 L22 112 Z" fill="url(#body-clean)" opacity=".8"/><path d="M50 43 L50 199 M30 64 L70 64 M34 83 L66 83 M36 102 L64 102 M39 122 L61 122 M41 145 L59 145" stroke="white" strokeOpacity=".5"/><circle cx="44" cy="78" r="4" fill="white"/></svg>{twinLabels.map(({ key, label, className }) => <button key={key} type="button" onClick={() => setSelectedTwin(key)} className={cn("absolute cursor-pointer rounded-full bg-background/70 px-2 py-1 text-xs font-semibold text-foreground shadow-sm ring-1 ring-border transition hover:bg-card", className)}>{label}</button>)}</div></Card>
-    <Card><h3 className="text-[17px] font-bold">Recovery Timeline</h3><div className="relative mt-5 space-y-5"><div className="absolute left-[86px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-violet-400 via-blue to-emerald" />{[{ date: "Apr 28", title: "Hospital Admission", tone: "border-violet-500" }, { date: "Apr 30", title: "Surgery Performed", tone: "border-violet-500" }, { date: "May 02", title: "Discharged", tone: "border-blue-500" }, { date: "May 03", title: "Home Recovery Started", tone: "border-teal" }].map(event => <div key={event.date} className="relative flex items-start gap-4"><span className="w-14 pt-1 text-right text-xs font-semibold text-muted-foreground">{event.date}</span><span className={cn("z-10 mt-0.5 h-5 w-5 shrink-0 rounded-full border-4 bg-card", event.tone)} /><div className="flex-1"><p className="text-sm font-bold">{event.title}</p><p className="mt-1 text-xs text-muted-foreground">{event.date}</p></div><ChevronRight className="mt-1 h-5 w-5 text-muted-foreground" /></div>)}<div className="relative flex items-start gap-4"><span className="w-14 pt-2 text-right text-xs font-bold text-emerald">May 12</span><span className="z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-emerald text-white">★</span><div className="flex-1 rounded-2xl border border-emerald/25 bg-emerald/5 p-3"><p className="text-sm font-bold text-emerald">You are here</p><p className="mt-1 text-xl font-bold text-emerald">Improving</p><p className="mt-1 text-sm text-muted-foreground">Day 12</p></div></div><div className="relative flex items-start gap-4"><span className="w-14 pt-1 text-right text-xs font-semibold text-muted-foreground">Jul 20</span><span className="z-10 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-amber bg-card text-amber">☆</span><div className="flex-1"><p className="text-sm font-bold">Expected Full Recovery</p><p className="mt-1 text-xs text-muted-foreground">Jul 20</p></div><ChevronRight className="mt-1 h-5 w-5 text-muted-foreground" /></div></div><div className="mt-5 flex items-center gap-3 rounded-2xl border border-emerald/20 bg-emerald/5 p-4"><span className="grid h-12 w-12 place-items-center rounded-full bg-emerald/10 text-emerald">✓</span><div><p className="font-bold text-emerald">Stay on track!</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">Your recovery is progressing well.<br/>Keep following your plan.</p></div></div></Card>
-    <Card><h3 className="text-[15px] font-bold">Recovery Score Trend</h3><p className="mt-1 text-xs text-muted-foreground">Tap a score to view that day’s summary</p><svg viewBox="0 0 280 150" className="mt-3 w-full"><path d="M25 108 L83 96 L141 75 L199 44 L257 30" fill="none" stroke="var(--emerald)" strokeWidth="2.5" />{points.map(([x, y, value, label]) => <g key={label} onClick={() => setSelectedDay(label)} className="cursor-pointer"><circle cx={x} cy={y} r="7" fill="transparent"/><circle cx={x} cy={y} r="4" fill="white" stroke="var(--emerald)" strokeWidth="3"/><text x={x} y={y - 10} textAnchor="middle" className="fill-foreground text-[10px] font-bold">{value}</text><text x={x} y="140" textAnchor="middle" className="fill-muted-foreground text-[8px]">{label}</text></g>)}</svg>{selectedDay && <div className="mt-2 rounded-xl bg-emerald/10 p-3 text-xs"><b>{selectedDay}</b><p className="mt-1 text-muted-foreground">Your recovery score was recorded and your plan remained on track that day.</p><button onClick={() => setSelectedDay(null)} className="mt-1 text-emerald">Close</button></div>}</Card>
-  </div>;
+
+      {/* Recovery Timeline */}
+      <Card>
+        <div className="flex items-center justify-between border-b border-border pb-3 mb-4">
+          <h3 className="text-sm font-semibold tracking-tight text-foreground">Recovery Timeline</h3>
+          <span className="text-[11px] text-muted-foreground">Phase milestones</span>
+        </div>
+        <div className="relative space-y-3.5 py-1">
+          <div className="absolute left-[64px] top-2 bottom-2 w-0.5 bg-gradient-to-b from-teal via-blue to-emerald" />
+          {[
+            { date: "Apr 28", title: "Hospital Admission" },
+            { date: "Apr 30", title: "Surgery Performed" },
+            { date: "May 02", title: "Discharged" },
+            { date: "May 03", title: "Home Recovery Started" },
+          ].map((event) => (
+            <div key={event.title} className="relative flex items-center gap-3">
+              <span className="w-12 text-right text-[11px] font-semibold text-muted-foreground shrink-0">{event.date}</span>
+              <span className="z-10 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-emerald text-white">
+                <Check className="h-3 w-3" strokeWidth={3} />
+              </span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-foreground truncate">{event.title}</p>
+              </div>
+            </div>
+          ))}
+          {/* Active Phase */}
+          <div className="relative flex items-center gap-3">
+            <span className="w-12 text-right text-[11px] font-bold text-emerald shrink-0">May 12</span>
+            <span className="z-10 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-gradient-to-br from-teal to-blue text-white ring-2 ring-teal/40">
+              <Activity className="h-3.5 w-3.5" />
+            </span>
+            <div className="flex-1 rounded-2xl border border-teal/30 bg-teal/5 p-2.5 min-w-0">
+              <div className="flex items-center justify-between gap-1">
+                <p className="text-xs font-bold text-teal truncate">Active Recovery · Day 12</p>
+                <span className="rounded-full bg-teal/15 px-2 py-0.5 text-[9px] font-bold text-teal shrink-0">Current</span>
+              </div>
+              <p className="text-[11px] text-muted-foreground mt-0.5">Improving as expected</p>
+            </div>
+          </div>
+          {/* Future Milestone */}
+          <div className="relative flex items-center gap-3">
+            <span className="w-12 text-right text-[11px] font-semibold text-muted-foreground shrink-0">Jul 20</span>
+            <span className="z-10 grid h-5 w-5 shrink-0 place-items-center rounded-full border border-border bg-muted text-muted-foreground">
+              <CircleCheck className="h-3 w-3" />
+            </span>
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-medium text-muted-foreground truncate">Expected Full Recovery</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 flex items-center gap-3 rounded-2xl border border-emerald/20 bg-emerald/5 p-3">
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-emerald/15 text-emerald">
+            <Check className="h-3.5 w-3.5" strokeWidth={3} />
+          </span>
+          <div>
+            <p className="text-xs font-semibold text-emerald">Stay on track!</p>
+            <p className="text-[11px] text-muted-foreground leading-snug">
+              Your recovery is progressing as expected. Keep following your daily baseline regimen.
+            </p>
+          </div>
+        </div>
+      </Card>
+
+      {/* Recovery Score Trend Graph (Clean SVG & No Point Breaks) */}
+      <Card>
+        <div className="flex items-center justify-between border-b border-border pb-3 mb-2">
+          <div>
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">Recovery Score Trend</h3>
+            <p className="text-[11px] text-muted-foreground">Tap a score to view that day’s summary</p>
+          </div>
+        </div>
+        <div className="w-full pt-2 pb-1 overflow-hidden">
+          <svg viewBox="0 0 280 155" className="w-full overflow-visible">
+            {/* Background subtle grid lines */}
+            <line x1="20" y1="40" x2="260" y2="40" stroke="currentColor" strokeDasharray="3 3" className="text-border/30" />
+            <line x1="20" y1="120" x2="260" y2="120" stroke="currentColor" strokeDasharray="3 3" className="text-border/30" />
+
+            {/* Smooth Bezier Trend Path (No Point Breaks) */}
+            <path
+              d={curvePath}
+              fill="none"
+              stroke="var(--teal)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            {/* Data Points with Text Padding & Click Hits */}
+            {points.map((pt) => {
+              const isSelected = selectedDay === pt.label;
+              return (
+                <g key={pt.label} onClick={() => setSelectedDay(pt.label)} className="cursor-pointer">
+                  {/* Invisible hit target */}
+                  <circle cx={pt.x} cy={pt.y} r="10" fill="transparent" />
+                  {/* Outer ring */}
+                  <circle
+                    cx={pt.x}
+                    cy={pt.y}
+                    r={isSelected ? "6" : "4"}
+                    fill={isSelected ? "var(--teal)" : "white"}
+                    stroke="var(--teal)"
+                    strokeWidth={isSelected ? "3" : "2.5"}
+                    className="transition-all duration-200"
+                  />
+                  {/* Score Label (Shifted above with safe padding) */}
+                  <text
+                    x={pt.x}
+                    y={pt.y - 10}
+                    textAnchor="middle"
+                    className={cn(
+                      "fill-foreground text-[10.5px] font-bold select-none",
+                      isSelected && "fill-teal"
+                    )}
+                  >
+                    {pt.value}
+                  </text>
+                  {/* Date Label */}
+                  <text
+                    x={pt.x}
+                    y="142"
+                    textAnchor="middle"
+                    className="fill-muted-foreground text-[9px] font-medium select-none"
+                  >
+                    {pt.label}
+                  </text>
+                </g>
+              );
+            })}
+          </svg>
+        </div>
+
+        {selectedDay && (
+          <div className="mt-3 rounded-2xl border border-teal/20 bg-teal/5 p-3 text-xs flex items-center justify-between rise-in">
+            <div>
+              <p className="font-semibold text-teal">{selectedDay}</p>
+              <p className="text-muted-foreground text-[11px] mt-0.5">
+                Recovery score recorded and plan remained on track.
+              </p>
+            </div>
+            <button
+              onClick={() => setSelectedDay(null)}
+              className="text-[11px] font-semibold text-teal hover:underline ml-2 cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        )}
+      </Card>
+    </div>
+  );
 }
 
 
