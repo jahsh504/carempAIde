@@ -186,6 +186,22 @@ function CareTeamPage() {
         </Card>
       </div>
 
+      <SectionHeader title="Caregiver updates" />
+      <div className="space-y-2">
+        {[
+          { who: "Priya", text: "Logged Meera's evening walk (32 min)", time: "1h ago" },
+          { who: "Nita", text: "Raghav completed Metformin dose", time: "1 day ago" },
+          { who: "Priya", text: "Booked lab collection for Meera", time: "2 days ago" },
+        ].map((u, i) => (
+          <div key={i} className="rounded-2xl border border-border bg-card p-3">
+            <p className="text-sm">
+              <span className="font-semibold">{u.who}</span> · {u.text}
+            </p>
+            <p className="text-[11px] text-muted-foreground">{u.time}</p>
+          </div>
+        ))}
+      </div>
+
       {/* Current care request / Quick actions */}
       <div>
         <SectionHeader title="Quick actions" />

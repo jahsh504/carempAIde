@@ -20,6 +20,16 @@ import {
   Brain,
   Flame,
   X,
+  ArrowDown,
+  ArrowUp,
+  CalendarDays,
+  Check,
+  ChevronRight,
+  HeartHandshake,
+  PersonStanding,
+  Shield,
+  Smile,
+  Soup,
 } from "lucide-react";
 import { scores, twinChanges, dataSources, user } from "@/data/mock";
 import {
@@ -28,6 +38,7 @@ import {
   subscribeTimeline,
 } from "@/data/wellness-timeline";
 import { RingProgress, TrendBadge, Card, SectionHeader } from "@/components/care/primitives";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/twin")({
@@ -177,6 +188,135 @@ const recoveryData = {
   ],
 };
 
+const energyTimelinePoints = [
+  { x: 24, y: 112, value: 32, label: "Low Energy", time: "2:00 AM", location: "Bedroom", tone: "text-coral", stroke: "var(--coral)" },
+  { x: 82, y: 72, value: 76, label: "Morning Boost", time: "8:00 AM", location: "Kitchen", tone: "text-emerald", stroke: "var(--emerald)" },
+  { x: 142, y: 40, value: 92, label: "Peak Energy", time: "12:30 PM", location: "Gym", tone: "text-emerald", stroke: "var(--emerald)" },
+  { x: 202, y: 82, value: 48, label: "Energy Dip", time: "4:30 PM", location: "Office", tone: "text-amber", stroke: "var(--amber)" },
+  { x: 262, y: 112, value: 35, label: "Rest Time", time: "9:30 PM", location: "Living Room", tone: "text-coral", stroke: "var(--coral)" },
+] as const;
+
+function BiologicalAgeCard() {
+  const yearsYounger = Math.max(0, user.age - user.biologicalAge);
+
+  return (
+    <Card className="overflow-hidden border-teal/20">
+      <div className="flex items-center gap-1.5">
+        <h3 className="text-[17px] font-bold">Biological Age</h3>
+        <Info className="h-4 w-4 text-muted-foreground" />
+      </div>
+
+      <div className="mt-4 grid grid-cols-[128px_1fr] items-center gap-4">
+        <RingProgress value={86} size={128} stroke={11} color="var(--teal)">
+          <div className="text-center">
+            <p className="text-[11px] font-semibold text-muted-foreground">Your age</p>
+            <p className="num text-5xl font-bold leading-none">{user.biologicalAge}</p>
+            <p className="text-xs font-semibold text-muted-foreground">years</p>
+          </div>
+        </RingProgress>
+
+        <div className="space-y-3">
+          <p className="text-sm text-muted-foreground">Actual age: {user.age} years</p>
+          <span className="inline-flex rounded-full bg-emerald/10 px-3 py-1.5 text-sm font-bold text-emerald">
+            {yearsYounger} years younger
+          </span>
+          <p className="text-sm leading-relaxed text-foreground/85">
+            Healthy habits are helping your twin stay younger, stronger, and more resilient.
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-5 rounded-2xl border border-teal/10 bg-gradient-to-r from-teal/10 to-emerald/5 p-4">
+        <p className="text-[15px] font-bold text-teal">You are building a healthier you every day.</p>
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Small steps today, better life tomorrow.</p>
+      </div>
+    </Card>
+  );
+}
+
+function EnergyTimelineCard() {
+  return (
+    <Card className="overflow-hidden">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="flex items-center gap-1.5">
+            <h3 className="text-[17px] font-bold">Energy Timeline</h3>
+            <Info className="h-4 w-4 text-muted-foreground" />
+          </div>
+          <p className="mt-1 text-xs text-muted-foreground">Your energy levels throughout the day</p>
+        </div>
+        <button className="inline-flex items-center gap-1 rounded-xl border border-border px-3 py-2 text-xs font-semibold">
+          Today <ChevronDown className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      <div className="mt-4 overflow-x-auto pb-1">
+        <svg viewBox="0 0 300 190" className="min-w-[360px] w-full">
+          <defs>
+            <linearGradient id="energy-area" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="var(--emerald)" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="var(--emerald)" stopOpacity="0.02" />
+            </linearGradient>
+          </defs>
+          <path d="M8 122 C28 132 42 128 54 118 C72 104 70 84 88 68 C106 52 121 70 136 50 C150 30 170 33 182 49 C196 68 194 86 212 88 C232 92 232 114 252 122 C268 128 282 130 294 120" fill="none" stroke="var(--coral)" strokeWidth="3" strokeLinecap="round" />
+          <path d="M61 108 C72 96 75 80 88 68 C106 52 121 70 136 50 C150 30 170 33 182 49 C195 66 195 80 206 87" fill="none" stroke="var(--emerald)" strokeWidth="3" strokeLinecap="round" />
+          <path d="M204 87 C214 90 220 98 226 102 C238 110 242 118 252 122" fill="none" stroke="var(--amber)" strokeWidth="3" strokeLinecap="round" />
+          <path d="M8 122 C28 132 42 128 54 118 C72 104 70 84 88 68 C106 52 121 70 136 50 C150 30 170 33 182 49 C196 68 194 86 212 88 C232 92 232 114 252 122 C268 128 282 130 294 120 L294 152 L8 152 Z" fill="url(#energy-area)" />
+          <line x1="8" y1="152" x2="294" y2="152" stroke="var(--border)" />
+          {[0, 50, 100].map((tick, index) => (
+            <g key={tick}>
+              <line x1="8" y1={152 - index * 50} x2="294" y2={152 - index * 50} stroke="var(--border)" strokeOpacity="0.35" />
+              <text x="2" y={156 - index * 50} className="fill-muted-foreground text-[8px]">{tick}</text>
+            </g>
+          ))}
+          <TooltipProvider delayDuration={0}>
+            {energyTimelinePoints.map((point) => (
+              <Tooltip key={point.time}>
+                <TooltipTrigger asChild>
+                  <g>
+                    <line x1={point.x} y1={point.y + 8} x2={point.x} y2="151" stroke="var(--border)" strokeDasharray="3 3" />
+                    <circle cx={point.x} cy={point.y} r="5" fill="white" stroke={point.stroke} strokeWidth="3" />
+                    <text x={point.x} y={point.y - 44} textAnchor="middle" className={cn("text-[8px] font-bold", point.tone)}>{point.label}</text>
+                    <text x={point.x} y={point.y - 28} textAnchor="middle" className="fill-muted-foreground text-[8px]">{point.time}</text>
+                    {/* <text x={point.x} y={point.y - 14} textAnchor="middle" className="fill-muted-foreground text-[7px]">{point.location}</text> */}
+                    <text x={point.x} y={point.y - 14} textAnchor="middle" className="fill-foreground text-[12px] font-bold">{point.value}</text>
+                  </g>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="rounded-xl border bg-card px-2.5 py-2 text-left shadow-lg">
+                  {/* <div className="text-[11px] font-bold text-foreground">{point.label}</div> */}
+                  {/* <div className="mt-0.5 text-[10px] text-muted-foreground">{point.time}</div> */}
+                  <div className="mt-1 text-[10px] text-muted-foreground">{point.location}</div>
+                </TooltipContent>
+              </Tooltip>
+            ))}
+          </TooltipProvider>
+          {["12 AM", "4 AM", "8 AM", "12 PM", "4 PM", "8 PM", "12 AM"].map((label, index) => (
+            <text key={label + index} x={12 + index * 46} y="176" textAnchor="middle" className="fill-muted-foreground text-[8px]">{label}</text>
+          ))}
+        </svg>
+      </div>
+
+      <div className="mt-4 grid grid-cols-3 divide-x divide-border rounded-2xl border border-border text-center">
+        <div className="p-3">
+          <Zap className="mx-auto h-5 w-5 text-teal" />
+          <p className="mt-1 text-[11px] font-bold">Best focus</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">9:00 AM - 1:00 PM</p>
+        </div>
+        <div className="p-3">
+          <Flame className="mx-auto h-5 w-5 text-amber" />
+          <p className="mt-1 text-[11px] font-bold">Peak energy</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">12:30 PM</p>
+        </div>
+        <div className="p-3">
+          <Moon className="mx-auto h-5 w-5 text-blue" />
+          <p className="mt-1 text-[11px] font-bold">Low energy</p>
+          <p className="mt-1 text-[11px] text-muted-foreground">9:30 PM</p>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
 function TwinPage() {
   const [mode, setMode] = useState<Mode>("everyday");
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -212,7 +352,7 @@ function TwinPage() {
 
   const data = mode === "everyday" ? everydayData : recoveryData;
 
-  return (
+  return mode === "recovery" ? <div className="px-4 pb-6 space-y-4"><div className="flex rounded-full border border-border bg-card p-1"><button onClick={() => setMode("everyday")} className="flex-1 rounded-full py-2 text-[12.5px] font-semibold text-muted-foreground">Everyday Twin</button><button className="flex-1 rounded-full bg-primary py-2 text-[12.5px] font-semibold text-primary-foreground">Recovery Twin</button></div><RecoveryDashboard /></div> : (
     <div className="px-4 pb-6 space-y-4">
       {/* Mode Segment Switcher */}
       <div className="flex rounded-full border border-border bg-card p-1">
@@ -407,6 +547,8 @@ function TwinPage() {
         <p className="mt-2 text-sm leading-relaxed text-foreground/90">{data.summaryText}</p>
       </Card>
 
+      <BiologicalAgeCard />
+
       {/* Body Systems / Recovery Indicators (Apple-style Cards with Dynamic Status Rings) */}
       <div className="transition-all duration-500">
         <SectionHeader title={data.gridTitle} hint={data.gridHint} />
@@ -496,6 +638,8 @@ function TwinPage() {
           })}
         </div>
       </div>
+
+      <EnergyTimelineCard />
 
       {/* Tap Detail Popover Overlay */}
       {selectedSystem && (
@@ -688,3 +832,103 @@ function TwinPage() {
     </div>
   );
 }
+
+/*
+function RecoveryDashboard() {
+  const [items, setItems] = useState([true, true, true, true, false]);
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const plans = ["Walk for 15 minutes", "Breathing exercise", "Take all medications", "High protein meal", "Sleep before 10:00 PM"];
+  const summary = ["Recovery is progressing normally.", "Your activity increased 18%.", "Pain reduced. Great job!", "No signs of infection detected.", "Continue breathing exercises."];
+  return <div className="space-y-3.5 rise-in">
+    <Card><div className="flex justify-between"><h3 className="text-[15px] font-bold">Milestones Completed</h3><span className="text-xl font-bold">4 / 8 <ChevronRight className="inline h-5 w-5 text-muted-foreground" /></span></div><div className="mt-4 h-2.5 rounded-full bg-muted"><div className="h-full w-1/2 rounded-full bg-gradient-to-r from-emerald to-teal" /></div><p className="mt-3 text-sm text-muted-foreground">You are <b className="text-emerald">6 days</b> ahead of expected timeline</p></Card>
+    <Card><div className="flex justify-between"><h3 className="text-[17px] font-bold">Recovery Score</h3><Info className="h-5 w-5 text-muted-foreground" /></div><div className="mt-2 flex items-center gap-3"><RingProgress value={81} size={160} stroke={14} color="var(--emerald)"><div className="text-center"><p className="num text-5xl font-bold">81</p><p className="text-sm text-muted-foreground">/100</p></div></RingProgress><div className="space-y-2"><p className="text-emerald"><ArrowUp className="inline h-5 w-5 text-amber" /> <b className="num text-2xl">4</b></p><p className="text-sm text-muted-foreground">from yesterday</p><p className="text-sm font-semibold text-emerald">● On Track</p><p className="text-xs leading-relaxed text-muted-foreground">You are recovering well.<br/>Keep following your plan.</p></div></div></Card>
+    <div className="grid grid-cols-2 gap-3"><Card><p className="text-sm font-semibold text-muted-foreground">Readmission Risk</p><p className="mt-2 text-lg font-bold text-emerald">Low</p><p className="num text-4xl font-bold text-emerald">12%</p><p className="text-xs text-muted-foreground"><ArrowDown className="inline h-4 w-4 text-emerald" /> <b>3%</b> from yesterday</p></Card><Card><p className="text-sm font-semibold text-muted-foreground">Recovery Day</p><p className="mt-3 text-3xl font-bold">Day 12</p><p className="text-sm text-muted-foreground">Since Discharge</p></Card></div>`r`n    <div className="flex flex-col space-y-3"><Card className="order-last"><h3 className="text-[15px] font-bold">Recovery Score Trend</h3><svg viewBox="0 0 280 150" className="mt-3 w-full"><path d="M25 108 L83 96 L141 75 L199 44 L257 30" fill="none" stroke="var(--emerald)" strokeWidth="2.5" />{[[25,108,58,"May 10"],[83,96,62,"May 17"],[141,75,68,"May 24"],[199,44,77,"May 31"],[257,30,81,"Today"]].map(([x,y,v,l])=><g key={String(l)} onClick={() => setSelectedDay(String(l))} className="cursor-pointer"><circle cx={x} cy={y} r="4" fill="white" stroke="var(--emerald)" strokeWidth="3"/><text x={x} y={Number(y)-10} textAnchor="middle" className="fill-foreground text-[10px] font-bold">{v}</text><text x={x} y="140" textAnchor="middle" className="fill-muted-foreground text-[8px]">{l}</text></g>)}</svg>{selectedDay && <div className="mt-2 rounded-xl bg-emerald/10 p-3 text-xs"><b>{selectedDay}</b><p className="mt-1 text-muted-foreground">Your recovery score was recorded and your plan remained on track that day.</p><button onClick={() => setSelectedDay(null)} className="mt-1 text-emerald">Close</button></div>}</Card><Card className="order-first"><h3 className="text-[15px] font-bold">Today's Twin Summary</h3><div className="mt-3 space-y-3">{summary.map(s => <p key={s} className="text-xs leading-snug text-muted-foreground">💚 {s}</p>)}</div></Card></div>
+    <Card><h3 className="text-[17px] font-bold">Your Recovery Twin</h3>    <Card><h3 className="text-[17px] font-bold">Your Recovery Twin</h3><div className="relative mx-auto mt-2 h-[300px] max-w-[360px]"><div className="absolute inset-x-8 top-5 bottom-4 rounded-[50%] border border-dashed border-teal/20"/><svg viewBox="0 0 100 220" className="absolute left-1/2 top-2 h-[290px] w-[125px] -translate-x-1/2"><defs><linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#5eead4"/><stop offset="1" stopColor="#0891b2"/></linearGradient></defs><circle cx="50" cy="22" r="13" fill="url(#body)"/><path d="M29 56 Q50 40 71 56 L78 112 L65 119 L61 201 L52 201 L50 135 L48 201 L39 201 L35 119 L22 112 Z" fill="url(#body)" opacity=".8"/><path d="M50 43 L50 199 M30 64 L70 64 M34 83 L66 83 M36 102 L64 102 M39 122 L61 122 M41 145 L59 145" stroke="white" strokeOpacity=".5"/><circle cx="44" cy="78" r="4" fill="white"/></svg><span className="absolute left-0 top-8 text-xs font-semibold">Vitals ❤️</span><span className="absolute right-0 top-8 text-xs font-semibold">Activity 🏃</span><span className="absolute left-0 top-28 text-xs font-semibold">Mind & Mood ☺</span><span className="absolute right-0 top-28 text-xs font-semibold">Sleep 🌙</span><span className="absolute left-0 top-48 text-xs font-semibold">Medications 💊</span><span className="absolute right-0 top-48 text-xs font-semibold">Nutrition 🍲</span></div></Card>
+  </div>;
+}
+*/
+
+function RecoveryDashboard() {
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+  const [selectedTwin, setSelectedTwin] = useState<string | null>(null);
+  const summary = ["Recovery is progressing normally.", "Your activity increased 18%.", "Pain reduced. Great job!", "No signs of infection detected.", "Continue breathing exercises."];
+  const points = [[25, 108, 58, "May 10"], [83, 96, 62, "May 17"], [141, 75, 68, "May 24"], [199, 44, 77, "May 31"], [257, 30, 81, "Today"]] as const;
+
+  const twinFindings: Record<string, { title: string; status: string; summary: string; detail: string }> = {
+    Vitals: {
+      title: "Current Vitals",
+      status: "Stable",
+      summary: "Your heart rate, blood pressure, and oxygen levels are all in a healthy range for recovery.",
+      detail: "Your current vital signs are stable and within your expected recovery range. No concerning changes were detected today.",
+    },
+    Activity: {
+      title: "Current Activity",
+      status: "Improving",
+      summary: "You are moving more than last week and your recovery activity is increasing steadily.",
+      detail: "Your movement is trending up, and your recovery plan is supporting healthy progress without overloading your system.",
+    },
+    "Mind & Mood": {
+      title: "Mind & Mood",
+      status: "Calm",
+      summary: "Your mood is stable and stress is low to moderate, which supports a better recovery rhythm.",
+      detail: "Your emotional state looks steady, and there are no signs of elevated stress that would slow healing.",
+    },
+    Sleep: {
+      title: "Sleep",
+      status: "Recovered",
+      summary: "Your rest is improving and you are getting enough deep sleep for healing and recovery.",
+      detail: "Sleep quality is better than earlier in the week. Recovery is being supported by stronger rest and deeper sleep cycles.",
+    },
+    Medications: {
+      title: "Medications",
+      status: "On track",
+      summary: "You are staying consistent with your medication plan, which is helping keep recovery stable.",
+      detail: "Medication adherence is strong, and the schedule is supporting the expected recovery pattern without missed doses.",
+    },
+    Glucose: {
+      title: "Glucose",
+      status: "Healthy",
+      summary: "Your blood sugar pattern is mostly steady, with no major spikes or dips noted.",
+      detail: "Your glucose trends remain within a healthy band. Energy and recovery remain balanced across the day.",
+    },
+  };
+
+  const twinLabels = [
+    { key: "Vitals", label: "Vitals ❤️", className: "left-0 top-8" },
+    { key: "Activity", label: "Activity 🏃", className: "right-0 top-8" },
+    { key: "Mind & Mood", label: "Mind & Mood ☺", className: "left-0 top-28" },
+    { key: "Sleep", label: "Sleep 🌙", className: "right-0 top-28" },
+    { key: "Medications", label: "Medications 💊", className: "left-0 top-48" },
+    { key: "Glucose", label: "Glucose 🍲", className: "right-0 top-48" },
+  ] as const;
+
+  const selectedFinding = selectedTwin ? twinFindings[selectedTwin] : null;
+
+  return <div className="flex flex-col space-y-3.5 rise-in [&>*:nth-child(1)]:order-1 [&>*:nth-child(2)]:order-2 [&>*:nth-child(3)]:order-4 [&>*:nth-child(4)]:order-5 [&>*:nth-child(5)]:order-3 [&>*:nth-child(6)]:order-6 [&>*:nth-child(7)]:order-7">
+    {selectedFinding && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={() => setSelectedTwin(null)}>
+        <div className="w-full max-w-xs rounded-2xl border border-border bg-card p-5 shadow-xl" onClick={(event) => event.stopPropagation()}>
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-bold">{selectedFinding.title}</h3>
+            <button type="button" onClick={() => setSelectedTwin(null)} className="text-xs text-muted-foreground">Close</button>
+          </div>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{selectedFinding.summary}</p>
+          <p className="mt-3 text-xs font-semibold text-emerald">Status: {selectedFinding.status}</p>
+          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">{selectedFinding.detail}</p>
+        </div>
+      </div>
+    )}
+    <Card><div className="flex justify-between"><h3 className="text-[15px] font-bold">Milestones Completed</h3><span className="text-xl font-bold">4 / 8 <ChevronRight className="inline h-5 w-5 text-muted-foreground" /></span></div><div className="mt-4 h-2.5 rounded-full bg-muted"><div className="h-full w-1/2 rounded-full bg-gradient-to-r from-emerald to-teal" /></div><p className="mt-3 text-sm text-muted-foreground">You are <b className="text-emerald">6 days</b> ahead of expected timeline</p></Card>
+    <Card><div className="flex justify-between"><h3 className="text-[17px] font-bold">Recovery Score</h3><Info className="h-5 w-5 text-muted-foreground" /></div><div className="mt-2 flex items-center gap-3"><RingProgress value={81} size={160} stroke={14} color="var(--emerald)"><div className="text-center"><p className="num text-5xl font-bold">81</p><p className="text-sm text-muted-foreground">/100</p></div></RingProgress><div className="space-y-2"><p className="text-emerald"><ArrowUp className="inline h-5 w-5 text-amber" /> <b className="num text-2xl">4</b></p><p className="text-sm text-muted-foreground">from yesterday</p><p className="text-sm font-semibold text-emerald">On Track</p><p className="text-xs leading-relaxed text-muted-foreground">You are recovering well.<br/>Keep following your plan.</p></div></div></Card>
+    <div className="grid grid-cols-2 gap-3"><Card><p className="text-sm font-semibold text-muted-foreground">Readmission Risk</p><p className="mt-2 text-lg font-bold text-emerald">Low</p><p className="num text-4xl font-bold text-emerald">12%</p><p className="text-xs text-muted-foreground"><ArrowDown className="inline h-4 w-4 text-emerald" /> <b>3%</b> from yesterday</p></Card><Card><p className="text-sm font-semibold text-muted-foreground">Recovery Day</p><p className="mt-3 text-3xl font-bold">Day 12</p><p className="text-sm text-muted-foreground">Since Discharge</p></Card></div>
+    <Card><h3 className="text-[15px] font-bold">Today's Twin Summary</h3><div className="mt-3 space-y-3">{summary.map(s => <p key={s} className="text-xs leading-snug text-muted-foreground">💚 {s}</p>)}</div></Card>
+    <Card><h3 className="text-[17px] font-bold">Your Recovery Twin</h3><div className="relative mx-auto mt-2 h-[300px] max-w-[360px]"><div className="absolute inset-x-8 top-5 bottom-4 rounded-[50%] border border-dashed border-teal/20"/><svg viewBox="0 0 100 220" className="absolute left-1/2 top-2 h-[290px] w-[125px] -translate-x-1/2"><defs><linearGradient id="body-clean" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#5eead4"/><stop offset="1" stopColor="#0891b2"/></linearGradient></defs><circle cx="50" cy="22" r="13" fill="url(#body-clean)"/><path d="M29 56 Q50 40 71 56 L78 112 L65 119 L61 201 L52 201 L50 135 L48 201 L39 201 L35 119 L22 112 Z" fill="url(#body-clean)" opacity=".8"/><path d="M50 43 L50 199 M30 64 L70 64 M34 83 L66 83 M36 102 L64 102 M39 122 L61 122 M41 145 L59 145" stroke="white" strokeOpacity=".5"/><circle cx="44" cy="78" r="4" fill="white"/></svg>{twinLabels.map(({ key, label, className }) => <button key={key} type="button" onClick={() => setSelectedTwin(key)} className={cn("absolute cursor-pointer rounded-full bg-background/70 px-2 py-1 text-xs font-semibold text-foreground shadow-sm ring-1 ring-border transition hover:bg-card", className)}>{label}</button>)}</div></Card>
+    <Card><h3 className="text-[17px] font-bold">Recovery Timeline</h3><div className="relative mt-5 space-y-5"><div className="absolute left-[86px] top-3 bottom-3 w-0.5 bg-gradient-to-b from-violet-400 via-blue to-emerald" />{[{ date: "Apr 28", title: "Hospital Admission", tone: "border-violet-500" }, { date: "Apr 30", title: "Surgery Performed", tone: "border-violet-500" }, { date: "May 02", title: "Discharged", tone: "border-blue-500" }, { date: "May 03", title: "Home Recovery Started", tone: "border-teal" }].map(event => <div key={event.date} className="relative flex items-start gap-4"><span className="w-14 pt-1 text-right text-xs font-semibold text-muted-foreground">{event.date}</span><span className={cn("z-10 mt-0.5 h-5 w-5 shrink-0 rounded-full border-4 bg-card", event.tone)} /><div className="flex-1"><p className="text-sm font-bold">{event.title}</p><p className="mt-1 text-xs text-muted-foreground">{event.date}</p></div><ChevronRight className="mt-1 h-5 w-5 text-muted-foreground" /></div>)}<div className="relative flex items-start gap-4"><span className="w-14 pt-2 text-right text-xs font-bold text-emerald">May 12</span><span className="z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full bg-emerald text-white">★</span><div className="flex-1 rounded-2xl border border-emerald/25 bg-emerald/5 p-3"><p className="text-sm font-bold text-emerald">You are here</p><p className="mt-1 text-xl font-bold text-emerald">Improving</p><p className="mt-1 text-sm text-muted-foreground">Day 12</p></div></div><div className="relative flex items-start gap-4"><span className="w-14 pt-1 text-right text-xs font-semibold text-muted-foreground">Jul 20</span><span className="z-10 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-amber bg-card text-amber">☆</span><div className="flex-1"><p className="text-sm font-bold">Expected Full Recovery</p><p className="mt-1 text-xs text-muted-foreground">Jul 20</p></div><ChevronRight className="mt-1 h-5 w-5 text-muted-foreground" /></div></div><div className="mt-5 flex items-center gap-3 rounded-2xl border border-emerald/20 bg-emerald/5 p-4"><span className="grid h-12 w-12 place-items-center rounded-full bg-emerald/10 text-emerald">✓</span><div><p className="font-bold text-emerald">Stay on track!</p><p className="mt-1 text-sm leading-relaxed text-muted-foreground">Your recovery is progressing well.<br/>Keep following your plan.</p></div></div></Card>
+    <Card><h3 className="text-[15px] font-bold">Recovery Score Trend</h3><p className="mt-1 text-xs text-muted-foreground">Tap a score to view that day’s summary</p><svg viewBox="0 0 280 150" className="mt-3 w-full"><path d="M25 108 L83 96 L141 75 L199 44 L257 30" fill="none" stroke="var(--emerald)" strokeWidth="2.5" />{points.map(([x, y, value, label]) => <g key={label} onClick={() => setSelectedDay(label)} className="cursor-pointer"><circle cx={x} cy={y} r="7" fill="transparent"/><circle cx={x} cy={y} r="4" fill="white" stroke="var(--emerald)" strokeWidth="3"/><text x={x} y={y - 10} textAnchor="middle" className="fill-foreground text-[10px] font-bold">{value}</text><text x={x} y="140" textAnchor="middle" className="fill-muted-foreground text-[8px]">{label}</text></g>)}</svg>{selectedDay && <div className="mt-2 rounded-xl bg-emerald/10 p-3 text-xs"><b>{selectedDay}</b><p className="mt-1 text-muted-foreground">Your recovery score was recorded and your plan remained on track that day.</p><button onClick={() => setSelectedDay(null)} className="mt-1 text-emerald">Close</button></div>}</Card>
+  </div>;
+}
+
+
+
+
+
