@@ -1,7 +1,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Info, ChevronDown, Dumbbell, TrendingDown, Heart, Leaf, Pill, CircleCheck, Activity, ShieldCheck, RefreshCw, Stethoscope, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Info,
+  ChevronDown,
+  Dumbbell,
+  TrendingDown,
+  Heart,
+  Leaf,
+  Pill,
+  CircleCheck,
+  Activity,
+  ShieldCheck,
+  RefreshCw,
+  Stethoscope,
+  Sparkles,
+  HeartPulse,
+  Zap,
+  Moon,
+  Brain,
+  Flame,
+  X,
+} from "lucide-react";
 import { scores, twinChanges, dataSources, user } from "@/data/mock";
+import {
+  getDailyTimeline,
+  getEventTimeline,
+  subscribeTimeline,
+} from "@/data/wellness-timeline";
 import { RingProgress, TrendBadge, Card, SectionHeader } from "@/components/care/primitives";
 import { cn } from "@/lib/utils";
 
@@ -23,59 +48,132 @@ const everydayData = {
   statusBadge: "Balanced",
   confidence: "Confidence 86%",
   heroValueLabel: "Twin health",
-  heroValue: "84",
-  secondaryLabel: "Health age",
-  secondaryValue: `${user.biologicalAge}/${user.age}`,
+  heroValue: "88",
+  secondaryLabel: "Recovery index",
+  secondaryValue: "84/100",
   trendLabel: "Trend",
-  trendValue: "Improving",
+  trendValue: "+3 pts vs baseline",
   trendTone: "text-emerald",
-  summaryTitle: "AI Twin summary",
-  summaryText: "Your body state is well-balanced today with steady HRV and optimal sleep recovery. Vital signs remain within ideal targets.",
-  gridTitle: "Body systems",
-  gridHint: "Tap a system for details",
+  summaryTitle: "Digital Twin summary",
+  summaryText: "Cardiovascular and metabolic systems are well balanced. Resting heart rate is at optimal baseline (68 bpm) and deep sleep recovered +23 mins.",
+  gridTitle: "Body systems status",
+  gridHint: "Tap card for details",
   systems: [
-    { key: "cardio", label: "Cardiovascular", score: 88, note: "HRV & Resting HR optimal", status: "good", trend: 3 },
-    { key: "metabolic", label: "Metabolic", score: 82, note: "Fasting glucose stable", status: "good", trend: 2 },
-    { key: "nervous", label: "Sleep & Nervous", score: 79, note: "7.5 hrs sleep · Deep recovery", status: "good", trend: 1 },
-    { key: "musculo", label: "Musculoskeletal", score: 85, note: "Good daily movement", status: "good", trend: 4 },
-  ],
-  timelineTitle: "Your Wellness Story",
-  timelineHint: "Recent milestones",
-  timeline: [
-    { icon: "check-circle" as const, title: "Doses completed on time", date: "Today · 8:00 AM" },
-    { icon: "dumbbell" as const, title: "Morning walk 2.4 km", date: "Today · 10:30 AM" },
-    { icon: "heart" as const, title: "Sleep score 85/100 · 7.5 hrs", date: "Today · 7:30 AM" },
-    { icon: "leaf" as const, title: "Baseline vitals recorded", date: "Yesterday" },
+    {
+      key: "cardio",
+      label: "CARDIOVASCULAR",
+      icon: HeartPulse,
+      statusText: "Stable",
+      statusTone: "emerald",
+      signalLabel: "Heart & HRV",
+      explanation: "Your heart-related readings are close to your usual pattern.",
+      signals: "Resting Heart Rate • HRV • Blood Pressure",
+    },
+    {
+      key: "metabolic",
+      label: "GLUCOSE",
+      icon: Zap,
+      statusText: "Good",
+      statusTone: "emerald",
+      signalLabel: "Glucose",
+      explanation: "Your energy and blood-sugar patterns look steady.",
+      signals: "Glucose",
+    },
+    {
+      key: "nervous",
+      label: "SLEEP & RECOVERY",
+      icon: Moon,
+      statusText: "Improving",
+      statusTone: "teal",
+      signalLabel: "Sleep",
+      explanation: "Your sleep and recovery duration are getting better.",
+      signals: "Deep Sleep • REM • Sleep Continuity",
+    },
+    {
+      key: "musculo",
+      label: "MOVEMENT & MOBILITY",
+      icon: Activity,
+      statusText: "Good",
+      statusTone: "emerald",
+      signalLabel: "Activity",
+      explanation: "Your movement pattern is looking consistent.",
+      signals: "Steps",
+    },
+    {
+      key: "mind",
+      label: "STRESS & MIND",
+      icon: Brain,
+      statusText: "Attention",
+      statusTone: "amber",
+      signalLabel: "Stress",
+      explanation: "Your stress levels have been higher than usual recently.",
+      signals: "Stress Index",
+    },
+    {
+      key: "wellness",
+      label: "OVERALL WELLNESS",
+      icon: ShieldCheck,
+      statusText: "Stable",
+      statusTone: "teal",
+      signalLabel: "Resilience",
+      explanation: "Your overall wellness is currently balanced.",
+      signals: "Resilience",
+    },
   ],
 };
 
 const recoveryData = {
-  statusBadge: "Recovery Journey",
-  confidence: "Phase 2 · Active Care",
-  heroValueLabel: "Readiness",
-  heroValue: "78%",
-  secondaryLabel: "Recovery day",
-  secondaryValue: "Day 5/10",
+  statusBadge: "Active Recovery",
+  confidence: "Confidence 86%",
+  heroValueLabel: "Health Score",
+  heroValue: "88",
+  secondaryLabel: "Recovery phase",
+  secondaryValue: "Phase 3",
   trendLabel: "State",
-  trendValue: "Recovering",
-  trendTone: "text-teal",
+  trendValue: "On Track",
+  trendTone: "text-emerald",
   summaryTitle: "Recovery Twin summary",
-  summaryText: "Post-procedure recovery is progressing steadily. Inflammatory response is decreasing as expected. Gentle mobility and medication routine are aligned.",
+  summaryText: "Informational AI-generated insight based on Recovery Plan & Baseline and Recovery Progress & Insight engine outputs. Your recovery is progressing as expected.",
   gridTitle: "Recovery indicators",
-  gridHint: "Live recovery metrics",
+  gridHint: "Engine outputs & derived risk",
   systems: [
-    { key: "cardio", label: "Inflammation Response", score: 82, note: "Inflammatory markers lowering", status: "good", trend: 5 },
-    { key: "metabolic", label: "Cardiac Stress Load", score: 90, note: "Low resting cardiac strain", status: "good", trend: 3 },
-    { key: "nervous", label: "Mobility & Rest", score: 68, note: "Gentle rest & mobility target", status: "caution", trend: 2 },
-    { key: "musculo", label: "Medication Alignment", score: 95, note: "100% dose compliance", status: "good", trend: 4 },
+    {
+      key: "progress",
+      label: "RECOVERY PROGRESS",
+      icon: Activity,
+      statusText: "On Track",
+      statusTone: "emerald",
+      signalLabel: "Expected path",
+      explanation: "Your recovery is progressing as expected compared with your clinical path.",
+      signals: "Discharge Plan • Clinical Guidance • Milestones",
+    },
+    {
+      key: "baseline",
+      label: "BACK TO BASELINE",
+      icon: TrendingDown,
+      statusText: "72%",
+      statusTone: "teal",
+      signalLabel: "Pre-recovery state",
+      explanation: "You're moving closer to your usual normal pre-recovery state.",
+      signals: "Pre-recovery Baseline • Vitals • Movement Signals",
+    },
+    {
+      key: "risk",
+      label: "READMISSION RISK",
+      icon: ShieldCheck,
+      statusText: "Low",
+      statusTone: "emerald",
+      signalLabel: "86% Confidence",
+      explanation: "Derived risk output indicates low readmission likelihood based on current vitals and medication adherence.",
+      signals: "Vitals Stability • Medication Compliance",
+    },
   ],
   timelineTitle: "Recovery Timeline",
-  timelineHint: "Care & healing timeline",
+  timelineHint: "Expected recovery phases",
   timeline: [
-    { icon: "pill" as const, title: "Morning dose taken: Metformin 500mg", date: "Today · 8:00 AM" },
-    { icon: "shield" as const, title: "Caregiver check-in verified", date: "Today · 10:02 AM" },
-    { icon: "stethoscope" as const, title: "Vitals check: BP 120/78, Temp 98.4°F", date: "Today · 11:15 AM" },
-    { icon: "activity" as const, title: "Wound & dressing check confirmed", date: "Today · 1:30 PM" },
+    { icon: "check-circle" as const, title: "Stabilization", date: "Phase 1 · Completed", completed: true, active: false },
+    { icon: "check-circle" as const, title: "Early Recovery", date: "Phase 2 · Completed", completed: true, active: false },
+    { icon: "activity" as const, title: "Active Recovery", date: "Phase 3 · Current Phase", completed: false, active: true },
   ],
 };
 
@@ -84,6 +182,19 @@ function TwinPage() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [transitionLabel, setTransitionLabel] = useState("");
   const [confOpen, setConfOpen] = useState(false);
+
+  const [activeTimelineTab, setActiveTimelineTab] = useState<"daily" | "events">("daily");
+  const [dailyTimelineItems, setDailyTimelineItems] = useState(getDailyTimeline());
+  const [eventTimelineItems, setEventTimelineItems] = useState(getEventTimeline());
+  const [selectedSystem, setSelectedSystem] = useState<any | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = subscribeTimeline(() => {
+      setDailyTimelineItems([...getDailyTimeline()]);
+      setEventTimelineItems([...getEventTimeline()]);
+    });
+    return unsubscribe;
+  }, []);
 
   const toggleMode = (targetMode: Mode) => {
     if (mode === targetMode || isTransitioning) return;
@@ -280,20 +391,10 @@ function TwinPage() {
             </svg>
           </div>
 
-          {/* Hero Statistics Grid */}
-          <div className="mt-4 grid w-full grid-cols-3 gap-3 text-center transition-all duration-500">
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-white/60">{data.heroValueLabel}</p>
-              <p className="num text-2xl font-semibold">{data.heroValue}</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-white/60">{data.secondaryLabel}</p>
-              <p className="num text-2xl font-semibold">{data.secondaryValue}</p>
-            </div>
-            <div>
-              <p className="text-[10px] uppercase tracking-wider text-white/60">{data.trendLabel}</p>
-              <p className={cn("text-lg font-semibold", data.trendTone)}>{data.trendValue}</p>
-            </div>
+          {/* Hero Statistics (Single Centered Health Score for all modes) */}
+          <div className="mt-4 flex flex-col items-center text-center transition-all duration-500">
+            <p className="text-[10px] uppercase tracking-wider text-white/60">{data.heroValueLabel}</p>
+            <p className="num text-3xl font-bold tracking-tight text-white">{data.heroValue}</p>
           </div>
         </div>
       </div>
@@ -306,103 +407,284 @@ function TwinPage() {
         <p className="mt-2 text-sm leading-relaxed text-foreground/90">{data.summaryText}</p>
       </Card>
 
-      {/* Body Systems / Recovery Indicators */}
+      {/* Body Systems / Recovery Indicators (Apple-style Cards with Dynamic Status Rings) */}
       <div className="transition-all duration-500">
         <SectionHeader title={data.gridTitle} hint={data.gridHint} />
         <div className="grid grid-cols-2 gap-3">
-          {data.systems.map((s) => (
-            <Link
-              key={s.key}
-              to="/twin/$system"
-              params={{ system: s.key }}
-              className="card-surface flex flex-col items-center p-3 text-center transition-all duration-300 active:scale-[0.98]"
-            >
-              <RingProgress
-                value={s.score}
-                size={72}
-                stroke={7}
-                color={s.status === "good" ? "var(--emerald)" : s.status === "caution" ? "var(--amber)" : "var(--coral)"}
-              />
-              <p className="mt-2 text-[13px] font-semibold">{s.label}</p>
-              <p className="text-[10px] text-muted-foreground">{s.note}</p>
-              <div className="mt-1"><TrendBadge value={s.trend} /></div>
-            </Link>
-          ))}
+          {data.systems.map((s, i) => {
+            const Icon = s.icon;
+            const isLastOdd = data.systems.length % 2 !== 0 && i === data.systems.length - 1;
+            return (
+              <div
+                key={s.key}
+                onClick={() => setSelectedSystem(s)}
+                className={cn(
+                  "card-surface flex flex-col items-center justify-between p-3.5 text-center cursor-pointer transition-all duration-300 active:scale-[0.98] hover:border-teal/40 group min-h-[160px] space-y-1.5",
+                  isLastOdd && "col-span-2 justify-self-center w-full max-w-[calc(50%-0.375rem)]"
+                )}
+              >
+                {/* Dynamic Status Ring & Centered Visual */}
+                <div className="relative grid h-16 w-16 place-items-center my-0.5">
+                  <svg className="absolute inset-0 h-full w-full -rotate-90" viewBox="0 0 64 64">
+                    {/* Subtle background track ring */}
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="27"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3.5"
+                      className="text-border/50"
+                    />
+                    {/* Dynamic gradient status ring */}
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="27"
+                      fill="none"
+                      stroke={
+                        s.statusTone === "emerald" ? "var(--emerald)" :
+                        s.statusTone === "amber" ? "var(--amber)" :
+                        s.statusTone === "coral" ? "var(--coral)" :
+                        "var(--teal)"
+                      }
+                      strokeWidth="3.5"
+                      strokeDasharray="170"
+                      strokeDashoffset="35"
+                      strokeLinecap="round"
+                      className="transition-all duration-700 drop-shadow-xs"
+                    />
+                  </svg>
+
+                  <div
+                    className={cn(
+                      "relative z-10 grid h-10 w-10 place-items-center rounded-full transition-transform group-hover:scale-105",
+                      s.statusTone === "emerald" ? "bg-emerald/10 text-emerald" :
+                      s.statusTone === "amber" ? "bg-amber/10 text-amber" :
+                      s.statusTone === "coral" ? "bg-coral/10 text-coral" :
+                      "bg-teal/10 text-teal"
+                    )}
+                  >
+                    <Icon className="h-5 w-5 stroke-[2]" />
+                  </div>
+                </div>
+
+                {/* ONE-WORD Status */}
+                <p
+                  className={cn(
+                    "text-[11px] font-bold tracking-wider uppercase",
+                    s.statusTone === "emerald" ? "text-emerald" :
+                    s.statusTone === "amber" ? "text-amber" :
+                    s.statusTone === "coral" ? "text-coral" :
+                    "text-teal"
+                  )}
+                >
+                  {s.statusText}
+                </p>
+
+                {/* System Name */}
+                <p className="text-[12px] font-semibold text-foreground leading-tight uppercase tracking-tight">
+                  {s.label}
+                </p>
+
+                {/* Small relevant signal label */}
+                <p className="text-[10.5px] font-medium text-muted-foreground">
+                  {s.signalLabel}
+                </p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* What Has Changed */}
-      <div>
-        <SectionHeader title="What has changed" hint="Recent window" />
-        <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1">
-          {twinChanges.map((c) => (
-            <div
-              key={c.label}
-              className={cn(
-                "shrink-0 rounded-2xl border px-3 py-2",
-                c.tone === "good" ? "border-emerald/30 bg-emerald/5" : "border-amber/30 bg-amber/5"
-              )}
-            >
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">{c.label}</p>
-              <p className={cn("num text-base font-semibold", c.tone === "good" ? "text-emerald" : "text-amber")}>{c.delta}</p>
+      {/* Tap Detail Popover Overlay */}
+      {selectedSystem && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4 rise-in"
+          onClick={() => setSelectedSystem(null)}
+        >
+          <div
+            className="w-full max-w-xs rounded-2xl border border-border bg-popover p-4 text-popover-foreground shadow-2xl space-y-3"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div
+                  className={cn(
+                    "grid h-8.5 w-8.5 place-items-center rounded-xl",
+                    selectedSystem.statusTone === "emerald" ? "bg-emerald/15 text-emerald" :
+                    selectedSystem.statusTone === "amber" ? "bg-amber/15 text-amber" :
+                    selectedSystem.statusTone === "coral" ? "bg-coral/15 text-coral" :
+                    "bg-teal/15 text-teal"
+                  )}
+                >
+                  <selectedSystem.icon className="h-4.5 w-4.5 stroke-[2]" />
+                </div>
+                <div>
+                  <h4 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                    {selectedSystem.label}
+                  </h4>
+                  <span
+                    className={cn(
+                      "inline-block text-xs font-bold uppercase tracking-wider",
+                      selectedSystem.statusTone === "emerald" ? "text-emerald" :
+                      selectedSystem.statusTone === "amber" ? "text-amber" :
+                      selectedSystem.statusTone === "coral" ? "text-coral" :
+                      "text-teal"
+                    )}
+                  >
+                    {selectedSystem.statusText}
+                  </span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setSelectedSystem(null)}
+                className="rounded-full p-1 text-muted-foreground hover:bg-muted cursor-pointer"
+              >
+                <X className="h-4 w-4" />
+              </button>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Timeline: Wellness Story vs Recovery Timeline */}
+            <p className="text-xs leading-relaxed text-foreground font-medium pt-1.5 border-t border-border/60">
+              "{selectedSystem.explanation}"
+            </p>
+
+            <div className="pt-2 border-t border-border/60 space-y-1">
+              <p className="text-[10px] uppercase tracking-wider font-semibold text-teal">Signals Monitored</p>
+              <p className="text-[11px] text-muted-foreground font-medium">
+                {selectedSystem.signals}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Timeline Section: 2 Timelines (Everyday Mode) vs Recovery Timeline */}
       <div className="transition-all duration-500">
-        <SectionHeader title={data.timelineTitle} hint={data.timelineHint} />
+        <div className="flex items-center justify-between mb-2">
+          <div>
+            <h3 className="text-sm font-semibold tracking-tight text-foreground">
+              {mode === "recovery" ? data.timelineTitle : "Digital Twin Story"}
+            </h3>
+            <p className="text-xs text-muted-foreground">
+              {mode === "recovery" ? data.timelineHint : activeTimelineTab === "daily" ? "Daily health activity" : "Personal health & lifestyle events"}
+            </p>
+          </div>
+
+          {/* Everyday Twin 2-Timelines Tab Toggle */}
+          {mode === "everyday" && (
+            <div className="flex rounded-full border border-border bg-muted/60 p-0.5 text-[10.5px]">
+              <button
+                onClick={() => setActiveTimelineTab("daily")}
+                className={cn(
+                  "rounded-full px-2.5 py-1 font-semibold transition-colors cursor-pointer",
+                  activeTimelineTab === "daily"
+                    ? "bg-card text-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                DAILY
+              </button>
+              <button
+                onClick={() => setActiveTimelineTab("events")}
+                className={cn(
+                  "rounded-full px-2.5 py-1 font-semibold transition-colors cursor-pointer",
+                  activeTimelineTab === "events"
+                    ? "bg-card text-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                EVENTS
+              </button>
+            </div>
+          )}
+        </div>
+
         <Card className="p-0">
           <div className="relative py-2">
             <span className="absolute left-[26px] top-4 bottom-4 w-px bg-border" />
-            {data.timeline.map((m, i) => {
-              const Icon = memIcon[m.icon as keyof typeof memIcon];
-              return (
-                <div key={i} className="relative flex items-center gap-3 px-3 py-2.5">
-                  <div className="relative z-10 grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-teal to-blue text-white">
-                    <Icon className="h-3.5 w-3.5" />
+
+            {/* Recovery Mode Timeline (Only completed phases + active current phase) */}
+            {mode === "recovery" ? (
+              data.timeline.map((m, i) => {
+                const isCompleted = m.completed;
+                const isActive = m.active;
+                return (
+                  <div key={i} className="relative flex items-center gap-3 px-3 py-2.5">
+                    <div
+                      className={cn(
+                        "relative z-10 grid h-8 w-8 place-items-center rounded-full transition-all",
+                        isCompleted
+                          ? "bg-emerald text-white"
+                          : isActive
+                          ? "bg-gradient-to-br from-teal to-blue text-white ring-2 ring-teal/50"
+                          : "bg-muted text-muted-foreground"
+                      )}
+                    >
+                      {isCompleted ? (
+                        <CircleCheck className="h-4 w-4" />
+                      ) : (
+                        <Activity className="h-3.5 w-3.5" />
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <p className={cn("text-[13px] font-medium truncate", isActive && "text-teal font-semibold")}>
+                          {m.title}
+                        </p>
+                        {isActive && (
+                          <span className="rounded-full bg-teal/15 px-2 py-0.5 text-[9.5px] font-semibold text-teal">
+                            Current Phase
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">{m.date}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-[13px] font-medium">{m.title}</p>
-                    <p className="text-[11px] text-muted-foreground">{m.date}</p>
+                );
+              })
+            ) : activeTimelineTab === "daily" ? (
+              /* Everyday Mode - Daily Timeline */
+              dailyTimelineItems.map((item) => {
+                const Icon = memIcon[item.icon as keyof typeof memIcon] || Activity;
+                return (
+                  <div key={item.id} className="relative flex items-center gap-3 px-3 py-2.5">
+                    <div className="relative z-10 grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-teal to-blue text-white">
+                      <Icon className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-[13px] font-medium truncate">{item.title}</p>
+                      <p className="text-[11px] text-muted-foreground">{item.date}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            ) : (
+              /* Everyday Mode - Event Timeline */
+              eventTimelineItems.map((item) => {
+                const Icon = memIcon[item.icon as keyof typeof memIcon] || Dumbbell;
+                return (
+                  <div key={item.id} className="relative flex items-center gap-3 px-3 py-2.5">
+                    <div className="relative z-10 grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-teal to-blue text-white">
+                      <Icon className="h-3.5 w-3.5" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between gap-1">
+                        <p className="text-[13px] font-medium truncate">{item.title}</p>
+                        <span className="shrink-0 rounded-full bg-teal/10 px-2 py-0.5 text-[9.5px] font-semibold text-teal">
+                          {item.source}
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-muted-foreground">{item.date}</p>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </Card>
       </div>
-
-      {/* Twin Confidence */}
-      <Card>
-        <button className="flex w-full items-center gap-3" onClick={() => setConfOpen((v) => !v)}>
-          <div className="grid h-10 w-10 place-items-center rounded-xl bg-blue/10 text-blue"><Info className="h-4 w-4" /></div>
-          <div className="flex-1 text-left">
-            <p className="text-[11px] uppercase tracking-wider text-muted-foreground">Twin confidence</p>
-            <p className="text-sm font-medium">86% · Growing with continuous data</p>
-          </div>
-          <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform", confOpen && "rotate-180")} />
-        </button>
-        {confOpen && (
-          <div className="mt-4 space-y-2 rise-in">
-            {dataSources.map((d) => (
-              <div key={d.label}>
-                <div className="mb-1 flex justify-between text-[11px]">
-                  <span>{d.label}</span>
-                  <span className="text-muted-foreground">{d.pct}%</span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-muted">
-                  <div className="h-full rounded-full bg-gradient-to-r from-teal to-blue" style={{ width: `${d.pct}%` }} />
-                </div>
-              </div>
-            ))}
-            <p className="pt-2 text-[11px] text-muted-foreground">
-              Continuous sync with vitals, care activity, and dose logging keeps confidence high.
-            </p>
-          </div>
-        )}
-      </Card>
     </div>
   );
 }

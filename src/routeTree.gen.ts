@@ -24,7 +24,6 @@ import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as RecordsRouteImport } from './routes/records'
 import { Route as ReportsRouteImport } from './routes/reports'
-import { Route as SupportRouteImport } from './routes/support'
 import { Route as TwinRouteImport } from './routes/twin'
 import { Route as CareTeamIndexRouteImport } from './routes/care-team.index'
 import { Route as CareTeamCaregiversRouteImport } from './routes/care-team.caregivers'
@@ -49,16 +48,10 @@ import { Route as ProfileSectionRouteImport } from './routes/profile.$section'
 import { Route as RecordsIndexRouteImport } from './routes/records.index'
 import { Route as RecordsCategoryRouteImport } from './routes/records.$category'
 import { Route as ReportsIdRouteImport } from './routes/reports.$id'
-import { Route as SupportAmbulanceRouteImport } from './routes/support.ambulance'
-import { Route as SupportClinicRouteImport } from './routes/support.clinic'
-import { Route as SupportLabRouteImport } from './routes/support.lab'
-import { Route as SupportPharmacyRouteImport } from './routes/support.pharmacy'
 import { Route as TwinSystemRouteImport } from './routes/twin.$system'
 import { Route as VitalsMetricRouteImport } from './routes/vitals.$metric'
 import { Route as CareTeamCaregiverCaregiverIdRouteImport } from './routes/care-team.caregiver.$caregiverId'
 import { Route as RecordsDocIdRouteImport } from './routes/records.doc.$id'
-import { Route as SupportHomeCareServiceRouteImport } from './routes/support.home-care.$service'
-import { Route as SupportOnlineServiceRouteImport } from './routes/support.online.$service'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -133,11 +126,6 @@ const RecordsRoute = RecordsRouteImport.update({
 const ReportsRoute = ReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SupportRoute = SupportRouteImport.update({
-  id: '/support',
-  path: '/support',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TwinRoute = TwinRouteImport.update({
@@ -260,26 +248,6 @@ const ReportsIdRoute = ReportsIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => ReportsRoute,
 } as any)
-const SupportAmbulanceRoute = SupportAmbulanceRouteImport.update({
-  id: '/ambulance',
-  path: '/ambulance',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportClinicRoute = SupportClinicRouteImport.update({
-  id: '/clinic',
-  path: '/clinic',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportLabRoute = SupportLabRouteImport.update({
-  id: '/lab',
-  path: '/lab',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportPharmacyRoute = SupportPharmacyRouteImport.update({
-  id: '/pharmacy',
-  path: '/pharmacy',
-  getParentRoute: () => SupportRoute,
-} as any)
 const TwinSystemRoute = TwinSystemRouteImport.update({
   id: '/$system',
   path: '/$system',
@@ -301,16 +269,6 @@ const RecordsDocIdRoute = RecordsDocIdRouteImport.update({
   path: '/doc/$id',
   getParentRoute: () => RecordsRoute,
 } as any)
-const SupportHomeCareServiceRoute = SupportHomeCareServiceRouteImport.update({
-  id: '/home-care/$service',
-  path: '/home-care/$service',
-  getParentRoute: () => SupportRoute,
-} as any)
-const SupportOnlineServiceRoute = SupportOnlineServiceRouteImport.update({
-  id: '/online/$service',
-  path: '/online/$service',
-  getParentRoute: () => SupportRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -328,7 +286,6 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRouteWithChildren
   '/records': typeof RecordsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
-  '/support': typeof SupportRouteWithChildren
   '/twin': typeof TwinRouteWithChildren
   '/care-team/caregivers': typeof CareTeamCaregiversRoute
   '/care-team/find': typeof CareTeamFindRoute
@@ -347,10 +304,6 @@ export interface FileRoutesByFullPath {
   '/profile/$section': typeof ProfileSectionRoute
   '/records/$category': typeof RecordsCategoryRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/support/ambulance': typeof SupportAmbulanceRoute
-  '/support/clinic': typeof SupportClinicRoute
-  '/support/lab': typeof SupportLabRoute
-  '/support/pharmacy': typeof SupportPharmacyRoute
   '/twin/$system': typeof TwinSystemRoute
   '/vitals/$metric': typeof VitalsMetricRoute
   '/care-team/': typeof CareTeamIndexRoute
@@ -361,8 +314,6 @@ export interface FileRoutesByFullPath {
   '/records/': typeof RecordsIndexRoute
   '/care-team/caregiver/$caregiverId': typeof CareTeamCaregiverCaregiverIdRoute
   '/records/doc/$id': typeof RecordsDocIdRoute
-  '/support/home-care/$service': typeof SupportHomeCareServiceRoute
-  '/support/online/$service': typeof SupportOnlineServiceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -374,7 +325,6 @@ export interface FileRoutesByTo {
   '/premium': typeof PremiumRoute
   '/profile': typeof ProfileRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
-  '/support': typeof SupportRouteWithChildren
   '/twin': typeof TwinRouteWithChildren
   '/care-team/caregivers': typeof CareTeamCaregiversRoute
   '/care-team/find': typeof CareTeamFindRoute
@@ -393,10 +343,6 @@ export interface FileRoutesByTo {
   '/profile/$section': typeof ProfileSectionRoute
   '/records/$category': typeof RecordsCategoryRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/support/ambulance': typeof SupportAmbulanceRoute
-  '/support/clinic': typeof SupportClinicRoute
-  '/support/lab': typeof SupportLabRoute
-  '/support/pharmacy': typeof SupportPharmacyRoute
   '/twin/$system': typeof TwinSystemRoute
   '/vitals/$metric': typeof VitalsMetricRoute
   '/care-team': typeof CareTeamIndexRoute
@@ -407,8 +353,6 @@ export interface FileRoutesByTo {
   '/records': typeof RecordsIndexRoute
   '/care-team/caregiver/$caregiverId': typeof CareTeamCaregiverCaregiverIdRoute
   '/records/doc/$id': typeof RecordsDocIdRoute
-  '/support/home-care/$service': typeof SupportHomeCareServiceRoute
-  '/support/online/$service': typeof SupportOnlineServiceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -427,7 +371,6 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRouteWithChildren
   '/records': typeof RecordsRouteWithChildren
   '/reports': typeof ReportsRouteWithChildren
-  '/support': typeof SupportRouteWithChildren
   '/twin': typeof TwinRouteWithChildren
   '/care-team/caregivers': typeof CareTeamCaregiversRoute
   '/care-team/find': typeof CareTeamFindRoute
@@ -446,10 +389,6 @@ export interface FileRoutesById {
   '/profile/$section': typeof ProfileSectionRoute
   '/records/$category': typeof RecordsCategoryRoute
   '/reports/$id': typeof ReportsIdRoute
-  '/support/ambulance': typeof SupportAmbulanceRoute
-  '/support/clinic': typeof SupportClinicRoute
-  '/support/lab': typeof SupportLabRoute
-  '/support/pharmacy': typeof SupportPharmacyRoute
   '/twin/$system': typeof TwinSystemRoute
   '/vitals/$metric': typeof VitalsMetricRoute
   '/care-team/': typeof CareTeamIndexRoute
@@ -460,8 +399,6 @@ export interface FileRoutesById {
   '/records/': typeof RecordsIndexRoute
   '/care-team/caregiver/$caregiverId': typeof CareTeamCaregiverCaregiverIdRoute
   '/records/doc/$id': typeof RecordsDocIdRoute
-  '/support/home-care/$service': typeof SupportHomeCareServiceRoute
-  '/support/online/$service': typeof SupportOnlineServiceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -481,7 +418,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/records'
     | '/reports'
-    | '/support'
     | '/twin'
     | '/care-team/caregivers'
     | '/care-team/find'
@@ -500,10 +436,6 @@ export interface FileRouteTypes {
     | '/profile/$section'
     | '/records/$category'
     | '/reports/$id'
-    | '/support/ambulance'
-    | '/support/clinic'
-    | '/support/lab'
-    | '/support/pharmacy'
     | '/twin/$system'
     | '/vitals/$metric'
     | '/care-team/'
@@ -514,8 +446,6 @@ export interface FileRouteTypes {
     | '/records/'
     | '/care-team/caregiver/$caregiverId'
     | '/records/doc/$id'
-    | '/support/home-care/$service'
-    | '/support/online/$service'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -527,7 +457,6 @@ export interface FileRouteTypes {
     | '/premium'
     | '/profile'
     | '/reports'
-    | '/support'
     | '/twin'
     | '/care-team/caregivers'
     | '/care-team/find'
@@ -546,10 +475,6 @@ export interface FileRouteTypes {
     | '/profile/$section'
     | '/records/$category'
     | '/reports/$id'
-    | '/support/ambulance'
-    | '/support/clinic'
-    | '/support/lab'
-    | '/support/pharmacy'
     | '/twin/$system'
     | '/vitals/$metric'
     | '/care-team'
@@ -560,8 +485,6 @@ export interface FileRouteTypes {
     | '/records'
     | '/care-team/caregiver/$caregiverId'
     | '/records/doc/$id'
-    | '/support/home-care/$service'
-    | '/support/online/$service'
   id:
     | '__root__'
     | '/'
@@ -579,7 +502,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/records'
     | '/reports'
-    | '/support'
     | '/twin'
     | '/care-team/caregivers'
     | '/care-team/find'
@@ -598,10 +520,6 @@ export interface FileRouteTypes {
     | '/profile/$section'
     | '/records/$category'
     | '/reports/$id'
-    | '/support/ambulance'
-    | '/support/clinic'
-    | '/support/lab'
-    | '/support/pharmacy'
     | '/twin/$system'
     | '/vitals/$metric'
     | '/care-team/'
@@ -612,8 +530,6 @@ export interface FileRouteTypes {
     | '/records/'
     | '/care-team/caregiver/$caregiverId'
     | '/records/doc/$id'
-    | '/support/home-care/$service'
-    | '/support/online/$service'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -632,7 +548,6 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRouteWithChildren
   RecordsRoute: typeof RecordsRouteWithChildren
   ReportsRoute: typeof ReportsRouteWithChildren
-  SupportRoute: typeof SupportRouteWithChildren
   TwinRoute: typeof TwinRouteWithChildren
   VitalsMetricRoute: typeof VitalsMetricRoute
 }
@@ -742,13 +657,6 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/reports'
       preLoaderRoute: typeof ReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/support': {
-      id: '/support'
-      path: '/support'
-      fullPath: '/support'
-      preLoaderRoute: typeof SupportRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/twin': {
@@ -919,34 +827,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportsIdRouteImport
       parentRoute: typeof ReportsRoute
     }
-    '/support/ambulance': {
-      id: '/support/ambulance'
-      path: '/ambulance'
-      fullPath: '/support/ambulance'
-      preLoaderRoute: typeof SupportAmbulanceRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/clinic': {
-      id: '/support/clinic'
-      path: '/clinic'
-      fullPath: '/support/clinic'
-      preLoaderRoute: typeof SupportClinicRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/lab': {
-      id: '/support/lab'
-      path: '/lab'
-      fullPath: '/support/lab'
-      preLoaderRoute: typeof SupportLabRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/pharmacy': {
-      id: '/support/pharmacy'
-      path: '/pharmacy'
-      fullPath: '/support/pharmacy'
-      preLoaderRoute: typeof SupportPharmacyRouteImport
-      parentRoute: typeof SupportRoute
-    }
     '/twin/$system': {
       id: '/twin/$system'
       path: '/$system'
@@ -974,20 +854,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/records/doc/$id'
       preLoaderRoute: typeof RecordsDocIdRouteImport
       parentRoute: typeof RecordsRoute
-    }
-    '/support/home-care/$service': {
-      id: '/support/home-care/$service'
-      path: '/home-care/$service'
-      fullPath: '/support/home-care/$service'
-      preLoaderRoute: typeof SupportHomeCareServiceRouteImport
-      parentRoute: typeof SupportRoute
-    }
-    '/support/online/$service': {
-      id: '/support/online/$service'
-      path: '/online/$service'
-      fullPath: '/support/online/$service'
-      preLoaderRoute: typeof SupportOnlineServiceRouteImport
-      parentRoute: typeof SupportRoute
     }
   }
 }
@@ -1116,27 +982,6 @@ const ReportsRouteChildren: ReportsRouteChildren = {
 const ReportsRouteWithChildren =
   ReportsRoute._addFileChildren(ReportsRouteChildren)
 
-interface SupportRouteChildren {
-  SupportAmbulanceRoute: typeof SupportAmbulanceRoute
-  SupportClinicRoute: typeof SupportClinicRoute
-  SupportLabRoute: typeof SupportLabRoute
-  SupportPharmacyRoute: typeof SupportPharmacyRoute
-  SupportHomeCareServiceRoute: typeof SupportHomeCareServiceRoute
-  SupportOnlineServiceRoute: typeof SupportOnlineServiceRoute
-}
-
-const SupportRouteChildren: SupportRouteChildren = {
-  SupportAmbulanceRoute: SupportAmbulanceRoute,
-  SupportClinicRoute: SupportClinicRoute,
-  SupportLabRoute: SupportLabRoute,
-  SupportPharmacyRoute: SupportPharmacyRoute,
-  SupportHomeCareServiceRoute: SupportHomeCareServiceRoute,
-  SupportOnlineServiceRoute: SupportOnlineServiceRoute,
-}
-
-const SupportRouteWithChildren =
-  SupportRoute._addFileChildren(SupportRouteChildren)
-
 interface TwinRouteChildren {
   TwinSystemRoute: typeof TwinSystemRoute
 }
@@ -1163,7 +1008,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRouteWithChildren,
   RecordsRoute: RecordsRouteWithChildren,
   ReportsRoute: ReportsRouteWithChildren,
-  SupportRoute: SupportRouteWithChildren,
   TwinRoute: TwinRouteWithChildren,
   VitalsMetricRoute: VitalsMetricRoute,
 }

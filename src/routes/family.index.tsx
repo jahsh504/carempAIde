@@ -91,8 +91,8 @@ function Family() {
       <SectionHeader title="Emergency contacts" />
       <div className="space-y-2">
         {[
-          { name: "Dr. Nadia Rahman", role: "Family physician", phone: "+91 98800 12345" },
-          { name: "Manipal Hospital", role: "24×7 Emergency", phone: "1066" },
+          { name: "Nadia Rahman", role: "Family physician", phone: "+91 98800 12345" },
+          { name: "John Doe", role: "Local guardian", phone: "1066" },
         ].map((c) => (
           <div
             key={c.name}

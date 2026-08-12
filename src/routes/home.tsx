@@ -29,6 +29,8 @@ import {
   type TimeRange,
   type MetricDataPoint,
 } from "@/data/change-detection";
+import { scoreAttributionData } from "@/data/score-attribution";
+import { markMedicationTaken } from "@/data/wellness-timeline";
 import {
   RadialScore,
   Sparkline,
@@ -141,7 +143,7 @@ function ChangeDetectionTrendGraph() {
       <div className="space-y-2">
         <div className="flex items-center justify-between">
           <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-            Change Detection Engine
+            Trends
           </p>
           <div className="flex rounded-full border border-border bg-muted/60 p-0.5 text-[10.5px]">
             {(["7D", "14D", "30D", "90D"] as TimeRange[]).map((r) => (
@@ -331,6 +333,7 @@ function HomePage() {
 
   const [factOpen, setFactOpen] = useState(false);
   const [factIndex, setFactIndex] = useState(0);
+  const [scorePopoverOpen, setScorePopoverOpen] = useState(false);
 
   useEffect(() => {
     const index = Math.floor(Math.random() * mockFunFacts.length);
@@ -342,11 +345,64 @@ function HomePage() {
   return (
     <div className="px-4 pb-6 space-y-4">
       {/* Hero score */}
-      <div className="relative overflow-visible rounded-3xl border border-border bg-gradient-to-br from-card via-card to-teal/5 p-5 soft-shadow rise-in">
+      <div className="relative z-20 overflow-visible rounded-3xl border border-border bg-gradient-to-br from-card via-card to-teal/5 p-5 soft-shadow rise-in">
         <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-teal/15 blur-3xl overflow-hidden" />
         <div className="pointer-events-none absolute -bottom-20 -left-10 h-48 w-48 rounded-full bg-blue/15 blur-3xl overflow-hidden" />
         <div className="relative flex items-center gap-4">
-          <RadialScore value={scores.overall} label="Health" size={148} />
+          <div className="relative cursor-pointer group" onClick={() => setScorePopoverOpen((v) => !v)}>
+            <RadialScore value={scores.overall} label="Health" size={148} />
+
+            {/* Why Your Score Popover Overlay */}
+            {scorePopoverOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setScorePopoverOpen(false);
+                  }}
+                />
+                <div
+                  onClick={(e) => e.stopPropagation()}
+                  className="absolute top-full left-0 mt-2 z-50 w-72 rounded-2xl border border-border bg-popover/95 p-4 text-popover-foreground shadow-xl backdrop-blur-md rise-in"
+                >
+                  <div className="flex items-center justify-between border-b border-border pb-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-teal">
+                      WHY YOUR SCORE?
+                    </p>
+                    <button
+                      onClick={() => setScorePopoverOpen(false)}
+                      className="text-[11px] font-medium text-muted-foreground hover:text-foreground"
+                    >
+                      Close
+                    </button>
+                  </div>
+                  <div className="mt-3 space-y-2.5 text-[12.5px]">
+                    {scoreAttributionData.map((factor) => (
+                      <div key={factor.metric} className="space-y-0.5">
+                        <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                          <span className="h-1.5 w-1.5 rounded-full bg-teal" />
+                          <span>{factor.metric}</span>
+                          <span
+                            className={cn(
+                              "text-[12px] font-bold",
+                              factor.direction === "up" ? "text-emerald" : "text-amber"
+                            )}
+                          >
+                            {factor.direction === "up" ? "↑" : "↓"}
+                          </span>
+                        </div>
+                        <p className="pl-3 text-[11.5px] leading-relaxed text-muted-foreground">
+                          {factor.text}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
           <div className="flex-1 space-y-2.5 min-w-0">
             <div>
               <p className="text-[11px] uppercase tracking-wider text-muted-foreground">
@@ -380,7 +436,7 @@ function HomePage() {
                   <div
                     onMouseEnter={() => setFactOpen(true)}
                     onMouseLeave={() => setFactOpen(false)}
-                    className="absolute left-0 bottom-full mb-2 z-50 w-72 rounded-2xl border border-border bg-popover/95 p-3.5 text-popover-foreground shadow-xl backdrop-blur-md rise-in"
+                    className="absolute top-full mt-2 -left-20 sm:left-0 z-50 w-[270px] sm:w-72 rounded-2xl border border-border bg-popover/95 p-3.5 text-popover-foreground shadow-xl backdrop-blur-md rise-in"
                   >
                     <p className="text-[10.5px] font-semibold uppercase tracking-wider text-teal">
                       FUN FACT ABOUT YOU ✨
@@ -523,10 +579,13 @@ function HomePage() {
             </p>
           </div>
           <button
-            onClick={() => setMedTaken(true)}
+            onClick={() => {
+              setMedTaken(true);
+              markMedicationTaken(`${medication.name} ${medication.dose}`);
+            }}
             disabled={medTaken}
             className={cn(
-              "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors",
+              "shrink-0 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer",
               medTaken ? "bg-emerald/15 text-emerald" : "bg-primary text-primary-foreground",
             )}
           >

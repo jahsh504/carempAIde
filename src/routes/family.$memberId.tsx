@@ -6,9 +6,9 @@ import {
   SectionHeader,
   RingProgress,
   StatusChip,
-  TrendBadge,
 } from "@/components/care/primitives";
-import { MessageSquare, Share2, Siren, ChevronRight, Sparkles, Loader2 } from "lucide-react";
+import { ChevronRight, Sparkles, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/family/$memberId")({
   head: ({ params }) => {
@@ -31,11 +31,76 @@ export const Route = createFileRoute("/family/$memberId")({
   component: MemberDetail,
 });
 
+type WindowRange = "7d" | "1m";
+
+type TrendSummary = {
+  metricName: string;
+  metricRoute: string;
+  status: "Stable" | "Improving" | "Higher" | "Lower";
+  statusTone: "emerald" | "teal" | "amber" | "coral";
+  insight: string;
+};
+
+const memberTrendSummaries: Record<string, Record<WindowRange, TrendSummary>> = {
+  priya: {
+    "7d": {
+      metricName: "Activity",
+      metricRoute: "activity",
+      status: "Improving",
+      statusTone: "emerald",
+      insight: "Activity has increased recently.",
+    },
+    "1m": {
+      metricName: "Sleep",
+      metricRoute: "sleep",
+      status: "Stable",
+      statusTone: "teal",
+      insight: "Sleep has been consistent over the past month.",
+    },
+  },
+  rohan: {
+    "7d": {
+      metricName: "Sleep",
+      metricRoute: "sleep",
+      status: "Stable",
+      statusTone: "teal",
+      insight: "Sleep has been consistent this week.",
+    },
+    "1m": {
+      metricName: "Wellness",
+      metricRoute: "wellness",
+      status: "Improving",
+      statusTone: "emerald",
+      insight: "Overall wellness score has improved over the past month.",
+    },
+  },
+  aarav: {
+    "7d": {
+      metricName: "Stress",
+      metricRoute: "stress",
+      status: "Lower",
+      statusTone: "emerald",
+      insight: "Stress levels have been lower recently.",
+    },
+    "1m": {
+      metricName: "Activity",
+      metricRoute: "activity",
+      status: "Higher",
+      statusTone: "teal",
+      insight: "Step counts are higher than last month.",
+    },
+  },
+};
+
 function MemberDetail() {
   const { memberId } = Route.useParams();
   const m = family.find((f) => f.id === memberId) ?? family[0];
   const d = familyDetails[m.id] ?? familyDetails.priya;
   const { pull, refreshing, containerRef } = usePullToRefresh();
+  const [windowRange, setWindowRange] = useState<WindowRange>("7d");
+
+  const memberTrends = memberTrendSummaries[m.id] ?? memberTrendSummaries.priya;
+  const currentSummary = memberTrends[windowRange];
 
   return (
     <div ref={containerRef} className="px-4 pb-6 space-y-4">
@@ -103,55 +168,74 @@ function MemberDetail() {
       <SectionHeader title="My Health Twin" />
       <Card>
         <p className="text-sm leading-relaxed">{d.twinSummary}</p>
-        <Link
-          to="/twin"
-          className="mt-4 flex w-full items-center justify-center rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          View Full Twin Analysis
-        </Link>
       </Card>
 
-      {/* 3 — Trends */}
-      <SectionHeader title="Trends" hint="Last 7 days" />
-      <Card className="p-0">
-        {d.trends.map((t, i, a) => (
-          <Link
-            key={t.key}
-            to="/vitals/$metric"
-            params={{ metric: t.metric }}
-            className={`flex items-center justify-between px-4 py-3.5 ${i < a.length - 1 ? "border-b border-border" : ""}`}
-          >
-            <span className="text-sm">{t.label}</span>
-            <span className="flex items-center gap-2">
-              <span className="text-[11px] text-muted-foreground">{t.caption}</span>
-              <TrendBadge value={t.delta} />
-              <ChevronRight className="h-4 w-4 text-muted-foreground" />
-            </span>
-          </Link>
-        ))}
-      </Card>
-
-      {/* 4 — Recent events */}
-      <SectionHeader title="Recent events" />
-      <Card className="p-0">
-        {d.events.slice(0, 5).map((e, i, a) => (
-          <div
-            key={i}
-            className={`flex items-start justify-between gap-3 px-4 py-3 ${i < a.length - 1 ? "border-b border-border" : ""}`}
-          >
-            <span className="text-sm">{e.text}</span>
-            <span className="shrink-0 text-[11px] text-muted-foreground">{e.when}</span>
+      {/* 3 — How They've Been */}
+      <div>
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm font-semibold tracking-tight text-foreground">
+            How they've been
+          </h3>
+          <div className="flex rounded-full border border-border bg-muted/60 p-0.5 text-[10.5px]">
+            <button
+              onClick={() => setWindowRange("7d")}
+              className={cn(
+                "rounded-full px-2.5 py-1 font-semibold transition-colors cursor-pointer",
+                windowRange === "7d"
+                  ? "bg-card text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              7 DAYS
+            </button>
+            <button
+              onClick={() => setWindowRange("1m")}
+              className={cn(
+                "rounded-full px-2.5 py-1 font-semibold transition-colors cursor-pointer",
+                windowRange === "1m"
+                  ? "bg-card text-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              )}
+            >
+              1 MONTH
+            </button>
           </div>
-        ))}
-      </Card>
-      <Link
-        to="/notifications"
-        className="flex items-center justify-center gap-1 text-xs font-medium text-primary"
-      >
-        See all activity <ChevronRight className="h-3.5 w-3.5" />
-      </Link>
+        </div>
 
-      {/* 5 — Insight */}
+        <Card className="p-0">
+          <Link
+            to="/vitals/$metric"
+            params={{ metric: currentSummary.metricRoute }}
+            className="flex items-center justify-between p-4 transition-all hover:bg-muted/30 group cursor-pointer"
+          >
+            <div className="space-y-1.5 min-w-0 flex-1 pr-3">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold text-foreground">
+                  {currentSummary.metricName}
+                </span>
+                <span
+                  className={cn(
+                    "rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                    currentSummary.statusTone === "emerald"
+                      ? "bg-emerald/10 text-emerald"
+                      : currentSummary.statusTone === "amber"
+                      ? "bg-amber/15 text-amber"
+                      : "bg-teal/10 text-teal"
+                  )}
+                >
+                  {currentSummary.status}
+                </span>
+              </div>
+              <p className="text-xs leading-relaxed text-muted-foreground font-medium">
+                "{currentSummary.insight}"
+              </p>
+            </div>
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </Card>
+      </div>
+
+      {/* 4 — Insight */}
       <SectionHeader title="Insight" />
       <Card>
         <div className="flex gap-3">
@@ -159,26 +243,6 @@ function MemberDetail() {
           <p className="text-sm leading-relaxed">{d.insight}</p>
         </div>
       </Card>
-
-      {/* 6 — Quick actions */}
-      <SectionHeader title="Quick actions" />
-      <div className="grid grid-cols-3 gap-2">
-        {[
-          { label: "Message", icon: MessageSquare },
-          { label: "Share", icon: Share2 },
-          { label: "Emergency", icon: Siren },
-        ].map((a) => (
-          <button
-            key={a.label}
-            className="flex flex-col items-center gap-1.5 rounded-2xl border border-border bg-card px-2 py-3 text-[11px] font-medium"
-          >
-            <a.icon
-              className={`h-4 w-4 ${a.label === "Emergency" ? "text-coral" : "text-muted-foreground"}`}
-            />
-            {a.label}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }

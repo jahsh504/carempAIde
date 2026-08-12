@@ -1,5 +1,5 @@
-// Medication Management — mock data + in-memory store.
 import { useSyncExternalStore } from "react";
+import { markMedicationTaken, addEventTimelineItem } from "@/data/wellness-timeline";
 
 export type FoodRule = "Before food" | "After food" | "With food" | "Anytime";
 
@@ -108,17 +108,53 @@ export function getSchedule() { return schedule; }
 export function getInventory() { return inventory; }
 
 export function toggleMedication(id: string) {
+  const target = schedule.find((m) => m.id === id);
+  const willBeTaken = target ? !target.taken : false;
   schedule = schedule.map((m) => (m.id === id ? { ...m, taken: !m.taken } : m));
+  if (willBeTaken && target) {
+    markMedicationTaken(`${target.name} (${target.dosage})`);
+  }
   emit();
 }
 
 export function takeMedication(id: string) {
+  const target = schedule.find((m) => m.id === id);
   schedule = schedule.map((m) => (m.id === id ? { ...m, taken: true } : m));
+  if (target) {
+    markMedicationTaken(`${target.name} (${target.dosage})`);
+  }
   emit();
 }
 
 export function addMedication(m: Omit<Medication, "id" | "taken" | "minutesFromNow">) {
-  schedule = [...schedule, { ...m, id: `m${Date.now()}`, taken: false, minutesFromNow: 600 }];
+  const newMed: Medication = { ...m, id: `m${Date.now()}`, taken: false, minutesFromNow: 600 };
+  schedule = [...schedule, newMed];
+  
+  // 1. Log to Daily Timeline
+  markMedicationTaken(`Started ${m.name} (${m.dosage})`);
+
+  // 2. Log to Event Timeline
+  const todayStr = new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  const isoDate = new Date().toISOString().split("T")[0];
+  addEventTimelineItem({
+    title: `${m.name} (${m.dosage}) started`,
+    category: "medication",
+    date: todayStr,
+    timestamp: isoDate,
+    source: "User",
+    context: `New medication added to daily schedule: ${m.dosage}, ${m.when} (${m.food}).`,
+    icon: "pill",
+    beforeAfterComparison: {
+      periodBefore: "Baseline prior to starting",
+      periodAfter: "Regimen active",
+      metrics: [
+        { label: "Adherence Target", before: "Pending", after: "100% Scheduled", change: "Active", trend: "positive" },
+        { label: "Daily Doses", before: "0", after: m.dosage, change: "+1 regimen", trend: "positive" },
+      ],
+      summary: `You started taking ${m.name} (${m.dosage}) on ${todayStr}. Schedule: ${m.when} (${m.food}).`,
+    },
+  });
+
   emit();
 }
 

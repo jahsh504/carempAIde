@@ -14,13 +14,18 @@ import {
   Pill,
   Brain,
 } from "lucide-react";
-import { chatSeed, suggestedQuestions } from "@/data/mock";
+import { chatSeed } from "@/data/mock";
+import {
+  addEventTimelineItem,
+  findTimelineEvent,
+  type EventTimelineItem,
+} from "@/data/wellness-timeline";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/companion")({
   head: () => ({
     meta: [
-      { title: "AI Companion — careMP" },
+      { title: "AI Companion — careMP AIDE" },
       {
         name: "description",
         content: "Chat with your careMP AI companion about vitals, reports, and daily wellness.",
@@ -34,17 +39,27 @@ type Rec = { kind: "counselor" | "pharmacy"; reason: string };
 type Msg = { role: "user" | "ai"; text: string; rich?: "hr-explainer"; rec?: Rec };
 
 const seededChat: Msg[] = [
-  ...(chatSeed as Msg[]),
   {
     role: "ai",
-    text: "Also — your sleep dropped 18% this week and stress spiked mid-week. A short session with a counselor could help.",
+    text: "I noticed your daily activity has increased significantly over the past 2 weeks (+68%). Did you start a new routine or activity?",
+  },
+  {
+    role: "ai",
+    text: "Also — your sleep dropped 18% this week and stress spiked mid-week.",
     rec: { kind: "counselor", reason: "Sleep –18% · stress trending up" },
   },
   {
     role: "ai",
-    text: "And a heads-up: your Atorvastatin runs out in 3 days.",
-    rec: { kind: "pharmacy", reason: "Refill needed by Fri" },
+    text: "And a heads-up on your medication timeline:",
+    rec: { kind: "pharmacy", reason: "Refill needed by Fri · Atorvastatin runs out in 3 days." },
   },
+];
+
+const companionSuggestedQuestions = [
+  "I started going to the gym. What changed after that?",
+  "I started taking Vitamin D yesterday",
+  "How is my resting heart rate trending?",
+  "Compare my vitals before and after checkup",
 ];
 
 function Companion() {
@@ -65,9 +80,9 @@ function Companion() {
     setInput("");
     setTyping(true);
     setTimeout(() => {
-      setMessages((m) => [...m, { role: "ai", text: canned(text) }]);
+      setMessages((m) => [...m, { role: "ai", text: processCompanionMessage(text) }]);
       setTyping(false);
-    }, 1100);
+    }, 1000);
   };
 
   return (
@@ -99,11 +114,11 @@ function Companion() {
 
       {/* Suggested chips */}
       <div className="no-scrollbar flex gap-2 overflow-x-auto px-4 pb-2">
-        {suggestedQuestions.map((q) => (
+        {companionSuggestedQuestions.map((q) => (
           <button
             key={q}
             onClick={() => send(q)}
-            className="shrink-0 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-medium text-foreground"
+            className="shrink-0 rounded-full border border-border bg-card px-3 py-1.5 text-[11px] font-medium text-foreground hover:border-teal/40 transition-colors"
           >
             {q}
           </button>
@@ -204,7 +219,7 @@ function Bubble({ msg, onDismiss }: { msg: Msg; onDismiss?: () => void }) {
     <div className="flex items-end gap-2 rise-in">
       <Avatar ai />
       <div className="max-w-[80%] space-y-2">
-        <div className="rounded-2xl rounded-bl-md border border-border bg-card px-4 py-2.5 text-sm">
+        <div className="rounded-2xl rounded-bl-md border border-border bg-card px-4 py-2.5 text-sm whitespace-pre-wrap leading-relaxed">
           {msg.text}
         </div>
         {msg.rich === "hr-explainer" && <HRExplainer />}
@@ -219,19 +234,13 @@ function RecCard({ rec, onDismiss }: { rec: Rec; onDismiss?: () => void }) {
     rec.kind === "counselor"
       ? {
           icon: Brain,
-          label: "Talk to a Counselor",
+          label: "Health Suggestion",
           accent: "bg-[oklch(0.62_0.18_295)]/10 text-[oklch(0.62_0.18_295)]",
-          btn: "bg-[oklch(0.62_0.18_295)]",
-          to: "/support/online/$service" as const,
-          params: { service: "counselor" },
         }
       : {
           icon: Pill,
-          label: "Order refill",
+          label: "Refill Reminder",
           accent: "bg-amber/15 text-amber",
-          btn: "bg-amber",
-          to: "/support/pharmacy" as const,
-          params: undefined,
         };
   const Icon = config.icon;
   return (
@@ -245,22 +254,13 @@ function RecCard({ rec, onDismiss }: { rec: Rec; onDismiss?: () => void }) {
       </button>
       <div className="flex items-center gap-2">
         <div className={cn("grid h-8 w-8 place-items-center rounded-xl", config.accent)}>
-          <Sparkle className="h-4 w-4" />
+          <Icon className="h-4 w-4" />
         </div>
         <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-          AI recommendation
+          {config.label}
         </p>
       </div>
-      <p className="mt-2 text-[12px] text-muted-foreground">{rec.reason}</p>
-      <Link
-        {...({ to: config.to, params: config.params } as any)}
-        className={cn(
-          "mt-3 inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[11px] font-semibold text-white",
-          config.btn,
-        )}
-      >
-        <Icon className="h-3.5 w-3.5" /> {config.label} <ChevronRight className="h-3 w-3" />
-      </Link>
+      <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{rec.reason}</p>
     </div>
   );
 }
@@ -297,15 +297,116 @@ function HRExplainer() {
   );
 }
 
-function canned(q: string) {
+function processCompanionMessage(q: string): string {
   const s = q.toLowerCase();
+
+  // 1. User replying to Twin proactive prompt / confirming workout/gym routine
+  if (
+    (s.includes("yeah") || s.includes("yes") || s.includes("sure") || s.includes("started") || s.includes("going")) &&
+    (s.includes("gym") || s.includes("workout") || s.includes("exercise") || s.includes("running") || s.includes("swimming"))
+  ) {
+    const title = s.includes("gym")
+      ? "Gym & workout routine started"
+      : s.includes("swimming")
+      ? "Swimming routine started"
+      : "Active exercise routine started";
+
+    addEventTimelineItem({
+      title,
+      category: "lifestyle",
+      date: "Today (Aug 12)",
+      timestamp: new Date().toISOString().split("T")[0],
+      source: "User + Companion",
+      context: "User confirmed new routine to Companion after Twin activity discovery.",
+      icon: "dumbbell",
+      beforeAfterComparison: {
+        periodBefore: "30 days prior",
+        periodAfter: "30 days after",
+        metrics: [
+          { label: "Resting Heart Rate", before: "72 bpm", after: "68 bpm", change: "-4 bpm", trend: "positive" },
+          { label: "Daily Active Time", before: "32 mins", after: "54 mins", change: "+22 mins (+68%)", trend: "positive" },
+          { label: "Deep Sleep Duration", before: "1h 12m", after: "1h 35m", change: "+23 mins (+32%)", trend: "positive" },
+          { label: "Stress Level", before: "48/100", after: "36/100", change: "-12 pts (-25%)", trend: "positive" },
+        ],
+        summary: "Since you started going to the gym on July 12, your average resting heart rate has decreased by 4 bpm, daily active time increased by 22 minutes, and deep sleep improved by 32%.",
+      },
+    });
+
+    return `Got it! I've recorded "${title}" into your Wellness Timeline (Date: Aug 12 · Source: User + Companion).\n\nAs your Digital Twin continues gathering vitals and sleep data, I'll track your health signals before and after this milestone.`;
+  }
+
+  // 2. User asking about past Timeline events & Before/After comparison
+  if (
+    s.includes("what changed") ||
+    s.includes("how did") ||
+    s.includes("compare") ||
+    s.includes("since i") ||
+    s.includes("after i") ||
+    s.includes("after that")
+  ) {
+    const matched = findTimelineEvent(s);
+    if (matched && matched.beforeAfterComparison) {
+      return matched.beforeAfterComparison.summary;
+    } else if (matched) {
+      return `I found "${matched.title}" recorded on ${matched.date}. Your Digital Twin is currently collecting post-event vitals to track your progress over the coming days!`;
+    }
+  }
+
+  // 3. User direct event reporting (User -> Timeline)
+  if (
+    s.startsWith("i started") ||
+    s.startsWith("i had") ||
+    s.startsWith("i took") ||
+    s.startsWith("i stopped") ||
+    s.startsWith("i was sick") ||
+    s.includes("started taking") ||
+    s.includes("health checkup")
+  ) {
+    let title = "User event logged";
+    let category: EventTimelineItem["category"] = "wellness";
+    let icon: EventTimelineItem["icon"] = "activity";
+
+    if (s.includes("vitamin") || s.includes("supplement")) {
+      title = "Vitamin D supplement started (2,000 IU)";
+      category = "medication";
+      icon = "pill";
+    } else if (s.includes("gym") || s.includes("workout")) {
+      title = s.includes("stopped") ? "Gym routine paused" : "Gym & workout routine started";
+      category = "lifestyle";
+      icon = "dumbbell";
+    } else if (s.includes("checkup") || s.includes("doctor")) {
+      title = "Health checkup & blood panel completed";
+      category = "clinical";
+      icon = "stethoscope";
+    } else if (s.includes("sick")) {
+      title = "Illness & recovery episode logged";
+      category = "symptom";
+      icon = "heart";
+    }
+
+    addEventTimelineItem({
+      title,
+      category,
+      date: s.includes("yesterday") ? "Yesterday" : s.includes("last week") ? "Last week" : "Today (Aug 12)",
+      timestamp: new Date().toISOString().split("T")[0],
+      source: "User",
+      context: "Directly logged by user via Companion chat.",
+      icon,
+    });
+
+    return `I've added "${title}" to your Wellness Timeline (Source: User · Category: ${category}).\n\nYour Digital Twin will now use this event as context when analyzing future changes in your vitals, sleep, and activity signals.`;
+  }
+
+  // 4. Default query fallbacks
   if (s.includes("sleep"))
     return "Your sleep has averaged 7h 20m this week — 22 minutes above your monthly baseline. Deep sleep is your biggest gain.";
   if (s.includes("lipid") || s.includes("report"))
     return "Your latest lipid panel shows LDL at 138 (slightly high) and HDL at 52 (healthy). Compared to March, LDL is down 18 points — good direction.";
   if (s.includes("blood pressure"))
     return "Your average BP over 14 days is 118/76 — within the ideal range for your age.";
-  if (s.includes("eat"))
+  if (s.includes("eat") || s.includes("diet"))
     return "Based on your activity today, aim for ~2,300 kcal with 100g protein. Add fiber — you've been low this week.";
-  return "Good question. Based on your recent trends, everything looks steady. I'll flag anything that drifts outside your personal range.";
+
+  return "Good question. Based on your Digital Twin baseline, everything looks steady. I'll flag anything that drifts or connect new timeline milestones to your health signals.";
 }
+

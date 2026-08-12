@@ -11,7 +11,6 @@ const TITLES: Record<string, string> = {
   "/companion": "AI Companion",
   "/twin": "My Health Twin",
   "/family": "Family Circle",
-  "/support": "Health Circle",
   "/care": "Care Plan",
   "/medication": "Medication",
   "/medication/add": "Add Medication",
@@ -40,7 +39,7 @@ export function TopBar() {
   const isHome = pathname === "/home";
   const showBack =
     !isHome &&
-    !["/companion", "/twin", "/family", "/support", "/care", "/care-team"].includes(pathname);
+    !["/companion", "/twin", "/family", "/care", "/care-team"].includes(pathname);
   const title = TITLES[pathname] ?? "";
 
   return (
